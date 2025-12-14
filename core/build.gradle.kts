@@ -36,10 +36,12 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
+
+            implementation(libs.ravenzip.kotlin.reactive.forms.core)
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
+        androidMain.dependencies { implementation(libs.androidx.lifecycle.runtimeCompose) }
+
+        commonTest.dependencies { implementation(libs.kotlin.test) }
     }
 }
