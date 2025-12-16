@@ -62,7 +62,7 @@ fun SingleLineTextField(
 }
 
 @Composable
-fun <T> SingleLineTextField(
+fun SingleLineTextField(
     control: MutableFormControl<String>,
     modifier: Modifier = Modifier,
     isReadonly: Boolean = false,
