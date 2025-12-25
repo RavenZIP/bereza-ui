@@ -33,7 +33,7 @@ kotlin {
             implementation(project(":core"))
 
             // Модули других библиотек собственного производства
-            implementation(libs.ravenzip.kotlin.reactive.forms.core)
+            implementation(libs.ravenzip.kotlinReactiveForms.core)
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }

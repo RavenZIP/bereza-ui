@@ -37,7 +37,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
 
-            implementation(libs.ravenzip.kotlin.reactive.forms.core)
+            implementation(libs.ravenzip.kotlinReactiveForms.core)
+            implementation(libs.ravenzip.krex.core)
         }
 
         androidMain.dependencies { implementation(libs.androidx.lifecycle.runtimeCompose) }

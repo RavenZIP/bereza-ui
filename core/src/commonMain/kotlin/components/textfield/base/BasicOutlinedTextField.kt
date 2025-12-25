@@ -6,20 +6,25 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.krex.function.pairwise
 import components.layout.SupportRow
 import components.text.CounterLabel
 import components.text.HintText
 import components.utils.calculateLabelColor
 import components.utils.canAddCharacter
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun BasicOutlinedTextField(
@@ -28,8 +33,11 @@ internal fun BasicOutlinedTextField(
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
     isInvalid: Boolean = false,
+    isDirty: Boolean = false,
+    isTouched: Boolean = false,
     errorMessage: String = "",
     onFocusChange: (FocusState) -> Unit = {},
+    onTouchedChange: () -> Unit,
     modifier: Modifier = Modifier,
     maxLength: Int? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -39,13 +47,22 @@ internal fun BasicOutlinedTextField(
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
-    isHiddenText: Boolean = false,
+    showTextLengthCounter: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
-    showTextLengthCounter: Boolean = false,
 ) {
     val isFocused = rememberSaveable { mutableStateOf(false) }
+    val shouldDisplayError = isInvalid && (isDirty || isTouched)
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { isFocused.value }
+            .pairwise()
+            .filter { x -> !x.second }
+            .onEach { onTouchedChange() }
+            .launchIn(this)
+    }
 
     OutlinedTextField(
         value = value,
@@ -70,7 +87,7 @@ internal fun BasicOutlinedTextField(
         supportingText = {
             SupportRow(
                 left =
-                    if (errorMessage.isNotEmpty()) {
+                    if (shouldDisplayError && errorMessage.isNotEmpty()) {
                         { HintText(text = errorMessage, color = colors.errorLabelColor) }
                     } else null,
                 right =
@@ -81,7 +98,7 @@ internal fun BasicOutlinedTextField(
                                 max = maxLength,
                                 color =
                                     colors.calculateLabelColor(
-                                        isInvalid = isInvalid,
+                                        isInvalid = shouldDisplayError,
                                         isFocused = isFocused.value,
                                     ),
                             )
@@ -89,9 +106,8 @@ internal fun BasicOutlinedTextField(
                     } else null,
             )
         },
-        isError = isInvalid,
-        visualTransformation =
-            if (isHiddenText) PasswordVisualTransformation() else VisualTransformation.None,
+        isError = shouldDisplayError,
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         singleLine = singleLine,
         shape = shape,

@@ -22,7 +22,8 @@ junit = "4.13.2"
 
 vanniktechMavenPublish = "0.35.0"
 
-ravenzip-kotlin-reactive-forms = "0.1.0"
+ravenzip-krex = "0.1.0"
+ravenzip-kotlinReactiveForms = "0.1.1"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -41,7 +42,8 @@ kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 junit = { module = "junit:junit", version.ref = "junit" }
 
-ravenzip-kotlin-reactive-forms-core = { module = "com.github.RavenZIP.kotlin-reactive-forms:core", version.ref = "ravenzip-kotlin-reactive-forms" }
+ravenzip-krex-core = { module = "com.github.RavenZIP.krex:core", version.ref = "ravenzip-krex" }
+ravenzip-kotlinReactiveForms-core = { module = "com.github.RavenZIP.kotlin-reactive-forms:core", version.ref = "ravenzip-kotlinReactiveForms" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

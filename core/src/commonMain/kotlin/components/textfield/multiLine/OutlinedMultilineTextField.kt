@@ -9,38 +9,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
+import com.github.ravenzip.kotlinreactiveforms.data.isInvalid
+import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 import components.textfield.base.BasicOutlinedTextField
+import components.utils.collectAsSnapshotStateList
+import components.utils.collectAsStateLifecycleAware
 
 @Composable
 fun OutlinedMultiLineTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    isEnabled: Boolean = true,
-    isReadonly: Boolean = false,
-    isInvalid: Boolean = false,
-    errorMessage: String = "",
-    onFocusChange: (FocusState) -> Unit = {},
+    control: MutableFormControl<String>,
     modifier: Modifier = Modifier,
+    onFocusChange: (FocusState) -> Unit = {},
+    isReadonly: Boolean = false,
     maxLength: Int? = null,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
     label: (@Composable () -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    showTextLengthCounter: Boolean = false,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
-    showTextLengthCounter: Boolean = false,
 ) {
+    val value = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val dirty = control.dirtyChanges.collectAsStateLifecycleAware().value
+    val touched = control.touchedChanges.collectAsStateLifecycleAware().value
+    val errorMessage = control.errorMessagesChanges.collectAsSnapshotStateList().firstOrNull() ?: ""
+
     BasicOutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { newValue -> control.setValue(newValue) },
         modifier = modifier,
-        isEnabled = isEnabled,
+        isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
-        onFocusChange = onFocusChange,
+        isInvalid = status.isInvalid(),
         errorMessage = errorMessage,
+        isDirty = dirty,
+        isTouched = touched,
+        onFocusChange = onFocusChange,
+        onTouchedChange = { control.markAsTouched() },
         maxLength = maxLength,
         maxLines = maxLines,
         minLines = minLines,
@@ -48,7 +59,6 @@ fun OutlinedMultiLineTextField(
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        isInvalid = isInvalid,
         showTextLengthCounter = showTextLengthCounter,
         keyboardOptions = keyboardOptions,
         shape = shape,
