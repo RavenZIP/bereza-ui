@@ -1,6 +1,8 @@
 package components.checkbox
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,22 +30,16 @@ fun Checkbox(
     text: @Composable () -> Unit,
     enabled: Boolean = true,
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
     Row(
         modifier =
-            modifier
-                .clip(shape)
-                .clickable(enabled = enabled, onClick = onClick)
-                .padding(top = 5.dp, bottom = 5.dp),
+            modifier.clip(shape).clickable(enabled = enabled, onClick = onClick).padding(padding),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Checkbox(
-            checked = isSelected,
-            onCheckedChange = { onClick() },
-            enabled = enabled,
-            colors = colors,
-        )
+        Checkbox(checked = isSelected, onCheckedChange = null, enabled = enabled, colors = colors)
 
         text()
     }
@@ -58,6 +54,7 @@ fun Checkbox(
     textStyle: TextStyle = TextStyle.Default.merge(fontSize = 18.sp),
     enabled: Boolean = true,
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
     Checkbox(
@@ -67,6 +64,7 @@ fun Checkbox(
         text = { Text(text = text, style = textStyle) },
         enabled = enabled,
         colors = colors,
+        padding = padding,
         shape = shape,
     )
 }
@@ -77,6 +75,7 @@ fun Checkbox(
     modifier: Modifier = Modifier,
     text: @Composable () -> Unit,
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
     val isSelected = control.valueChanges.collectAsState().value
@@ -92,6 +91,7 @@ fun Checkbox(
         text = text,
         enabled = status.isEnabled(),
         colors = colors,
+        padding = padding,
         shape = shape,
     )
 }
@@ -103,6 +103,7 @@ fun Checkbox(
     text: String,
     textStyle: TextStyle = TextStyle.Default.merge(fontSize = 18.sp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
     val isSelected = control.valueChanges.collectAsState().value
@@ -119,6 +120,7 @@ fun Checkbox(
         textStyle = textStyle,
         enabled = status.isEnabled(),
         colors = colors,
+        padding = padding,
         shape = shape,
     )
 }
