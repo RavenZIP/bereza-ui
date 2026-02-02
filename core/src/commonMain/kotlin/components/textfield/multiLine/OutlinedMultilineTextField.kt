@@ -23,13 +23,13 @@ fun OutlinedMultiLineTextField(
     onFocusChange: (FocusState) -> Unit = {},
     isReadonly: Boolean = false,
     maxLength: Int? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
     label: (@Composable () -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
     showTextLengthCounter: Boolean = false,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
@@ -42,16 +42,19 @@ fun OutlinedMultiLineTextField(
 
     BasicOutlinedTextField(
         value = value,
-        onValueChange = { newValue -> control.setValue(newValue) },
+        onValueChange = { newValue ->
+            control.setValue(newValue)
+            control.markAsDirty()
+        },
         modifier = modifier,
         isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
         isInvalid = status.isInvalid(),
-        errorMessage = errorMessage,
         isDirty = dirty,
         isTouched = touched,
         onFocusChange = onFocusChange,
         onTouchedChange = { control.markAsTouched() },
+        errorMessage = errorMessage,
         maxLength = maxLength,
         maxLines = maxLines,
         minLines = minLines,

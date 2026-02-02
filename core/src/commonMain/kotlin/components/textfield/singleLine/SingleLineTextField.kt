@@ -46,15 +46,15 @@ fun SingleLineTextField(
             control.setValue(newValue)
             control.markAsDirty()
         },
+        modifier = modifier,
         isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
         isInvalid = status.isInvalid(),
-        errorMessage = errorMessage,
         isDirty = dirty,
         isTouched = touched,
+        errorMessage = errorMessage,
         onFocusChange = onFocusChange,
         onTouchedChange = { control.markAsTouched() },
-        modifier = modifier,
         maxLength = maxLength,
         label = label,
         placeholder = placeholder,

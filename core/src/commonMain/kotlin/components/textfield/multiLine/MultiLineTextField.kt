@@ -9,16 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
+import com.github.ravenzip.kotlinreactiveforms.data.isInvalid
+import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 import components.textfield.base.BasicTextField
+import components.utils.collectAsSnapshotStateList
+import components.utils.collectAsStateLifecycleAware
 
 @Composable
 fun MultiLineTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    isEnabled: Boolean = true,
+    control: MutableFormControl<String>,
     isReadonly: Boolean = false,
-    isInvalid: Boolean = false,
-    errorMessage: String = "",
     onFocusChange: (FocusState) -> Unit = {},
     modifier: Modifier = Modifier,
     maxLength: Int? = null,
@@ -33,13 +34,26 @@ fun MultiLineTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     showTextLengthCounter: Boolean = false,
 ) {
+    val value = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val dirty = control.dirtyChanges.collectAsStateLifecycleAware().value
+    val touched = control.touchedChanges.collectAsStateLifecycleAware().value
+    val errorMessage = control.errorMessagesChanges.collectAsSnapshotStateList().firstOrNull() ?: ""
+
     BasicTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { newValue ->
+            control.setValue(newValue)
+            control.markAsDirty()
+        },
         modifier = modifier,
-        isEnabled = isEnabled,
+        isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
+        isInvalid = status.isInvalid(),
+        isDirty = dirty,
+        isTouched = touched,
         onFocusChange = onFocusChange,
+        onTouchedChange = { control.markAsTouched() },
         errorMessage = errorMessage,
         maxLength = maxLength,
         maxLines = maxLines,
@@ -48,7 +62,6 @@ fun MultiLineTextField(
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        isInvalid = isInvalid,
         showTextLengthCounter = showTextLengthCounter,
         keyboardOptions = keyboardOptions,
         shape = shape,
