@@ -19,6 +19,55 @@ import components.utils.collectAsStateLifecycleAware
 
 @Composable
 fun SingleLineTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isDirty: Boolean = false,
+    isTouched: Boolean = false,
+    isEnabled: Boolean = true,
+    isInvalid: Boolean = false,
+    isReadonly: Boolean = false,
+    errorMessage: String = "",
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    maxLength: Int? = null,
+    label: (@Composable () -> Unit)? = null,
+    placeholder: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    showTextLengthCounter: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    shape: Shape = RoundedCornerShape(14.dp),
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        isEnabled = isEnabled,
+        isReadonly = isReadonly,
+        isInvalid = isInvalid,
+        isDirty = isDirty,
+        isTouched = isTouched,
+        errorMessage = errorMessage,
+        onFocusChange = onFocusChange,
+        onTouchedChange = onTouchChange,
+        maxLength = maxLength,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        showTextLengthCounter = showTextLengthCounter,
+        shape = shape,
+        colors = colors,
+    )
+}
+
+@Composable
+fun SingleLineTextField(
     control: MutableFormControl<String>,
     modifier: Modifier = Modifier,
     onFocusChange: (FocusState) -> Unit = {},
