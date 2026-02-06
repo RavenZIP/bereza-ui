@@ -55,6 +55,8 @@ internal fun BasicOutlinedTextField(
 ) {
     val isFocused = rememberSaveable { mutableStateOf(false) }
     val shouldDisplayError = isInvalid && (isDirty || isTouched)
+    val errorMessageIsVisible = shouldDisplayError && errorMessage.isNotEmpty()
+    val supportRowIsVisible = errorMessageIsVisible || showTextLengthCounter
 
     LaunchedEffect(Unit) {
         snapshotFlow { isFocused.value }
@@ -84,28 +86,31 @@ internal fun BasicOutlinedTextField(
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        supportingText = {
-            SupportRow(
-                left =
-                    if (shouldDisplayError && errorMessage.isNotEmpty()) {
-                        { HintText(text = errorMessage, color = colors.errorLabelColor) }
-                    } else null,
-                right =
-                    if (showTextLengthCounter) {
-                        {
-                            CounterLabel(
-                                current = value.length,
-                                max = maxLength,
-                                color =
-                                    colors.calculateLabelColor(
-                                        isInvalid = shouldDisplayError,
-                                        isFocused = isFocused.value,
-                                    ),
-                            )
-                        }
-                    } else null,
-            )
-        },
+        supportingText =
+            if (supportRowIsVisible) {
+                {
+                    SupportRow(
+                        left =
+                            if (errorMessageIsVisible) {
+                                { HintText(text = errorMessage, color = colors.errorLabelColor) }
+                            } else null,
+                        right =
+                            if (showTextLengthCounter) {
+                                {
+                                    CounterLabel(
+                                        current = value.length,
+                                        max = maxLength,
+                                        color =
+                                            colors.calculateLabelColor(
+                                                isInvalid = shouldDisplayError,
+                                                isFocused = isFocused.value,
+                                            ),
+                                    )
+                                }
+                            } else null,
+                    )
+                }
+            } else null,
         isError = shouldDisplayError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,

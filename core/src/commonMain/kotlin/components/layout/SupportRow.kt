@@ -7,20 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SupportRow(
+internal fun SupportRow(
     modifier: Modifier = Modifier,
     left: (@Composable () -> Unit)? = null,
     right: (@Composable () -> Unit)? = null,
 ) {
-    if (left != null || right != null) {
-        Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
-            if (left != null) {
-                Box(Modifier.weight(1f)) { left() }
-            }
+    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
+        if (left != null) {
+            Box(Modifier.weight(1f)) { left() }
+        }
 
-            if (right != null) {
-                Box(Modifier.weight(1f)) { right() }
-            }
+        if (right != null) {
+            Box(Modifier.weight(1f)) { right() }
         }
     }
 }
