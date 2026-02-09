@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
@@ -16,18 +17,16 @@ import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 import components.textfield.base.BasicOutlinedTextField
 import components.utils.collectAsSnapshotStateList
 import components.utils.collectAsStateLifecycleAware
+import data.ComponentErrorState
 
 @Composable
 fun OutlinedSingleLineTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isDirty: Boolean = false,
-    isTouched: Boolean = false,
     isEnabled: Boolean = true,
-    isInvalid: Boolean = false,
     isReadonly: Boolean = false,
-    errorMessage: String = "",
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
@@ -47,10 +46,7 @@ fun OutlinedSingleLineTextField(
         modifier = modifier,
         isEnabled = isEnabled,
         isReadonly = isReadonly,
-        isInvalid = isInvalid,
-        isDirty = isDirty,
-        isTouched = isTouched,
-        errorMessage = errorMessage,
+        errorState = errorState,
         onFocusChange = onFocusChange,
         onTouchedChange = onTouchChange,
         maxLength = maxLength,
@@ -88,6 +84,11 @@ fun OutlinedSingleLineTextField(
     val dirty = control.dirtyChanges.collectAsStateLifecycleAware().value
     val touched = control.touchedChanges.collectAsStateLifecycleAware().value
     val errorMessage = control.errorMessagesChanges.collectAsSnapshotStateList().firstOrNull() ?: ""
+    val errorState =
+        remember(status, dirty, touched) {
+            if (status.isInvalid() && (dirty || touched)) ComponentErrorState.Error(errorMessage)
+            else ComponentErrorState.Ok
+        }
 
     BasicOutlinedTextField(
         value = value,
@@ -98,10 +99,7 @@ fun OutlinedSingleLineTextField(
         modifier = modifier,
         isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
-        isInvalid = status.isInvalid(),
-        isDirty = dirty,
-        isTouched = touched,
-        errorMessage = errorMessage,
+        errorState = errorState,
         onFocusChange = onFocusChange,
         onTouchedChange = { control.markAsTouched() },
         maxLength = maxLength,

@@ -5,11 +5,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
@@ -22,6 +19,8 @@ import components.text.CounterLabel
 import components.text.HintText
 import components.utils.calculateLabelColor
 import components.utils.canAddCharacter
+import data.ComponentErrorState
+import data.unwrapErrorMessage
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,10 +31,7 @@ internal fun BasicOutlinedTextField(
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
-    isInvalid: Boolean = false,
-    isDirty: Boolean = false,
-    isTouched: Boolean = false,
-    errorMessage: String = "",
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchedChange: () -> Unit,
     modifier: Modifier = Modifier,
@@ -54,9 +50,10 @@ internal fun BasicOutlinedTextField(
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
     val isFocused = rememberSaveable { mutableStateOf(false) }
-    val shouldDisplayError = isInvalid && (isDirty || isTouched)
-    val errorMessageIsVisible = shouldDisplayError && errorMessage.isNotEmpty()
-    val supportRowIsVisible = errorMessageIsVisible || showTextLengthCounter
+    val isError = remember(errorState) { errorState is ComponentErrorState.Error }
+    val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
+    val hasErrorMessage = errorMessage.isNotEmpty()
+    val supportRowIsVisible = hasErrorMessage || showTextLengthCounter
 
     LaunchedEffect(Unit) {
         snapshotFlow { isFocused.value }
@@ -91,7 +88,7 @@ internal fun BasicOutlinedTextField(
                 {
                     SupportRow(
                         left =
-                            if (errorMessageIsVisible) {
+                            if (hasErrorMessage) {
                                 { HintText(text = errorMessage, color = colors.errorLabelColor) }
                             } else null,
                         right =
@@ -102,7 +99,7 @@ internal fun BasicOutlinedTextField(
                                         max = maxLength,
                                         color =
                                             colors.calculateLabelColor(
-                                                isInvalid = shouldDisplayError,
+                                                isInvalid = isError,
                                                 isFocused = isFocused.value,
                                             ),
                                     )
@@ -111,7 +108,7 @@ internal fun BasicOutlinedTextField(
                     )
                 }
             } else null,
-        isError = shouldDisplayError,
+        isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         singleLine = singleLine,
