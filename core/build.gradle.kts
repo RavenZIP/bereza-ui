@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.vanniktech.mavenPublish)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.androidMultiplatformLibrary)
 }
 
 version = "0.1.0"
@@ -20,7 +20,7 @@ kotlin {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
-        compilations.configureEach { compilerOptions.configure { jvmTarget.set(JvmTarget.JVM_17) } }
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
 
     @OptIn(ExperimentalWasmDsl::class)
