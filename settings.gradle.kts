@@ -22,8 +22,10 @@ plugins { id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 
 include("core")
 
-include("demo:shared")
+include(
+    "demo:shared",
+    "demo:desktopApp",
+    "demo:androidApp",
+)
 
-include("demo:desktopApp")
-
-include("demo:androidApp")
+// include("demo:webApp")

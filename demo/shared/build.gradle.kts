@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -9,6 +10,8 @@ plugins {
 }
 
 kotlin {
+    jvm()
+
     androidLibrary {
         namespace = "com.github.ravenzip.berezaUI"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -21,7 +24,9 @@ kotlin {
         withHostTest { isIncludeAndroidResources = true }
     }
 
-    jvm()
+    js { browser() }
+
+    @OptIn(ExperimentalWasmDsl::class) wasmJs { browser() }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     dependencies {
