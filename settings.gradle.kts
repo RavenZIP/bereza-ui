@@ -26,6 +26,5 @@ include(
     "demo:shared",
     "demo:desktopApp",
     "demo:androidApp",
+    "demo:webApp",
 )
-
-// include("demo:webApp")
