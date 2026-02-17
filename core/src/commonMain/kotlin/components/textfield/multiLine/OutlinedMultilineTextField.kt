@@ -85,7 +85,9 @@ fun OutlinedMultiLineTextField(
     val status = control.statusChanges.collectAsStateLifecycleAware().value
     val dirty = control.dirtyChanges.collectAsStateLifecycleAware().value
     val touched = control.touchedChanges.collectAsStateLifecycleAware().value
-    val errorMessage = control.errorMessagesChanges.collectAsSnapshotStateList().firstOrNull() ?: ""
+    val errorMessage =
+        control.errorsChanges.collectAsSnapshotStateList().firstOrNull()?.message ?: ""
+
     val errorState =
         remember(status, dirty, touched) {
             if (status.isInvalid() && (dirty || touched)) ComponentErrorState.Error(errorMessage)

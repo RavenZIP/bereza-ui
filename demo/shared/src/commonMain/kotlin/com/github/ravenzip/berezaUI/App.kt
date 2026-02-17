@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
@@ -21,16 +20,11 @@ import components.textfield.singleLine.OutlinedSingleLineTextField
 @Composable
 fun App() {
     MaterialTheme {
-        val scope = rememberCoroutineScope()
-        val control1 = remember {
-            mutableFormControl("", validators = listOf(Validator.required), coroutineScope = scope)
-        }
+        val control1 = remember { mutableFormControl("", validators = listOf(Validator.required)) }
 
-        val control2 = remember {
-            mutableFormControl("", validators = listOf(Validator.required), coroutineScope = scope)
-        }
+        val control2 = remember { mutableFormControl("", validators = listOf(Validator.required)) }
 
-        val control3 = remember { mutableFormControl(false, coroutineScope = scope) }
+        val control3 = remember { mutableFormControl(false) }
 
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
