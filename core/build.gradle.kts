@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -9,8 +8,6 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.androidMultiplatformLibrary)
 }
-
-version = "0.1.0"
 
 kotlin {
     jvm()
@@ -31,17 +28,16 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(libs.ravenzip.kotlinReactiveForms.core)
             implementation(libs.ravenzip.krex.core)
         }
-
-        androidMain.dependencies { implementation(libs.androidx.lifecycle.runtimeCompose) }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }
     }
