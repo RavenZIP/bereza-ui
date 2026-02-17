@@ -20,7 +20,7 @@ junit = "4.13.2"
 
 vanniktechMavenPublish = "0.36.0"
 
-ravenzip-krex = "0.1.0"
+ravenzip-krex = "0.1.1"
 ravenzip-kotlinReactiveForms = "0.2.0"
 
 [libraries]
@@ -42,7 +42,7 @@ androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
-ravenzip-krex-core = { module = "com.github.RavenZIP.krex:core", version.ref = "ravenzip-krex" }
+ravenzip-krex-core = { module = "com.github.RavenZIP.krex:krex-core", version.ref = "ravenzip-krex" }
 ravenzip-kotlinReactiveForms-core = { module = "com.github.RavenZIP.kotlin-reactive-forms:krf-core", version.ref = "ravenzip-kotlinReactiveForms" }
 
 [plugins]
