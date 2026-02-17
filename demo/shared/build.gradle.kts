@@ -40,7 +40,7 @@ kotlin {
         implementation(libs.androidx.lifecycle.runtimeCompose)
 
         // Модули bereza ui
-        implementation(projects.core)
+        implementation(projects.berezaCore)
 
         // Модули других библиотек собственного производства
         implementation(libs.ravenzip.kotlinReactiveForms.core)
