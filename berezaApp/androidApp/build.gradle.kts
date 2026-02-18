@@ -13,7 +13,7 @@ kotlin {
 
     OptIn(ExperimentalKotlinGradlePluginApi::class)
     dependencies {
-        implementation(projects.demo.shared)
+        implementation(projects.berezaApp.shared)
         implementation(libs.androidx.activity.compose)
         implementation(libs.compose.uiToolingPreview)
         implementation(libs.androidx.core.ktx)

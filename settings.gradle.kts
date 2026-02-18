@@ -22,4 +22,4 @@ plugins { id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 
 include("bereza-core")
 
-include("demo:shared", "demo:desktopApp", "demo:androidApp", "demo:webApp")
+include("berezaApp:shared", "berezaApp:desktopApp", "berezaApp:androidApp", "berezaApp:webApp")

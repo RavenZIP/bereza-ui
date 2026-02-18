@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     dependencies {
-        implementation(projects.demo.shared)
+        implementation(projects.berezaApp.shared)
 
         implementation(compose.desktop.currentOs)
         implementation(libs.kotlinx.coroutinesSwing)

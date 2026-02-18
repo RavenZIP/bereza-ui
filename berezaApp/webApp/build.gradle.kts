@@ -20,7 +20,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.demo.shared)
+            implementation(projects.berezaApp.shared)
 
             implementation(libs.compose.ui)
             implementation(npm("@js-joda/timezone", "2.22.0"))
