@@ -20,8 +20,8 @@ junit = "4.13.2"
 
 vanniktechMavenPublish = "0.36.0"
 
-ravenzip-krex = "0.1.1"
-ravenzip-kotlinReactiveForms = "0.2.0"
+ravenzip-krex = "0.1.2"
+ravenzip-kotlinReactiveForms = "0.2.1"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

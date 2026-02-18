@@ -24,7 +24,7 @@ kotlin {
         withHostTest { isIncludeAndroidResources = true }
     }
 
-    //    js { browser() }
+    js(IR) { browser() }
 
     @OptIn(ExperimentalWasmDsl::class) wasmJs { browser() }
 

@@ -7,10 +7,10 @@ plugins {
 }
 
 kotlin {
-    //    js {
-    //        browser()
-    //        binaries.executable()
-    //    }
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
