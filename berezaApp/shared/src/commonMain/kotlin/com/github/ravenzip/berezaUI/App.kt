@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 import components.button.SimpleButton
-import components.checkbox.Checkbox
+import components.checkbox.CheckboxWithText
+import components.switch.SwitchWithText
 import components.textfield.singleLine.OutlinedSingleLineTextField
 
 @Composable
@@ -26,6 +27,8 @@ fun App() {
 
         val control3 = remember { mutableFormControl(false) }
 
+        val control4 = remember { mutableFormControl(false) }
+
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
                 modifier = Modifier.padding(innerPadding).padding(start = 10.dp),
@@ -35,7 +38,9 @@ fun App() {
 
                 OutlinedSingleLineTextField(control2, label = { Text("Текстовое поле 2") })
 
-                Checkbox(control = control3, text = "Я чекбокс")
+                CheckboxWithText(control = control3, text = "Я чекбокс")
+
+                SwitchWithText(control = control4, label = "Я свитч", description = "Описание")
 
                 SimpleButton(onClick = { control1.setValue("Значение") }, text = "Кнопка")
             }
