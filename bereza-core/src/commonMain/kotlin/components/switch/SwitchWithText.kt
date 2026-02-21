@@ -114,8 +114,8 @@ fun SwitchWithText(
     label: String,
     labelStyle: TextStyle =
         TextStyle.Default.merge(fontSize = 16.sp, fontWeight = FontWeight.Medium),
-    description: String,
-    descriptionStyle: TextStyle = TextStyle.Default.merge(fontSize = 16.sp),
+    description: String? = null,
+    descriptionStyle: TextStyle? = null,
     padding: PaddingValues = PaddingValues(15.dp),
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
