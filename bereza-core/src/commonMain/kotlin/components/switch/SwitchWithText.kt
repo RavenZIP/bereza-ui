@@ -39,12 +39,7 @@ fun SwitchWithText(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Switch(
-            checked = isSelected,
-            onCheckedChange = { onClick() },
-            enabled = isEnabled,
-            colors = colors,
-        )
+        Switch(checked = isSelected, onCheckedChange = null, enabled = isEnabled, colors = colors)
     }
 }
 
