@@ -1,5 +1,9 @@
 package components.textfield.base
 
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -12,9 +16,9 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.krex.function.pairwise
-import components.layout.SupportRow
 import components.text.CounterLabel
 import components.text.HintText
 import components.utils.calculateLabelColor
@@ -31,6 +35,7 @@ internal fun BasicOutlinedTextField(
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
+    mayHaveAnError: Boolean = true,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchedChange: () -> Unit,
@@ -52,8 +57,6 @@ internal fun BasicOutlinedTextField(
     val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
-    val hasErrorMessage = errorMessage.isNotEmpty()
-    val supportRowIsVisible = hasErrorMessage || showTextLengthCounter
 
     LaunchedEffect(Unit) {
         snapshotFlow { isFocused.value }
@@ -84,28 +87,40 @@ internal fun BasicOutlinedTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         supportingText =
-            if (supportRowIsVisible) {
+            if (mayHaveAnError || showTextLengthCounter) {
                 {
-                    SupportRow(
-                        left =
-                            if (hasErrorMessage) {
-                                { HintText(text = errorMessage, color = colors.errorLabelColor) }
-                            } else null,
-                        right =
-                            if (showTextLengthCounter) {
-                                {
-                                    CounterLabel(
-                                        current = value.length,
-                                        max = maxLength,
-                                        color =
-                                            colors.calculateLabelColor(
-                                                isInvalid = isError,
-                                                isFocused = isFocused.value,
-                                            ),
-                                    )
-                                }
-                            } else null,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        val errorMessageMaxWidth = remember {
+                            if (showTextLengthCounter) 0.95f else 1f
+                        }
+
+                        AnimatedVisibility(
+                            visible = errorMessage.isNotEmpty(),
+                            enter = slideInVertically() + fadeIn(),
+                            exit = slideOutVertically() + fadeOut(),
+                        ) {
+                            HintText(
+                                text = errorMessage,
+                                modifier = Modifier.fillMaxWidth(errorMessageMaxWidth),
+                                color = colors.errorLabelColor,
+                            )
+                        }
+
+                        CounterLabel(
+                            current = value.length,
+                            max = maxLength,
+                            modifier = Modifier.fillMaxWidth(),
+                            color =
+                                colors.calculateLabelColor(
+                                    isInvalid = isError,
+                                    isFocused = isFocused.value,
+                                ),
+                            textAlign = TextAlign.End,
+                        )
+                    }
                 }
             } else null,
         isError = isError,
