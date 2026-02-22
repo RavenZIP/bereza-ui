@@ -61,7 +61,7 @@ fun SwitchWithText(
     SwitchWithText(
         isSelected = isSelected,
         isEnabled = isEnabled,
-        onClick = { onClick() },
+        onClick = onClick,
         modifier = modifier,
         text = {
             if (description != null && descriptionStyle != null) {

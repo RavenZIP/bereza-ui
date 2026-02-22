@@ -58,7 +58,7 @@ fun RadioButtonWithText(
     RadioButtonWithText(
         isSelected = isSelected,
         isEnabled = isEnabled,
-        onClick = { onClick() },
+        onClick = onClick,
         modifier = modifier,
         text = { Text(text = text, style = textStyle) },
         padding = padding,
