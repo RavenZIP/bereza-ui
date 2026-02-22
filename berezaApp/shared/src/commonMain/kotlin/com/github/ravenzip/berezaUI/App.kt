@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.bereza.ui.com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 import components.button.SimpleButton
 import components.checkbox.CheckboxWithText
+import components.radio.RadioGroup
 import components.switch.SwitchWithText
 import components.textfield.singleLine.OutlinedSingleLineTextField
 
@@ -29,6 +31,14 @@ fun App() {
 
         val control4 = remember { mutableFormControl(false) }
 
+        val control5 = remember { mutableFormControl(Sample(1, "Albert")) }
+
+        val control6 = remember { mutableFormControl(Sample(1, "Albert")) }
+
+        val itemsForRadioGroup = remember {
+            listOf(Sample(1, "Albert"), Sample(2, "Ivan"), Sample(3, "Nicolay"))
+        }
+
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
                 modifier = Modifier.padding(innerPadding).padding(start = 10.dp),
@@ -41,6 +51,20 @@ fun App() {
                 CheckboxWithText(control = control3, text = "Я чекбокс")
 
                 SwitchWithText(control = control4, label = "Я свитч", description = "Описание")
+
+                RadioGroup(
+                    control5,
+                    itemsForRadioGroup,
+                    { x -> x.id },
+                    text = { x -> Text(x.name) },
+                )
+
+                RadioGroup(
+                    control6,
+                    itemsForRadioGroup,
+                    { x -> x.id },
+                    displayedText = { x -> x.name },
+                )
 
                 SimpleButton(onClick = { control1.setValue("Значение") }, text = "Кнопка")
             }
