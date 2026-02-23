@@ -105,6 +105,7 @@ fun OutlinedSingleLineTextField(
         modifier = modifier,
         isEnabled = status.isEnabled(),
         isReadonly = isReadonly,
+        mayHaveAnError = control.hasValidators,
         errorState = errorState,
         onFocusChange = onFocusChange,
         onTouchedChange = { control.markAsTouched() },
