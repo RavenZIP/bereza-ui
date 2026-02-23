@@ -2,6 +2,7 @@ package components.textfield.base
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,12 +12,12 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.krex.function.pairwise
 import components.text.CounterLabel
@@ -49,6 +50,7 @@ internal fun BasicOutlinedTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     showTextLengthCounter: Boolean = false,
+    showTextLengthCounterIfZero: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
@@ -93,33 +95,36 @@ internal fun BasicOutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        val errorMessageMaxWidth = remember {
-                            if (showTextLengthCounter) 0.95f else 1f
-                        }
-
                         AnimatedVisibility(
                             visible = errorMessage.isNotEmpty(),
                             enter = slideInVertically() + fadeIn(),
                             exit = slideOutVertically() + fadeOut(),
                         ) {
-                            HintText(
-                                text = errorMessage,
-                                modifier = Modifier.fillMaxWidth(errorMessageMaxWidth),
-                                color = colors.errorLabelColor,
-                            )
+                            HintText(text = errorMessage, color = colors.errorLabelColor)
                         }
 
-                        CounterLabel(
-                            current = value.length,
-                            max = maxLength,
-                            modifier = Modifier.fillMaxWidth(),
-                            color =
-                                colors.calculateLabelColor(
-                                    isInvalid = isError,
-                                    isFocused = isFocused.value,
-                                ),
-                            textAlign = TextAlign.End,
-                        )
+                        AnimatedVisibility(
+                            visible =
+                                showTextLengthCounter &&
+                                    (value.isNotEmpty() || showTextLengthCounterIfZero),
+                            enter = slideInVertically() + fadeIn(),
+                            exit = slideOutVertically() + fadeOut(),
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.CenterEnd,
+                            ) {
+                                CounterLabel(
+                                    current = value.length,
+                                    max = maxLength,
+                                    color =
+                                        colors.calculateLabelColor(
+                                            isInvalid = isError,
+                                            isFocused = isFocused.value,
+                                        ),
+                                )
+                            }
+                        }
                     }
                 }
             } else null,

@@ -1,5 +1,7 @@
 package components.text
 
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,14 +22,41 @@ fun CounterLabel(
     color: Color = Color.Unspecified,
     style: TextStyle = LocalTextStyle.current,
 ) {
-    Text(
-        text = if (max != null) "$current / $max" else "$current",
-        modifier = modifier,
-        style =
-            style.merge(
-                color = color,
-                fontSize = fontSize,
-                textAlign = textAlign ?: TextAlign.Unspecified,
-            ),
-    )
+    Row(modifier = modifier) {
+        AnimatedContent(
+            targetState = current,
+            transitionSpec = {
+                if (targetState > initialState) {
+                        slideInVertically { height -> height } + fadeIn() togetherWith
+                            slideOutVertically { height -> -height } + fadeOut()
+                    } else {
+                        slideInVertically { height -> -height } + fadeIn() togetherWith
+                            slideOutVertically { height -> height } + fadeOut()
+                    }
+                    .using(SizeTransform(clip = false))
+            },
+        ) { targetCount ->
+            Text(
+                text = "$targetCount",
+                style =
+                    style.merge(
+                        color = color,
+                        fontSize = fontSize,
+                        textAlign = textAlign ?: TextAlign.Unspecified,
+                    ),
+            )
+        }
+
+        if (max != null) {
+            Text(
+                text = " / $max",
+                style =
+                    style.merge(
+                        color = color,
+                        fontSize = fontSize,
+                        textAlign = textAlign ?: TextAlign.Unspecified,
+                    ),
+            )
+        }
+    }
 }

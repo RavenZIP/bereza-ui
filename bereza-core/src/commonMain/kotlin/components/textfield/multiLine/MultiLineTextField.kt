@@ -35,10 +35,11 @@ fun MultiLineTextField(
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
+    showTextLengthCounter: Boolean = false,
+    showTextLengthCounterIfZero: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    showTextLengthCounter: Boolean = false,
 ) {
     BasicTextField(
         value = value,
@@ -57,6 +58,7 @@ fun MultiLineTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
         keyboardOptions = keyboardOptions,
         shape = shape,
         colors = colors,
@@ -76,10 +78,11 @@ fun MultiLineTextField(
     placeholder: (@Composable () -> Unit)? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
+    showTextLengthCounter: Boolean = false,
+    showTextLengthCounterIfZero: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    showTextLengthCounter: Boolean = false,
 ) {
     val value = control.valueChanges.collectAsStateLifecycleAware().value
     val status = control.statusChanges.collectAsStateLifecycleAware().value
@@ -114,6 +117,7 @@ fun MultiLineTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
         keyboardOptions = keyboardOptions,
         shape = shape,
         colors = colors,

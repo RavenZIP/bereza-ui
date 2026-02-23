@@ -35,6 +35,7 @@ fun SingleLineTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     showTextLengthCounter: Boolean = false,
+    showTextLengthCounterIfZero: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
@@ -57,6 +58,7 @@ fun SingleLineTextField(
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
         shape = shape,
         colors = colors,
     )
@@ -74,6 +76,7 @@ fun SingleLineTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     showTextLengthCounter: Boolean = false,
+    showTextLengthCounterIfZero: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = RoundedCornerShape(14.dp),
@@ -112,6 +115,7 @@ fun SingleLineTextField(
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
         shape = shape,
         colors = colors,
     )
