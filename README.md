@@ -2,8 +2,8 @@
 
 <img alt="Logo" src="images/logo.png" width="100%">
 
-<img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.3.0-A831F5">
-<img alt="Compose Multiplatform" src="https://img.shields.io/badge/Compose Multiplatform-1.10.0-3b83f8">
+<img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.3.10-A831F5">
+<img alt="Compose Multiplatform" src="https://img.shields.io/badge/Compose Multiplatform-1.10.1-3b83f8">
 <img alt="Static Badge" src="https://img.shields.io/badge/API-24+-39ad31">
 <a href="https://jitpack.io/#RavenZIP/bereza-ui">
   <img src="https://jitpack.io/v/RavenZIP/bereza-ui.svg">
@@ -49,7 +49,7 @@ dependencyResolutionManagement {
 
 ```
 dependencies {
-    implementation("com.github.RavenZIP.bereza-ui:core:$version") 
+    implementation("com.github.RavenZIP.bereza-ui:bereza-core:$version") 
 }
 ```
 
@@ -62,7 +62,7 @@ dependencies {
 ravenzip-bereza-ui = "$version"
 
 [libraries]
-ravenzip-bereza-ui-core = { module = "com.github.RavenZIP.bereza-ui:core", version.ref = "ravenzip-bereza-ui" }
+ravenzip-bereza-ui-core = { module = "com.github.RavenZIP.bereza-ui:bereza-core", version.ref = "ravenzip-bereza-ui" }
 ```
 
 **build.gradle.kts**
