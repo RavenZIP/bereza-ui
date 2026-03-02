@@ -60,7 +60,7 @@ fun App() {
 
                 OutlinedSingleLineTextField(control2, label = { Text("Текстовое поле 2") })
 
-                CheckboxWithText(control = control3, text = "Я чекбокс")
+                CheckboxWithText(control = control3, label = "Я чекбокс")
 
                 SwitchWithText(control = control4, label = "Я свитч", description = "Описание")
 
