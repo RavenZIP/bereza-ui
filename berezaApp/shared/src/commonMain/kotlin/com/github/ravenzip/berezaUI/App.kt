@@ -17,15 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.components.button.SimpleButton
+import com.github.ravenzip.berezaUI.components.checkbox.CheckboxWithText
+import com.github.ravenzip.berezaUI.components.layout.ExpandableCard
+import com.github.ravenzip.berezaUI.components.radio.RadioGroup
+import com.github.ravenzip.berezaUI.components.switch.SwitchWithText
+import com.github.ravenzip.berezaUI.components.textfield.singleLine.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
-import components.button.SimpleButton
-import components.checkbox.CheckboxWithText
-import components.layout.ExpandableCard
-import components.radio.RadioGroup
-import components.switch.SwitchWithText
-import components.textfield.singleLine.OutlinedSingleLineTextField
 
 @Composable
 fun App() {
