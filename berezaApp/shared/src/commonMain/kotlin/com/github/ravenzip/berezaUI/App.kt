@@ -1,4 +1,4 @@
-package com.github.ravenzip.bereza.ui.com.github.ravenzip.berezaUI
+package com.github.ravenzip.berezaUI
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.bereza.ui.com.github.ravenzip.berezaUI.data.Sample
+import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 import components.button.SimpleButton
