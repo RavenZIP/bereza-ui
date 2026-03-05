@@ -19,6 +19,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
@@ -34,8 +35,7 @@ internal fun BasicOutlinedTextField(
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
     mayHaveAnError: Boolean = true,
-    errorState: com.github.ravenzip.berezaUI.core.data.ComponentErrorState =
-        _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Ok,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchedChange: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,10 +55,7 @@ internal fun BasicOutlinedTextField(
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
     val isFocused = rememberSaveable { mutableStateOf(false) }
-    val isError =
-        remember(errorState) {
-            errorState is com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Error
-        }
+    val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
     LaunchedEffect(Unit) {

@@ -11,6 +11,8 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.base.BasicTextField
+import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.utils.collectAsSnapshotStateList
 import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
@@ -24,8 +26,7 @@ fun SingleLineTextField(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
-    errorState: com.github.ravenzip.berezaUI.core.data.ComponentErrorState =
-        _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Ok,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
@@ -40,7 +41,7 @@ fun SingleLineTextField(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
-    _root_ide_package_.com.github.ravenzip.berezaUI.core.components.textfield.base.BasicTextField(
+    BasicTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
@@ -91,14 +92,11 @@ fun SingleLineTextField(
 
     val errorState =
         remember(status, dirty, touched) {
-            if (status.isInvalid() && (dirty || touched))
-                _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Error(
-                    errorMessage
-                )
-            else _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Ok
+            if (status.isInvalid() && (dirty || touched)) ComponentErrorState.Error(errorMessage)
+            else ComponentErrorState.Ok
         }
 
-    _root_ide_package_.com.github.ravenzip.berezaUI.core.components.textfield.base.BasicTextField(
+    BasicTextField(
         value = value,
         onValueChange = { newValue ->
             control.setValue(newValue)

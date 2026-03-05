@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.base.BasicOutlinedTextField
+import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.utils.collectAsSnapshotStateList
 import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
@@ -23,8 +25,7 @@ fun OutlinedMultiLineTextField(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isReadonly: Boolean = false,
-    errorState: com.github.ravenzip.berezaUI.core.data.ComponentErrorState =
-        _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Ok,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
@@ -40,29 +41,28 @@ fun OutlinedMultiLineTextField(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
-    _root_ide_package_.com.github.ravenzip.berezaUI.core.components.textfield.base
-        .BasicOutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            isEnabled = isEnabled,
-            isReadonly = isReadonly,
-            errorState = errorState,
-            onFocusChange = onFocusChange,
-            onTouchedChange = onTouchChange,
-            maxLength = maxLength,
-            maxLines = maxLines,
-            minLines = minLines,
-            label = label,
-            placeholder = placeholder,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            showTextLengthCounter = showTextLengthCounter,
-            showTextLengthCounterIfZero = showTextLengthCounterIfZero,
-            keyboardOptions = keyboardOptions,
-            shape = shape,
-            colors = colors,
-        )
+    BasicOutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        isEnabled = isEnabled,
+        isReadonly = isReadonly,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchedChange = onTouchChange,
+        maxLength = maxLength,
+        maxLines = maxLines,
+        minLines = minLines,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
+        keyboardOptions = keyboardOptions,
+        shape = shape,
+        colors = colors,
+    )
 }
 
 @Composable
@@ -93,38 +93,34 @@ fun OutlinedMultiLineTextField(
 
     val errorState =
         remember(status, dirty, touched) {
-            if (status.isInvalid() && (dirty || touched))
-                _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Error(
-                    errorMessage
-                )
-            else _root_ide_package_.com.github.ravenzip.berezaUI.core.data.ComponentErrorState.Ok
+            if (status.isInvalid() && (dirty || touched)) ComponentErrorState.Error(errorMessage)
+            else ComponentErrorState.Ok
         }
 
-    _root_ide_package_.com.github.ravenzip.berezaUI.core.components.textfield.base
-        .BasicOutlinedTextField(
-            value = value,
-            onValueChange = { newValue ->
-                control.setValue(newValue)
-                control.markAsDirty()
-            },
-            modifier = modifier,
-            isEnabled = status.isEnabled(),
-            isReadonly = isReadonly,
-            mayHaveAnError = control.hasValidators,
-            errorState = errorState,
-            onFocusChange = onFocusChange,
-            onTouchedChange = { control.markAsTouched() },
-            maxLength = maxLength,
-            maxLines = maxLines,
-            minLines = minLines,
-            label = label,
-            placeholder = placeholder,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            showTextLengthCounter = showTextLengthCounter,
-            showTextLengthCounterIfZero = showTextLengthCounterIfZero,
-            keyboardOptions = keyboardOptions,
-            shape = shape,
-            colors = colors,
-        )
+    BasicOutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            control.setValue(newValue)
+            control.markAsDirty()
+        },
+        modifier = modifier,
+        isEnabled = status.isEnabled(),
+        isReadonly = isReadonly,
+        mayHaveAnError = control.hasValidators,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchedChange = { control.markAsTouched() },
+        maxLength = maxLength,
+        maxLines = maxLines,
+        minLines = minLines,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        showTextLengthCounter = showTextLengthCounter,
+        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
+        keyboardOptions = keyboardOptions,
+        shape = shape,
+        colors = colors,
+    )
 }
