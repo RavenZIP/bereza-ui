@@ -19,6 +19,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
+import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
@@ -98,8 +100,7 @@ internal fun BasicOutlinedTextField(
                             enter = slideInVertically() + fadeIn(),
                             exit = slideOutVertically() + fadeOut(),
                         ) {
-                            _root_ide_package_.com.github.ravenzip.berezaUI.core.components.text
-                                .HintText(text = errorMessage, color = colors.errorLabelColor)
+                            HintText(text = errorMessage, color = colors.errorLabelColor)
                         }
 
                         AnimatedVisibility(
@@ -113,16 +114,15 @@ internal fun BasicOutlinedTextField(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.CenterEnd,
                             ) {
-                                _root_ide_package_.com.github.ravenzip.berezaUI.core.components.text
-                                    .CounterLabel(
-                                        current = value.length,
-                                        max = maxLength,
-                                        color =
-                                            colors.calculateLabelColor(
-                                                isInvalid = isError,
-                                                isFocused = isFocused.value,
-                                            ),
-                                    )
+                                CounterLabel(
+                                    current = value.length,
+                                    max = maxLength,
+                                    color =
+                                        colors.calculateLabelColor(
+                                            isInvalid = isError,
+                                            isFocused = isFocused.value,
+                                        ),
+                                )
                             }
                         }
                     }

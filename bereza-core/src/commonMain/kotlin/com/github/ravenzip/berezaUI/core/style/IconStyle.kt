@@ -22,7 +22,7 @@ class IconStyle(val size: Dp = 25.dp, val color: Color? = null) {
          *
          * [color] - null
          */
-        @Stable val Default = _root_ide_package_.com.github.ravenzip.berezaUI.core.style.IconStyle()
+        @Stable val Default = IconStyle()
 
         /**
          * [Size20]
@@ -31,9 +31,7 @@ class IconStyle(val size: Dp = 25.dp, val color: Color? = null) {
          *
          * [color] - null
          */
-        @Stable
-        val Size20 =
-            _root_ide_package_.com.github.ravenzip.berezaUI.core.style.IconStyle(size = 20.dp)
+        @Stable val Size20 = IconStyle(size = 20.dp)
 
         /**
          * [Size22]
@@ -42,9 +40,7 @@ class IconStyle(val size: Dp = 25.dp, val color: Color? = null) {
          *
          * [color] - null
          */
-        @Stable
-        val Size22 =
-            _root_ide_package_.com.github.ravenzip.berezaUI.core.style.IconStyle(size = 22.dp)
+        @Stable val Size22 = IconStyle(size = 22.dp)
 
         /**
          * [PrimaryColor]
@@ -55,10 +51,6 @@ class IconStyle(val size: Dp = 25.dp, val color: Color? = null) {
          */
         @Stable
         val PrimaryColor
-            @Composable
-            get() =
-                _root_ide_package_.com.github.ravenzip.berezaUI.core.style.IconStyle(
-                    color = MaterialTheme.colorScheme.primary
-                )
+            @Composable get() = IconStyle(color = MaterialTheme.colorScheme.primary)
     }
 }
