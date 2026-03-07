@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.core.style
+package com.github.ravenzip.berezaUI.extensions.style
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -7,10 +7,10 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.style.IconStyle.Companion.Default
-import com.github.ravenzip.berezaUI.core.style.IconStyle.Companion.PrimaryColor
-import com.github.ravenzip.berezaUI.core.style.IconStyle.Companion.Size20
-import com.github.ravenzip.berezaUI.core.style.IconStyle.Companion.Size22
+import com.github.ravenzip.berezaUI.extensions.style.IconStyle.Companion.Default
+import com.github.ravenzip.berezaUI.extensions.style.IconStyle.Companion.PrimaryColor
+import com.github.ravenzip.berezaUI.extensions.style.IconStyle.Companion.Size20
+import com.github.ravenzip.berezaUI.extensions.style.IconStyle.Companion.Size22
 
 @Immutable
 class IconStyle(val size: Dp = 25.dp, val color: Color? = null) {

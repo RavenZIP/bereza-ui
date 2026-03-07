@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.components.IconButton
 import com.github.ravenzip.berezaUI.core.components.RichButton
-import com.github.ravenzip.berezaUI.core.style.IconStyle
+import com.github.ravenzip.berezaUI.extensions.style.IconStyle
 
 @Composable
 fun SimpleButton(
