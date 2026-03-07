@@ -10,7 +10,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +25,9 @@ import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
 import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
+import com.github.ravenzip.berezaUI.core.effects.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
-import com.github.ravenzip.krex.function.pairwise
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun BasicOutlinedTextField(
@@ -60,13 +59,7 @@ internal fun BasicOutlinedTextField(
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { isFocused.value }
-            .pairwise()
-            .filter { x -> !x.second }
-            .onEach { onTouchedChange() }
-            .launchIn(this)
-    }
+    FocusLostEffect(isFocused = isFocused, onFocusLost = onTouchedChange)
 
     OutlinedTextField(
         value = value,
