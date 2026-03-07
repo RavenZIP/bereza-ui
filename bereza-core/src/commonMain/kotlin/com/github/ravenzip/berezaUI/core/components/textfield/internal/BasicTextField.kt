@@ -1,10 +1,5 @@
-package com.github.ravenzip.berezaUI.core.components.textfield.base
+package com.github.ravenzip.berezaUI.core.components.textfield.internal
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextField
@@ -14,19 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
-import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.effects.FocusLostEffect
-import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
 @Composable
@@ -84,41 +75,16 @@ internal fun BasicTextField(
         supportingText =
             if (mayHaveAnError || showTextLengthCounter) {
                 {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        AnimatedVisibility(
-                            visible = errorMessage.isNotEmpty(),
-                            enter = slideInVertically() + fadeIn(),
-                            exit = slideOutVertically() + fadeOut(),
-                        ) {
-                            HintText(text = errorMessage, color = colors.errorLabelColor)
-                        }
-
-                        AnimatedVisibility(
-                            visible =
-                                showTextLengthCounter &&
-                                    (value.isNotEmpty() || showTextLengthCounterIfZero),
-                            enter = slideInVertically() + fadeIn(),
-                            exit = slideOutVertically() + fadeOut(),
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.CenterEnd,
-                            ) {
-                                CounterLabel(
-                                    current = value.length,
-                                    max = maxLength,
-                                    color =
-                                        colors.calculateLabelColor(
-                                            isInvalid = isError,
-                                            isFocused = isFocused.value,
-                                        ),
-                                )
-                            }
-                        }
-                    }
+                    BasicTextFieldSupportingRow(
+                        errorMessage = errorMessage,
+                        showTextLengthCounter = showTextLengthCounter,
+                        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
+                        value = value,
+                        maxLength = maxLength,
+                        isError = isError,
+                        isFocused = isFocused.value,
+                        colors = colors,
+                    )
                 }
             } else null,
         isError = isError,

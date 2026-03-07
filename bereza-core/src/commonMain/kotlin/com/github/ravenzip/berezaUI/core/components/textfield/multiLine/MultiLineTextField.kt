@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.base.BasicTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.internal.BasicTextField
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.utils.collectAsSnapshotStateList
 import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
