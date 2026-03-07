@@ -14,7 +14,7 @@ import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 
 @Composable
-fun BasicTextFieldSupportingRow(
+internal fun BasicTextFieldSupportingRow(
     errorMessage: String,
     showTextLengthCounter: Boolean,
     showTextLengthCounterIfZero: Boolean,
