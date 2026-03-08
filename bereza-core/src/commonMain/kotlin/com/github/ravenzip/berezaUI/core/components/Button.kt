@@ -26,7 +26,6 @@ fun IconButton(
     interactionSource: MutableInteractionSource? = null,
     contentPadding: PaddingValues = PaddingValues(10.dp),
 ) {
-
     val containerColor = if (isEnabled) colors.containerColor else colors.disabledContainerColor
 
     RoundedBox(
