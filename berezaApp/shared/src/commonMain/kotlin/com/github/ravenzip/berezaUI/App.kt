@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.NavDisplay
 import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
@@ -31,6 +32,11 @@ import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 @Composable
 fun App() {
     MaterialTheme {
+        // TODO
+        // Сделать отдельные экраны под каждый компонент и один какой-то демонстрационный,
+        // похожий на экран реального приложения
+        NavDisplay(entries = listOf<String>()) { entry -> }
+
         val control1 = remember { mutableFormControl("", validators = listOf(Validator.required)) }
 
         val control2 = remember { mutableFormControl("", validators = listOf(Validator.required)) }
