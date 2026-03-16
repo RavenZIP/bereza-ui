@@ -3,3 +3,4 @@ jdk:
 
 install:
   - ./gradlew :bereza-core:publishToMavenLocal
+  - ./gradlew :bereza-extensions:publishToMavenLocal
