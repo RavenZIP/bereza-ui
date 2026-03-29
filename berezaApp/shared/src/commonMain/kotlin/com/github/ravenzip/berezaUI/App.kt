@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
+import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
@@ -43,8 +45,14 @@ fun App() {
 
         val control6 = remember { mutableFormControl(Sample(1, "Albert")) }
 
-        val itemsForRadioGroup = remember {
+        val items = remember {
             listOf(Sample(1, "Albert"), Sample(2, "Ivan"), Sample(3, "Nicolay"))
+        }
+
+        val dropDownText = remember { mutableStateOf("") }
+
+        val mutableItems = remember {
+            mutableStateListOf(Sample(1, "Albert"), Sample(2, "Ivan"), Sample(3, "Nicolay"))
         }
 
         val expanded = remember { mutableStateOf(false) }
@@ -64,19 +72,9 @@ fun App() {
 
                 SwitchWithText(control = control4, label = "Я свитч", description = "Описание")
 
-                RadioGroup(
-                    control5,
-                    itemsForRadioGroup,
-                    { x -> x.id },
-                    text = { x -> Text(x.name) },
-                )
+                RadioGroup(control5, items, { x -> x.id }, text = { x -> Text(x.name) })
 
-                RadioGroup(
-                    control6,
-                    itemsForRadioGroup,
-                    { x -> x.id },
-                    displayedText = { x -> x.name },
-                )
+                RadioGroup(control6, items, { x -> x.id }, displayedText = { x -> x.name })
 
                 ExpandableCard(
                     text = { Text("Заголовок") },
@@ -94,6 +92,15 @@ fun App() {
                         text = "Этот текст должен скрываться",
                     )
                 }
+
+                DropDownTextField(
+                    searchQuery = dropDownText.value,
+                    onSearchQueryChange = { dropDownText.value = it },
+                    searchResults = mutableItems,
+                    onSelectItem = { dropDownText.value = it.name },
+                    dropDownMenuItem = { x -> Text(x.name) },
+                    dropDownMenuItemPlaceholder = { Text("Нет результатов") },
+                )
 
                 SimpleButton(onClick = { control1.setValue("Значение") }, text = "Кнопка")
             }
