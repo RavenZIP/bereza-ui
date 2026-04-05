@@ -22,6 +22,8 @@ import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
+import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
+import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
@@ -29,6 +31,7 @@ import com.github.ravenzip.berezaUI.extensions.components.SwitchWithText
 import com.github.ravenzip.berezaUI.extensions.components.radio.RadioGroup
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun App() {
@@ -58,6 +61,14 @@ fun App() {
         val expanded = remember { mutableStateOf(false) }
 
         val rotation = animateFloatAsState(targetValue = if (expanded.value) 180f else 0f)
+
+        val dropDownSource = remember {
+            mutableStateOf<DropDownTextFieldSource<Sample>>(
+                DropDownTextFieldSource.Predefined(mutableItems)
+            )
+        }
+
+        val dropDownControl = remember { mutableFormControl(EMPTY_SAMPLE) }
 
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
@@ -94,15 +105,26 @@ fun App() {
                 }
 
                 DropDownTextField(
-                    searchQuery = dropDownText.value,
-                    onSearchQueryChange = { dropDownText.value = it },
-                    searchResults = mutableItems,
-                    onSelectItem = { dropDownText.value = it.name },
-                    dropDownMenuItem = { x -> Text(x.name) },
+                    control = dropDownControl,
+                    clearValue = EMPTY_SAMPLE,
+                    source = dropDownSource.value,
+                    sourceItemToString = { x -> x.name },
+                    dropDownMenuItemContent = { x -> Text(x.name) },
                     dropDownMenuItemPlaceholder = { Text("Нет результатов") },
                 )
 
-                SimpleButton(onClick = { control1.setValue("Значение") }, text = "Кнопка")
+                SimpleButton(
+                    onClick = {
+                        control1.setValue("Значение")
+                        if (dropDownSource.value is DropDownTextFieldSource.Predefined) {
+                            dropDownSource.value =
+                                DropDownTextFieldSource.ByQuery({ x -> flowOf(mutableItems) })
+                        } else {
+                            dropDownSource.value = DropDownTextFieldSource.Predefined(mutableItems)
+                        }
+                    },
+                    text = "Кнопка",
+                )
             }
         }
     }
