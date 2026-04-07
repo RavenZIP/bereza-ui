@@ -1,18 +1,18 @@
 [versions]
-agp = "8.12.3"
+agp = "8.13.2"
 
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
 
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 kotlinx-coroutines = "1.10.2"
 
-androidx-activity = "1.12.4"
-androidx-core = "1.17.0"
-androidx-lifecycle = "2.9.6"
+androidx-activity = "1.13.0"
+androidx-core = "1.18.0"
+androidx-lifecycle = "2.10.0"
 
-composeMultiplatform = "1.10.1"
+composeMultiplatform = "1.10.3"
 
 material3 = "1.10.0-alpha05"
 
