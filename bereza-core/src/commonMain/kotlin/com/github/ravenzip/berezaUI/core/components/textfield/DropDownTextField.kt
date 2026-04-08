@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.SingleLineTextField
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
 import com.github.ravenzip.berezaUI.core.effects.ExpandedChangeEffect
@@ -25,7 +26,6 @@ import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 // TODO добавить возможность прокидывать иконки для элемента меню
 // TODO добавить возможность отключить границы у меню
 // TODO добавить возможность установки своих модификаторов в меню
-// TODO сделать компонент на основе обычного TextField
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun <T> BasicDropDownTextField(
@@ -94,9 +94,64 @@ internal fun <T> BasicDropDownTextField(
     }
 }
 
+// TODO убрать выделение меню, должно быть только у Outlined версии
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DropDownTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit,
+    source: DropDownTextFieldSource<T>,
+    sourceItemToString: (T) -> String,
+    onSelectItem: (T) -> Unit,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    onExpandedChange: (Boolean) -> Unit = {},
+    label: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    dropDownMenuItemContent: @Composable (T) -> Unit,
+    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    BasicDropDownTextField(
+        source = source,
+        sourceItemToString = sourceItemToString,
+        text = text,
+        textField = { menuAnchor ->
+            SingleLineTextField(
+                value = text,
+                onValueChange = onTextChange,
+                modifier = modifier.then(menuAnchor),
+                isEnabled = enabled,
+                isReadonly = readOnly,
+                errorState = errorState,
+                label = label,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                shape = shape,
+                colors = colors,
+            )
+        },
+        onSelectItem = onSelectItem,
+        enabled = enabled,
+        readOnly = readOnly,
+        onExpandedChange = onExpandedChange,
+        dropDownMenuItemText = dropDownMenuItemContent,
+        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        menuBorderColor = colors.focusedLabelColor,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> OutlinedDropDownTextField(
     modifier: Modifier = Modifier,
     text: String,
     onTextChange: (String) -> Unit,
@@ -148,11 +203,89 @@ fun <T> DropDownTextField(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> DropDownTextField(
+    modifier: Modifier = Modifier,
+    control: MutableFormControl<T>,
+    clearValue: T,
+    source: DropDownTextFieldSource<T>,
+    sourceItemToString: (T) -> String,
+    readOnly: Boolean = false,
+    onTextChange: (String) -> Unit = {},
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    onExpandedChange: (Boolean) -> Unit = {},
+    label: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    dropDownMenuItemContent: @Composable (T) -> Unit,
+    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    var text by remember { mutableStateOf("") }
+
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val dirty = control.dirtyChanges.collectAsStateLifecycleAware().value
+    val touched = control.touchedChanges.collectAsStateLifecycleAware().value
+    val errorMessage =
+        control.errorsChanges.collectAsSnapshotStateList().firstOrNull()?.message ?: ""
+
+    val errorState =
+        remember(status, dirty, touched) {
+            if (status.isInvalid() && (dirty || touched)) ComponentErrorState.Error(errorMessage)
+            else ComponentErrorState.Ok
+        }
+
+    BasicDropDownTextField(
+        source = source,
+        sourceItemToString = sourceItemToString,
+        text = text,
+        textField = { menuAnchor ->
+            SingleLineTextField(
+                value = text,
+                onValueChange = { x ->
+                    text = x
+                    onTextChange(x)
+                    control.markAsDirty()
+
+                    if (x.isEmpty()) {
+                        control.setValue(clearValue)
+                    }
+                },
+                modifier = modifier.then(menuAnchor),
+                isEnabled = status.isEnabled(),
+                isReadonly = readOnly,
+                errorState = errorState,
+                label = label,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                shape = shape,
+                colors = colors,
+            )
+        },
+        onSelectItem = { x ->
+            text = sourceItemToString(x)
+            control.setValue(x)
+            control.markAsDirty()
+        },
+        enabled = status.isEnabled(),
+        readOnly = readOnly,
+        onExpandedChange = onExpandedChange,
+        dropDownMenuItemText = dropDownMenuItemContent,
+        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        menuBorderColor = colors.focusedLabelColor,
+    )
+}
+
 // TODO чистить контрол, если в поле введен текст, который не матчится со значениями в списке
 // TODO чистить текстовое поле после потери фокуса, если значение невалидное
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> DropDownTextField(
+fun <T> OutlinedDropDownTextField(
     modifier: Modifier = Modifier,
     control: MutableFormControl<T>,
     clearValue: T,

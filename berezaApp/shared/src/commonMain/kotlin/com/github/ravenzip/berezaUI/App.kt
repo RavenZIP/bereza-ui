@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
-import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedDropDownTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
@@ -104,7 +104,7 @@ fun App() {
                     )
                 }
 
-                DropDownTextField(
+                OutlinedDropDownTextField(
                     control = dropDownControl,
                     clearValue = EMPTY_SAMPLE,
                     source = dropDownSource.value,
