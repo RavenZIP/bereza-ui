@@ -3,6 +3,7 @@ package com.github.ravenzip.berezaUI.core.components.textfield
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.OutlinedTextFieldDefaults.FocusedBorderThickness
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -68,7 +69,7 @@ internal fun <T> BasicDropDownTextField(
             onDismissRequest = { expanded = false },
             modifier =
                 Modifier.border(
-                    width = 2.dp,
+                    width = FocusedBorderThickness,
                     color = menuBorderColor,
                     shape = RoundedCornerShape(12.dp),
                 ),
