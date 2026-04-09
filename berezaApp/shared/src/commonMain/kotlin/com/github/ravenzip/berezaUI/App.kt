@@ -20,9 +20,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
-import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedDropDownTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
+import com.github.ravenzip.berezaUI.core.data.AutocompleteSource
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
@@ -63,9 +63,7 @@ fun App() {
         val rotation = animateFloatAsState(targetValue = if (expanded.value) 180f else 0f)
 
         val dropDownSource = remember {
-            mutableStateOf<DropDownTextFieldSource<Sample>>(
-                DropDownTextFieldSource.Predefined(mutableItems)
-            )
+            mutableStateOf<AutocompleteSource<Sample>>(AutocompleteSource.Predefined(mutableItems))
         }
 
         val dropDownControl = remember { mutableFormControl(EMPTY_SAMPLE) }
@@ -104,7 +102,7 @@ fun App() {
                     )
                 }
 
-                OutlinedDropDownTextField(
+                OutlinedAutocompleteTextField(
                     control = dropDownControl,
                     clearValue = EMPTY_SAMPLE,
                     source = dropDownSource.value,
@@ -116,11 +114,11 @@ fun App() {
                 SimpleButton(
                     onClick = {
                         control1.setValue("Значение")
-                        if (dropDownSource.value is DropDownTextFieldSource.Predefined) {
+                        if (dropDownSource.value is AutocompleteSource.Predefined) {
                             dropDownSource.value =
-                                DropDownTextFieldSource.ByQuery({ x -> flowOf(mutableItems) })
+                                AutocompleteSource.ByQuery({ x -> flowOf(mutableItems) })
                         } else {
-                            dropDownSource.value = DropDownTextFieldSource.Predefined(mutableItems)
+                            dropDownSource.value = AutocompleteSource.Predefined(mutableItems)
                         }
                     },
                     text = "Кнопка",

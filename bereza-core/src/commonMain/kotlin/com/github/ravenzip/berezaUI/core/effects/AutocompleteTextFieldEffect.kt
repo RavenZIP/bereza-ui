@@ -3,7 +3,7 @@ package com.github.ravenzip.berezaUI.core.effects
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
-import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
+import com.github.ravenzip.berezaUI.core.data.AutocompleteSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -38,7 +38,7 @@ internal fun ExpandedChangeEffect(expanded: () -> Boolean, onExpandedChange: (Bo
 // sealed class
 @Composable
 internal fun <T> LoadSearchResult(
-    source: DropDownTextFieldSource<T>,
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     searchQuery: () -> String,
     expanded: () -> Boolean,
@@ -47,7 +47,7 @@ internal fun <T> LoadSearchResult(
 ) {
     LaunchedEffect(source, sourceItemToString, searchQuery, expanded) {
         when (source) {
-            is DropDownTextFieldSource.Predefined -> {
+            is AutocompleteSource.Predefined -> {
                 loadSearchResult(
                         source = source,
                         sourceItemToString = sourceItemToString,
@@ -59,7 +59,7 @@ internal fun <T> LoadSearchResult(
                     .launchIn(this)
             }
 
-            is DropDownTextFieldSource.ByQuery -> {
+            is AutocompleteSource.ByQuery -> {
                 loadSearchResult(
                         source = source,
                         expanded = expanded,
@@ -74,7 +74,7 @@ internal fun <T> LoadSearchResult(
 }
 
 internal fun <T> loadSearchResult(
-    source: DropDownTextFieldSource.Predefined<T>,
+    source: AutocompleteSource.Predefined<T>,
     searchQuery: () -> String,
     expanded: () -> Boolean,
     sourceItemToString: (T) -> String,
@@ -98,7 +98,7 @@ internal fun <T> loadSearchResult(
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal fun <T> loadSearchResult(
-    source: DropDownTextFieldSource.ByQuery<T>,
+    source: AutocompleteSource.ByQuery<T>,
     searchQuery: () -> String,
     expanded: () -> Boolean,
     onSearchStarted: () -> Unit,

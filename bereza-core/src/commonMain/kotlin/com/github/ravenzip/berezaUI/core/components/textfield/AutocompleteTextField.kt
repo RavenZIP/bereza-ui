@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.SingleLineTextField
+import com.github.ravenzip.berezaUI.core.data.AutocompleteSource
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
-import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldSource
 import com.github.ravenzip.berezaUI.core.effects.ExpandedChangeEffect
 import com.github.ravenzip.berezaUI.core.effects.LoadSearchResult
 import com.github.ravenzip.berezaUI.core.utils.collectAsSnapshotStateList
@@ -28,8 +28,8 @@ import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 // TODO добавить возможность установки своих модификаторов в меню
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun <T> BasicDropDownTextField(
-    source: DropDownTextFieldSource<T>,
+internal fun <T> BasicAutocompleteTextField(
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     text: String,
     textField: @Composable (menuAnchor: Modifier) -> Unit,
@@ -97,11 +97,11 @@ internal fun <T> BasicDropDownTextField(
 // TODO убрать выделение меню, должно быть только у Outlined версии
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> DropDownTextField(
+fun <T> AutocompleteTextField(
     modifier: Modifier = Modifier,
     text: String,
     onTextChange: (String) -> Unit,
-    source: DropDownTextFieldSource<T>,
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     onSelectItem: (T) -> Unit,
     enabled: Boolean = true,
@@ -118,7 +118,7 @@ fun <T> DropDownTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
-    BasicDropDownTextField(
+    BasicAutocompleteTextField(
         source = source,
         sourceItemToString = sourceItemToString,
         text = text,
@@ -151,11 +151,11 @@ fun <T> DropDownTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> OutlinedDropDownTextField(
+fun <T> OutlinedAutocompleteTextField(
     modifier: Modifier = Modifier,
     text: String,
     onTextChange: (String) -> Unit,
-    source: DropDownTextFieldSource<T>,
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     onSelectItem: (T) -> Unit,
     enabled: Boolean = true,
@@ -172,7 +172,7 @@ fun <T> OutlinedDropDownTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
-    BasicDropDownTextField(
+    BasicAutocompleteTextField(
         source = source,
         sourceItemToString = sourceItemToString,
         text = text,
@@ -205,11 +205,11 @@ fun <T> OutlinedDropDownTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> DropDownTextField(
+fun <T> AutocompleteTextField(
     modifier: Modifier = Modifier,
     control: MutableFormControl<T>,
     clearValue: T,
-    source: DropDownTextFieldSource<T>,
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     readOnly: Boolean = false,
     onTextChange: (String) -> Unit = {},
@@ -238,7 +238,7 @@ fun <T> DropDownTextField(
             else ComponentErrorState.Ok
         }
 
-    BasicDropDownTextField(
+    BasicAutocompleteTextField(
         source = source,
         sourceItemToString = sourceItemToString,
         text = text,
@@ -285,11 +285,11 @@ fun <T> DropDownTextField(
 // TODO чистить текстовое поле после потери фокуса, если значение невалидное
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> OutlinedDropDownTextField(
+fun <T> OutlinedAutocompleteTextField(
     modifier: Modifier = Modifier,
     control: MutableFormControl<T>,
     clearValue: T,
-    source: DropDownTextFieldSource<T>,
+    source: AutocompleteSource<T>,
     sourceItemToString: (T) -> String,
     readOnly: Boolean = false,
     onTextChange: (String) -> Unit = {},
@@ -318,7 +318,7 @@ fun <T> OutlinedDropDownTextField(
             else ComponentErrorState.Ok
         }
 
-    BasicDropDownTextField(
+    BasicAutocompleteTextField(
         source = source,
         sourceItemToString = sourceItemToString,
         text = text,
