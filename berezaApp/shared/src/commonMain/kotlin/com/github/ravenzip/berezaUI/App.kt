@@ -22,7 +22,8 @@ import com.github.ravenzip.berezaUI.core.components.layout.ExpandableCard
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.data.AutocompleteSource
+import com.github.ravenzip.berezaUI.core.data.autocomplete.AutocompleteSearch
+import com.github.ravenzip.berezaUI.core.data.autocomplete.AutocompleteSource
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
@@ -63,7 +64,18 @@ fun App() {
         val rotation = animateFloatAsState(targetValue = if (expanded.value) 180f else 0f)
 
         val dropDownSource = remember {
-            mutableStateOf<AutocompleteSource<Sample>>(AutocompleteSource.Predefined(mutableItems))
+            mutableStateOf<AutocompleteSource<Sample>>(
+                AutocompleteSource.Predefined(
+                    items = mutableItems,
+                    search = { source, value ->
+                        AutocompleteSearch.startWith(
+                            source = source,
+                            value = value,
+                            key = { y -> y.name },
+                        )
+                    },
+                )
+            )
         }
 
         val dropDownControl = remember { mutableFormControl(EMPTY_SAMPLE) }
@@ -118,7 +130,17 @@ fun App() {
                             dropDownSource.value =
                                 AutocompleteSource.ByQuery({ x -> flowOf(mutableItems) })
                         } else {
-                            dropDownSource.value = AutocompleteSource.Predefined(mutableItems)
+                            dropDownSource.value =
+                                AutocompleteSource.Predefined(
+                                    items = mutableItems,
+                                    search = { source, value ->
+                                        AutocompleteSearch.startWith(
+                                            source = source,
+                                            value = value,
+                                            key = { y -> y.name },
+                                        )
+                                    },
+                                )
                         }
                     },
                     text = "Кнопка",
