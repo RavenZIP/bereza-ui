@@ -33,6 +33,7 @@ import com.github.ravenzip.berezaUI.extensions.components.radio.RadioGroup
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun App() {
@@ -128,7 +129,11 @@ fun App() {
                         control1.setValue("Значение")
                         if (dropDownSource.value is AutocompleteSource.Predefined) {
                             dropDownSource.value =
-                                AutocompleteSource.ByQuery({ x -> flowOf(mutableItems) })
+                                AutocompleteSource.ByQuery({ x ->
+                                    flowOf(mutableItems).map { y ->
+                                        y.filter { y -> y.name.startsWith(x, ignoreCase = true) }
+                                    }
+                                })
                         } else {
                             dropDownSource.value =
                                 AutocompleteSource.Predefined(

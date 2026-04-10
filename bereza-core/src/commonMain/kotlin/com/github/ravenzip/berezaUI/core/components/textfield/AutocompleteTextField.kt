@@ -205,7 +205,7 @@ fun <T> AutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: AutocompleteTextFieldColors = AutocompleteTextFieldDefaults.colors(),
 ) {
-    val state = remember(control) { AutocompleteState(source) }
+    val state = remember(control, source) { AutocompleteState(source) }
     var text by remember { mutableStateOf("") }
 
     val status by control.statusChanges.collectAsStateLifecycleAware()
@@ -284,7 +284,7 @@ fun <T> OutlinedAutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: AutocompleteTextFieldColors = OutlinedAutocompleteTextFieldDefaults.colors(),
 ) {
-    val state = remember(control) { AutocompleteState(source) }
+    val state = remember(control, source) { AutocompleteState(source) }
     var text by remember { mutableStateOf("") }
 
     val status by control.statusChanges.collectAsStateLifecycleAware()
