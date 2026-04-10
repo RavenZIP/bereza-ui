@@ -23,7 +23,8 @@ import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
 import com.github.ravenzip.kotlinreactiveforms.data.isInvalid
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
-// TODO уйти от дублирования SearchEffect и вычисления переменных в компонентах с контролами
+// TODO уйти от дублирования вычисления переменных в компонентах с контролами (глобально, касается
+// не только Autocomplete)
 // TODO добавить возможность прокидывать иконки для элемента меню
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,9 +84,35 @@ fun <T> AutocompleteBox(
     }
 }
 
+@Composable
+fun <T> AutocompleteProvider(
+    textField: @Composable (Modifier) -> Unit,
+    text: String,
+    state: AutocompleteState<T>,
+    onSelectItem: (T) -> Unit,
+    enabled: Boolean,
+    readOnly: Boolean,
+    dropDownMenuItemText: @Composable (T) -> Unit,
+    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    menuColors: AutocompleteMenuColors,
+) {
+    SearchEffect(state = state, searchQuery = { text })
+
+    AutocompleteBox(
+        state = state,
+        textField = textField,
+        onSelectItem = onSelectItem,
+        enabled = enabled,
+        readOnly = readOnly,
+        dropDownMenuItemText = dropDownMenuItemText,
+        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        colors = menuColors,
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> AutocompleteTextField(
+fun <T> BasicAutocompleteTextField(
     modifier: Modifier = Modifier,
     text: String,
     onTextChange: (String) -> Unit,
@@ -104,10 +131,9 @@ fun <T> AutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: AutocompleteTextFieldColors = AutocompleteTextFieldDefaults.colors(),
 ) {
-    SearchEffect(state = state, searchQuery = { text })
-
-    AutocompleteBox(
+    AutocompleteProvider(
         state = state,
+        text = text,
         textField = { menuAnchor ->
             SingleLineTextField(
                 value = text,
@@ -130,7 +156,99 @@ fun <T> AutocompleteTextField(
         readOnly = readOnly,
         dropDownMenuItemText = dropDownMenuItemContent,
         dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
-        colors = colors.menuColors,
+        menuColors = colors.menuColors,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> BasicOutlinedAutocompleteTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit,
+    state: AutocompleteState<T>,
+    onSelectItem: (T) -> Unit,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    label: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    dropDownMenuItemContent: @Composable (T) -> Unit,
+    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: AutocompleteTextFieldColors = OutlinedAutocompleteTextFieldDefaults.colors(),
+) {
+    AutocompleteProvider(
+        state = state,
+        text = text,
+        textField = { menuAnchor ->
+            OutlinedSingleLineTextField(
+                value = text,
+                onValueChange = onTextChange,
+                modifier = modifier.then(menuAnchor),
+                isEnabled = enabled,
+                isReadonly = readOnly,
+                errorState = errorState,
+                label = label,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        onSelectItem = onSelectItem,
+        enabled = enabled,
+        readOnly = readOnly,
+        dropDownMenuItemText = dropDownMenuItemContent,
+        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        menuColors = colors.menuColors,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> AutocompleteTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit,
+    state: AutocompleteState<T>,
+    onSelectItem: (T) -> Unit,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    label: (@Composable () -> Unit)? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    dropDownMenuItemContent: @Composable (T) -> Unit,
+    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: AutocompleteTextFieldColors = AutocompleteTextFieldDefaults.colors(),
+) {
+    BasicAutocompleteTextField(
+        modifier = modifier,
+        text = text,
+        onTextChange = onTextChange,
+        state = state,
+        onSelectItem = onSelectItem,
+        enabled = enabled,
+        readOnly = readOnly,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchChange = onTouchChange,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        dropDownMenuItemContent = dropDownMenuItemContent,
+        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        shape = shape,
+        colors = colors,
     )
 }
 
@@ -155,33 +273,24 @@ fun <T> OutlinedAutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: AutocompleteTextFieldColors = OutlinedAutocompleteTextFieldDefaults.colors(),
 ) {
-    SearchEffect(state = state, searchQuery = { text })
-
-    AutocompleteBox(
+    BasicOutlinedAutocompleteTextField(
+        modifier = modifier,
+        text = text,
+        onTextChange = onTextChange,
         state = state,
-        textField = { menuAnchor ->
-            OutlinedSingleLineTextField(
-                value = text,
-                onValueChange = onTextChange,
-                modifier = modifier.then(menuAnchor),
-                isEnabled = enabled,
-                isReadonly = readOnly,
-                errorState = errorState,
-                label = label,
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
-                shape = shape,
-                colors = colors.textFieldColors,
-            )
-        },
         onSelectItem = onSelectItem,
         enabled = enabled,
         readOnly = readOnly,
-        dropDownMenuItemText = dropDownMenuItemContent,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchChange = onTouchChange,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        dropDownMenuItemContent = dropDownMenuItemContent,
         dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
-        colors = colors.menuColors,
+        shape = shape,
+        colors = colors,
     )
 }
 
@@ -220,35 +329,19 @@ fun <T> AutocompleteTextField(
             else ComponentErrorState.Ok
         }
 
-    SearchEffect(state = state, searchQuery = { text })
+    BasicAutocompleteTextField(
+        modifier = modifier,
+        text = text,
+        onTextChange = { x ->
+            text = x
+            onTextChange(x)
+            control.markAsDirty()
 
-    AutocompleteBox(
-        state = state,
-        textField = { menuAnchor ->
-            SingleLineTextField(
-                value = text,
-                onValueChange = { x ->
-                    text = x
-                    onTextChange(x)
-                    control.markAsDirty()
-
-                    if (x.isEmpty()) {
-                        control.setValue(clearValue)
-                    }
-                },
-                modifier = modifier.then(menuAnchor),
-                isEnabled = status.isEnabled(),
-                isReadonly = readOnly,
-                errorState = errorState,
-                label = label,
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
-                shape = shape,
-                colors = colors.textFieldColors,
-            )
+            if (x.isEmpty()) {
+                control.setValue(clearValue)
+            }
         },
+        state = state,
         onSelectItem = { x ->
             text = sourceItemToString(x)
             control.setValue(x)
@@ -256,9 +349,16 @@ fun <T> AutocompleteTextField(
         },
         enabled = status.isEnabled(),
         readOnly = readOnly,
-        dropDownMenuItemText = dropDownMenuItemContent,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchChange = onTouchChange,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        dropDownMenuItemContent = dropDownMenuItemContent,
         dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
-        colors = colors.menuColors,
+        shape = shape,
+        colors = colors,
     )
 }
 
@@ -299,35 +399,19 @@ fun <T> OutlinedAutocompleteTextField(
             else ComponentErrorState.Ok
         }
 
-    SearchEffect(state = state, searchQuery = { text })
+    BasicOutlinedAutocompleteTextField(
+        modifier = modifier,
+        text = text,
+        onTextChange = { x ->
+            text = x
+            onTextChange(x)
+            control.markAsDirty()
 
-    AutocompleteBox(
-        state = state,
-        textField = { menuAnchor ->
-            OutlinedSingleLineTextField(
-                value = text,
-                onValueChange = { x ->
-                    text = x
-                    onTextChange(x)
-                    control.markAsDirty()
-
-                    if (x.isEmpty()) {
-                        control.setValue(clearValue)
-                    }
-                },
-                modifier = modifier.then(menuAnchor),
-                isEnabled = status.isEnabled(),
-                isReadonly = readOnly,
-                errorState = errorState,
-                label = label,
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
-                shape = shape,
-                colors = colors.textFieldColors,
-            )
+            if (x.isEmpty()) {
+                control.setValue(clearValue)
+            }
         },
+        state = state,
         onSelectItem = { x ->
             text = sourceItemToString(x)
             control.setValue(x)
@@ -335,8 +419,15 @@ fun <T> OutlinedAutocompleteTextField(
         },
         enabled = status.isEnabled(),
         readOnly = readOnly,
-        dropDownMenuItemText = dropDownMenuItemContent,
+        errorState = errorState,
+        onFocusChange = onFocusChange,
+        onTouchChange = onTouchChange,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        dropDownMenuItemContent = dropDownMenuItemContent,
         dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
-        colors = colors.menuColors,
+        shape = shape,
+        colors = colors,
     )
 }
