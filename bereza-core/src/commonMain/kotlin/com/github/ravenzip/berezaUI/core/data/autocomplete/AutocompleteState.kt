@@ -1,9 +1,11 @@
 package com.github.ravenzip.berezaUI.core.data.autocomplete
 
+import androidx.compose.runtime.Stable
 import com.github.ravenzip.berezaUI.core.effects.snapshotCombinedFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
+@Stable
 class AutocompleteState<T>(val source: AutocompleteSource<T>) {
     private val _expanded: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val _result: MutableStateFlow<List<T>> = MutableStateFlow<List<T>>(emptyList())

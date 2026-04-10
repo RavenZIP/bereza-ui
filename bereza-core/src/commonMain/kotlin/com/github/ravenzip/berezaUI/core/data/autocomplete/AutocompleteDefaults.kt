@@ -48,6 +48,7 @@ object OutlinedAutocompleteMenuDefaults {
         )
 }
 
+@Immutable
 object AutocompleteMenuDefaults {
     @Composable
     fun colors(): AutocompleteMenuColors =
