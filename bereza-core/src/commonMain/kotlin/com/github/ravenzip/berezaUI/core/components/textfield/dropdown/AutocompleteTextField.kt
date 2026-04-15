@@ -36,7 +36,8 @@ fun <T> AutocompleteTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -84,7 +85,8 @@ fun <T> AutocompleteTextField(
         textFieldLeadingIcon = textFieldLeadingIcon,
         textFieldTrailingIcon = textFieldTrailingIcon,
         dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        dropDownMenuEmptyContent = dropDownMenuEmptyContent,
+        dropDownMenuLoadingContent = dropDownMenuLoadingContent,
         shape = shape,
         colors = colors,
     )
@@ -111,7 +113,8 @@ fun <T> OutlinedAutocompleteTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = OutlinedDropDownTextFieldDefaults.colors(),
 ) {
@@ -158,7 +161,8 @@ fun <T> OutlinedAutocompleteTextField(
         textFieldLeadingIcon = textFieldLeadingIcon,
         textFieldTrailingIcon = textFieldTrailingIcon,
         dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        dropDownMenuEmptyContent = dropDownMenuEmptyContent,
+        dropDownMenuLoadingContent = dropDownMenuLoadingContent,
         shape = shape,
         colors = colors,
     )
@@ -182,7 +186,8 @@ fun <T> AutocompleteTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -225,7 +230,7 @@ fun <T> AutocompleteTextField(
         textFieldLeadingIcon = textFieldLeadingIcon,
         textFieldTrailingIcon = textFieldTrailingIcon,
         dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        dropDownMenuEmptyContent = dropDownMenuEmptyContent,
         shape = shape,
         colors = colors,
     )
@@ -249,7 +254,8 @@ fun <T> OutlinedAutocompleteTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = OutlinedDropDownTextFieldDefaults.colors(),
 ) {
@@ -292,7 +298,8 @@ fun <T> OutlinedAutocompleteTextField(
         textFieldLeadingIcon = textFieldLeadingIcon,
         textFieldTrailingIcon = textFieldTrailingIcon,
         dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        dropDownMenuEmptyContent = dropDownMenuEmptyContent,
+        dropDownMenuLoadingContent = dropDownMenuLoadingContent,
         shape = shape,
         colors = colors,
     )

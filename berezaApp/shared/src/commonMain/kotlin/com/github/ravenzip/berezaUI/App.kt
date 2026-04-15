@@ -159,7 +159,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                         viewModel.dropDownText = x.name
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },
-                    dropDownMenuItemPlaceholder = { Text("Нет результатов") },
+                    dropDownMenuEmptyContent = { Text("Нет результатов") },
                 )
 
                 AutocompleteTextField(
@@ -171,7 +171,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                         coroutineScope.launch { viewModel.autocompleteTextChanged.emit(it) }
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },
-                    dropDownMenuItemPlaceholder = { Text("Нет результатов") },
+                    dropDownMenuEmptyContent = { Text("Нет результатов") },
                 )
 
                 SimpleButton(onClick = { viewModel.autocompleteControl.reset() }, text = "Кнопка")

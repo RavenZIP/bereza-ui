@@ -130,7 +130,8 @@ fun <T> DropdownTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -165,7 +166,8 @@ fun <T> DropdownTextField(
             )
         },
         itemContent = dropDownMenuItemContent,
-        emptyContent = dropDownMenuItemPlaceholder,
+        emptyContent = dropDownMenuEmptyContent,
+        loadingContent = dropDownMenuLoadingContent,
         enabled = enabled,
         readOnly = readOnly,
         shape = shape,
@@ -192,7 +194,8 @@ fun <T> OutlinedDropdownTextField(
     textFieldLeadingIcon: (@Composable () -> Unit)? = null,
     textFieldTrailingIcon: (@Composable () -> Unit)? = null,
     dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    dropDownMenuEmptyContent: @Composable () -> Unit,
+    dropDownMenuLoadingContent: @Composable () -> Unit = dropDownMenuEmptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = OutlinedDropDownTextFieldDefaults.colors(),
 ) {
@@ -227,7 +230,8 @@ fun <T> OutlinedDropdownTextField(
             )
         },
         itemContent = dropDownMenuItemContent,
-        emptyContent = dropDownMenuItemPlaceholder,
+        emptyContent = dropDownMenuEmptyContent,
+        loadingContent = dropDownMenuLoadingContent,
         enabled = enabled,
         readOnly = readOnly,
         shape = shape,
