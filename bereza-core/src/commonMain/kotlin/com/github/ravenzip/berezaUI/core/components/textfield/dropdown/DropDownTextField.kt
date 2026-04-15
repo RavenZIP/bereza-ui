@@ -70,34 +70,30 @@ fun <T> DropDownTextFieldBox(
                 }
 
                 is SourceState.Content -> {
-                    when (sourceState.items.size) {
-                        0 -> {
-                            DisabledDropDownMenuItem(text = emptyContent)
-                        }
+                    if (sourceState.items.isEmpty()) {
+                        DisabledDropDownMenuItem(text = emptyContent)
+                    } else {
+                        // TODO попробовать перейти на LazyColumn
+                        sourceState.items.forEach { item ->
+                            val key = if (keySelector != null) keySelector(item) else item
 
-                        else -> {
-                            // TODO попробовать перейти на LazyColumn
-                            sourceState.items.forEach { item ->
-                                val key = if (keySelector != null) keySelector(item) else item
+                            key(key) {
+                                DropdownMenuItem(
+                                    text = { itemContent(item) },
+                                    onClick = {
+                                        onSelectItem(item)
 
-                                key(key) {
-                                    DropdownMenuItem(
-                                        text = { itemContent(item) },
-                                        onClick = {
-                                            onSelectItem(item)
-
-                                            if (collapseAfterSelect) {
-                                                onExpandedChange(
-                                                    createDropDownExpandEvent(
-                                                        expanded = false,
-                                                        afterSelect = true,
-                                                    )
+                                        if (collapseAfterSelect) {
+                                            onExpandedChange(
+                                                createDropDownExpandEvent(
+                                                    expanded = false,
+                                                    afterSelect = true,
                                                 )
-                                            }
-                                        },
-                                        enabled = enabled,
-                                    )
-                                }
+                                            )
+                                        }
+                                    },
+                                    enabled = enabled,
+                                )
                             }
                         }
                     }
