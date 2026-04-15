@@ -29,8 +29,9 @@ fun <T> DropDownTextFieldBox(
     collapseAfterSelect: Boolean = true,
     modifier: Modifier = Modifier,
     textField: @Composable (Modifier) -> Unit,
-    dropDownMenuItemContent: @Composable (T) -> Unit,
-    dropDownMenuItemPlaceholder: @Composable () -> Unit,
+    itemContent: @Composable (T) -> Unit,
+    emptyContent: @Composable () -> Unit,
+    loadingContent: @Composable () -> Unit = emptyContent,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -64,35 +65,46 @@ fun <T> DropDownTextFieldBox(
             containerColor = colors.containerColor,
         ) {
             when (sourceState) {
-                is SourceState.Loading,
-                SourceState.Empty -> {
-                    DisabledDropDownMenuItem(text = dropDownMenuItemPlaceholder)
+                is SourceState.Loading -> {
+                    DisabledDropDownMenuItem(text = loadingContent)
                 }
 
                 is SourceState.Content -> {
-                    // TODO попробовать перейти на LazyColumn
-                    sourceState.items.forEach { item ->
-                        val key = if (keySelector != null) keySelector(item) else item
+                    when (sourceState.items.size) {
+                        0 -> {
+                            DisabledDropDownMenuItem(text = emptyContent)
+                        }
 
-                        key(key) {
-                            DropdownMenuItem(
-                                text = { dropDownMenuItemContent(item) },
-                                onClick = {
-                                    onSelectItem(item)
+                        else -> {
+                            // TODO попробовать перейти на LazyColumn
+                            sourceState.items.forEach { item ->
+                                val key = if (keySelector != null) keySelector(item) else item
 
-                                    if (collapseAfterSelect) {
-                                        onExpandedChange(
-                                            createDropDownExpandEvent(
-                                                expanded = false,
-                                                afterSelect = true,
-                                            )
-                                        )
-                                    }
-                                },
-                                enabled = enabled,
-                            )
+                                key(key) {
+                                    DropdownMenuItem(
+                                        text = { itemContent(item) },
+                                        onClick = {
+                                            onSelectItem(item)
+
+                                            if (collapseAfterSelect) {
+                                                onExpandedChange(
+                                                    createDropDownExpandEvent(
+                                                        expanded = false,
+                                                        afterSelect = true,
+                                                    )
+                                                )
+                                            }
+                                        },
+                                        enabled = enabled,
+                                    )
+                                }
+                            }
                         }
                     }
+                }
+
+                else -> {
+                    // do nothing
                 }
             }
         }
@@ -152,8 +164,8 @@ fun <T> DropdownTextField(
                 colors = colors.textFieldColors,
             )
         },
-        dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        itemContent = dropDownMenuItemContent,
+        emptyContent = dropDownMenuItemPlaceholder,
         enabled = enabled,
         readOnly = readOnly,
         shape = shape,
@@ -214,8 +226,8 @@ fun <T> OutlinedDropdownTextField(
                 colors = colors.textFieldColors,
             )
         },
-        dropDownMenuItemContent = dropDownMenuItemContent,
-        dropDownMenuItemPlaceholder = dropDownMenuItemPlaceholder,
+        itemContent = dropDownMenuItemContent,
+        emptyContent = dropDownMenuItemPlaceholder,
         enabled = enabled,
         readOnly = readOnly,
         shape = shape,
