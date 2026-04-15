@@ -79,7 +79,6 @@ class MyViewModel : ViewModel() {
 
         autocompleteControl.valueChanges
             .map { x -> x.name }
-            .onEach { x -> println("in control ${x.ifBlank { "EMPTY" }}") }
             .onEach { x -> dropDownText = x }
             .launchIn(viewModelScope)
     }
@@ -169,7 +168,6 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                     clearValue = EMPTY_SAMPLE,
                     itemToString = { x -> x.name },
                     onTextChange = {
-                        println("текст поменялся на $it")
                         coroutineScope.launch { viewModel.autocompleteTextChanged.emit(it) }
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },
