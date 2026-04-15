@@ -20,6 +20,7 @@ fun <T> AutocompleteTextField(
     loadedState: LoadedState<T>,
     selected: T,
     onSelectItem: (T) -> Unit,
+    onClearSelected: () -> Unit,
     itemToString: (T) -> String,
     keySelector: ((T) -> Any)? = null,
     onTextChange: (String) -> Unit,
@@ -27,6 +28,8 @@ fun <T> AutocompleteTextField(
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -37,12 +40,7 @@ fun <T> AutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
-    var text by remember { mutableStateOf("") }
-
-    LaunchedEffect(selected) {
-        val selectedText = itemToString(selected)
-        text = selectedText.ifBlank { text }
-    }
+    var text by remember(selected) { mutableStateOf(itemToString(selected)) }
 
     DropdownTextField(
         loadedState = loadedState,
@@ -62,6 +60,26 @@ fun <T> AutocompleteTextField(
         readOnly = readOnly,
         onFocusChange = onFocusChange,
         onTouchChange = onTouchChange,
+        onExpandedChange = { expandedEvent ->
+            // TODO уйти от дубликата тут и ниже
+            /**
+             * Если после закрытия выпадающего списка введенное значение не совпадает с выбранным,
+             * то вызываем событие очистки значения, т.к. считаем, что оно стало невалидным
+             *
+             * Реализовать такой функционал при вводе текста трудно, поэтому завязываемся на
+             * окончание работы с поиском (закрытие выпадающего списка)
+             */
+            if (
+                expandedEvent is DropDownExpandEvent.Collapsed &&
+                    !expandedEvent.afterSelect &&
+                    itemToString(selected) != text
+            ) {
+                onClearSelected()
+            }
+
+            onExpandedChange(expandedEvent)
+        },
+        collapseAfterSelect = collapseAfterSelect,
         textFieldLabel = textFieldLabel,
         textFieldLeadingIcon = textFieldLeadingIcon,
         textFieldTrailingIcon = textFieldTrailingIcon,
@@ -77,6 +95,7 @@ fun <T> OutlinedAutocompleteTextField(
     loadedState: LoadedState<T>,
     selected: T,
     onSelectItem: (T) -> Unit,
+    onClearSelected: () -> Unit,
     itemToString: (T) -> String,
     keySelector: ((T) -> Any)? = null,
     onTextChange: (String) -> Unit,
@@ -84,6 +103,8 @@ fun <T> OutlinedAutocompleteTextField(
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -94,12 +115,7 @@ fun <T> OutlinedAutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = OutlinedDropDownTextFieldDefaults.colors(),
 ) {
-    var text by remember { mutableStateOf("") }
-
-    LaunchedEffect(selected) {
-        val selectedText = itemToString(selected)
-        text = selectedText.ifBlank { text }
-    }
+    var text by remember(selected) { mutableStateOf(itemToString(selected)) }
 
     OutlinedDropdownTextField(
         loadedState = loadedState,
@@ -117,6 +133,25 @@ fun <T> OutlinedAutocompleteTextField(
         errorState = errorState,
         enabled = enabled,
         readOnly = readOnly,
+        onExpandedChange = { expandedEvent ->
+            /**
+             * Если после закрытия выпадающего списка введенное значение не совпадает с выбранным,
+             * то вызываем событие очистки значения, т.к. считаем, что оно стало невалидным
+             *
+             * Реализовать такой функционал при вводе текста трудно, поэтому завязываемся на
+             * окончание работы с поиском (закрытие выпадающего списка)
+             */
+            if (
+                expandedEvent is DropDownExpandEvent.Collapsed &&
+                    !expandedEvent.afterSelect &&
+                    itemToString(selected) != text
+            ) {
+                onClearSelected()
+            }
+
+            onExpandedChange(expandedEvent)
+        },
+        collapseAfterSelect = collapseAfterSelect,
         onFocusChange = onFocusChange,
         onTouchChange = onTouchChange,
         textFieldLabel = textFieldLabel,
@@ -139,6 +174,8 @@ fun <T> AutocompleteTextField(
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -165,14 +202,14 @@ fun <T> AutocompleteTextField(
     AutocompleteTextField(
         loadedState = loadedState,
         selected = value,
-        onSelectItem = { newSelectedItem ->
-            control.setValue(newSelectedItem)
+        onSelectItem = { newSelected ->
+            control.setValue(newSelected)
             control.markAsDirty()
         },
+        onClearSelected = { control.setValue(clearValue) },
         itemToString = itemToString,
         keySelector = keySelector,
         onTextChange = { newText ->
-            control.setValue(clearValue)
             control.markAsDirty()
             onTextChange(newText)
         },
@@ -180,6 +217,8 @@ fun <T> AutocompleteTextField(
         errorState = errorState,
         enabled = status.isEnabled(),
         readOnly = readOnly,
+        onExpandedChange = onExpandedChange,
+        collapseAfterSelect = collapseAfterSelect,
         onFocusChange = onFocusChange,
         onTouchChange = onTouchChange,
         textFieldLabel = textFieldLabel,
@@ -202,6 +241,8 @@ fun <T> OutlinedAutocompleteTextField(
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -232,10 +273,10 @@ fun <T> OutlinedAutocompleteTextField(
             control.setValue(newSelectedItem)
             control.markAsDirty()
         },
+        onClearSelected = { control.setValue(clearValue) },
         itemToString = itemToString,
         keySelector = keySelector,
         onTextChange = { newText ->
-            control.setValue(clearValue)
             control.markAsDirty()
             onTextChange(newText)
         },
@@ -243,6 +284,8 @@ fun <T> OutlinedAutocompleteTextField(
         errorState = errorState,
         enabled = status.isEnabled(),
         readOnly = readOnly,
+        onExpandedChange = onExpandedChange,
+        collapseAfterSelect = collapseAfterSelect,
         onFocusChange = onFocusChange,
         onTouchChange = onTouchChange,
         textFieldLabel = textFieldLabel,

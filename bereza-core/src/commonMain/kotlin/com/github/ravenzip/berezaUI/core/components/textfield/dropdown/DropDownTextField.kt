@@ -25,7 +25,8 @@ fun <T> DropDownTextFieldBox(
     onSelectItem: (T) -> Unit,
     keySelector: ((T) -> Any)? = null,
     expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
+    onExpandedChange: (DropDownExpandEvent) -> Unit,
+    collapseAfterSelect: Boolean = true,
     modifier: Modifier = Modifier,
     textField: @Composable (Modifier) -> Unit,
     dropDownMenuItemContent: @Composable (T) -> Unit,
@@ -41,7 +42,9 @@ fun <T> DropDownTextFieldBox(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = onExpandedChange,
+        onExpandedChange = { expanded ->
+            onExpandedChange(createDropDownExpandEvent(expanded = expanded))
+        },
         modifier = modifier,
     ) {
         textField(
@@ -55,7 +58,7 @@ fun <T> DropDownTextFieldBox(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { onExpandedChange(false) },
+            onDismissRequest = { onExpandedChange(createDropDownExpandEvent(expanded = false)) },
             border = menuBorder,
             shape = shape,
             containerColor = colors.containerColor,
@@ -76,7 +79,15 @@ fun <T> DropDownTextFieldBox(
                                 text = { dropDownMenuItemContent(item) },
                                 onClick = {
                                     onSelectItem(item)
-                                    onExpandedChange(false)
+
+                                    if (collapseAfterSelect) {
+                                        onExpandedChange(
+                                            createDropDownExpandEvent(
+                                                expanded = false,
+                                                afterSelect = true,
+                                            )
+                                        )
+                                    }
                                 },
                                 enabled = enabled,
                             )
@@ -99,6 +110,8 @@ fun <T> DropdownTextField(
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -116,7 +129,11 @@ fun <T> DropdownTextField(
         onSelectItem = onSelectItem,
         keySelector = keySelector,
         expanded = expanded,
-        onExpandedChange = { value -> expanded = value },
+        onExpandedChange = { expandEvent ->
+            expanded = expandEvent is DropDownExpandEvent.Expanded
+            onExpandedChange(expandEvent)
+        },
+        collapseAfterSelect = collapseAfterSelect,
         modifier = modifier,
         textField = { menuAnchor ->
             SingleLineTextField(
@@ -155,6 +172,8 @@ fun <T> OutlinedDropdownTextField(
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    onExpandedChange: (DropDownExpandEvent) -> Unit = {},
+    collapseAfterSelect: Boolean = false,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
     textFieldLabel: (@Composable () -> Unit)? = null,
@@ -172,7 +191,11 @@ fun <T> OutlinedDropdownTextField(
         onSelectItem = onSelectItem,
         keySelector = keySelector,
         expanded = expanded,
-        onExpandedChange = { value -> expanded = value },
+        onExpandedChange = { expandEvent ->
+            expanded = expandEvent is DropDownExpandEvent.Expanded
+            onExpandedChange(expandEvent)
+        },
+        collapseAfterSelect = collapseAfterSelect,
         modifier = modifier,
         textField = { menuAnchor ->
             OutlinedSingleLineTextField(

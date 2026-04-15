@@ -75,12 +75,11 @@ class MyViewModel : ViewModel() {
             .debounce { 300L }
             .map { x -> mutableItems.filter { y -> y.name.startsWith(x, ignoreCase = true) } }
             .onEach { x -> dropDownSource = x }
-            .onEach { println(dropDownSource.size) }
             .launchIn(viewModelScope)
 
         autocompleteControl.valueChanges
             .map { x -> x.name }
-            .onEach { println(it) }
+            .onEach { x -> println("in control ${x.ifBlank { "EMPTY" }}") }
             .onEach { x -> dropDownText = x }
             .launchIn(viewModelScope)
     }
@@ -177,10 +176,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                     dropDownMenuItemPlaceholder = { Text("Нет результатов") },
                 )
 
-                SimpleButton(
-                    onClick = { viewModel.autocompleteControl.setValue(viewModel.items[0]) },
-                    text = "Кнопка",
-                )
+                SimpleButton(onClick = { viewModel.autocompleteControl.reset() }, text = "Кнопка")
             }
         }
     }
