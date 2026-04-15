@@ -21,7 +21,7 @@ import com.github.ravenzip.berezaUI.core.data.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DropDownTextFieldBox(
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
     keySelector: ((T) -> Any)? = null,
     expanded: Boolean,
@@ -63,15 +63,15 @@ fun <T> DropDownTextFieldBox(
             shape = shape,
             containerColor = colors.containerColor,
         ) {
-            when (loadedState) {
-                is LoadedState.Loading,
-                LoadedState.Empty -> {
+            when (sourceState) {
+                is SourceState.Loading,
+                SourceState.Empty -> {
                     DisabledDropDownMenuItem(text = dropDownMenuItemPlaceholder)
                 }
 
-                is LoadedState.Data -> {
+                is SourceState.Content -> {
                     // TODO попробовать перейти на LazyColumn
-                    loadedState.source.forEach { item ->
+                    sourceState.items.forEach { item ->
                         val key = if (keySelector != null) keySelector(item) else item
 
                         key(key) {
@@ -101,7 +101,7 @@ fun <T> DropDownTextFieldBox(
 
 @Composable
 fun <T> DropdownTextField(
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
     keySelector: ((T) -> Any)? = null,
     text: String,
@@ -125,7 +125,7 @@ fun <T> DropdownTextField(
     var expanded by remember { mutableStateOf(false) }
 
     DropDownTextFieldBox(
-        loadedState = loadedState,
+        sourceState = sourceState,
         onSelectItem = onSelectItem,
         keySelector = keySelector,
         expanded = expanded,
@@ -163,7 +163,7 @@ fun <T> DropdownTextField(
 
 @Composable
 fun <T> OutlinedDropdownTextField(
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
     keySelector: ((T) -> Any)? = null,
     text: String,
@@ -187,7 +187,7 @@ fun <T> OutlinedDropdownTextField(
     var expanded by remember { mutableStateOf(false) }
 
     DropDownTextFieldBox(
-        loadedState = loadedState,
+        sourceState = sourceState,
         onSelectItem = onSelectItem,
         keySelector = keySelector,
         expanded = expanded,

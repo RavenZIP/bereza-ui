@@ -22,7 +22,7 @@ import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AutocompleteTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.DropdownTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.data.LoadedState
+import com.github.ravenzip.berezaUI.core.data.SourceState
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
@@ -93,7 +93,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
 
         val autocompleteValue = remember { mutableStateOf(EMPTY_SAMPLE) }
         val autocompleteState =
-            remember(viewModel.dropDownSource) { LoadedState.Data(viewModel.dropDownSource) }
+            remember(viewModel.dropDownSource) { SourceState.Content(viewModel.dropDownSource) }
 
         val coroutineScope = rememberCoroutineScope()
 
@@ -152,7 +152,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                 }
 
                 DropdownTextField(
-                    loadedState = autocompleteState,
+                    sourceState = autocompleteState,
                     text = viewModel.dropDownText,
                     onTextChange = { viewModel.dropDownText = it },
                     onSelectItem = { x ->
@@ -165,7 +165,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
 
                 AutocompleteTextField(
                     control = viewModel.autocompleteControl,
-                    loadedState = autocompleteState,
+                    sourceState = autocompleteState,
                     clearValue = EMPTY_SAMPLE,
                     itemToString = { x -> x.name },
                     onTextChange = {

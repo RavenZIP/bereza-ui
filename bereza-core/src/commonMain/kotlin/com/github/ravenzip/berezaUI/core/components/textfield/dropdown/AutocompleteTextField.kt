@@ -17,7 +17,7 @@ import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 // не только Autocomplete)
 @Composable
 fun <T> AutocompleteTextField(
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     selected: T,
     onSelectItem: (T) -> Unit,
     onClearSelected: () -> Unit,
@@ -43,7 +43,7 @@ fun <T> AutocompleteTextField(
     var text by remember(selected) { mutableStateOf(itemToString(selected)) }
 
     DropdownTextField(
-        loadedState = loadedState,
+        sourceState = sourceState,
         onSelectItem = { newSelectedItem ->
             text = itemToString(newSelectedItem)
             onSelectItem(newSelectedItem)
@@ -92,7 +92,7 @@ fun <T> AutocompleteTextField(
 
 @Composable
 fun <T> OutlinedAutocompleteTextField(
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     selected: T,
     onSelectItem: (T) -> Unit,
     onClearSelected: () -> Unit,
@@ -118,7 +118,7 @@ fun <T> OutlinedAutocompleteTextField(
     var text by remember(selected) { mutableStateOf(itemToString(selected)) }
 
     OutlinedDropdownTextField(
-        loadedState = loadedState,
+        sourceState = sourceState,
         onSelectItem = { newSelectedItem ->
             text = itemToString(newSelectedItem)
             onSelectItem(newSelectedItem)
@@ -167,7 +167,7 @@ fun <T> OutlinedAutocompleteTextField(
 @Composable
 fun <T> AutocompleteTextField(
     control: MutableFormControl<T>,
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     clearValue: T,
     itemToString: (T) -> String,
     keySelector: ((T) -> Any)? = null,
@@ -200,7 +200,7 @@ fun <T> AutocompleteTextField(
         }
 
     AutocompleteTextField(
-        loadedState = loadedState,
+        sourceState = sourceState,
         selected = value,
         onSelectItem = { newSelected ->
             control.setValue(newSelected)
@@ -234,7 +234,7 @@ fun <T> AutocompleteTextField(
 @Composable
 fun <T> OutlinedAutocompleteTextField(
     control: MutableFormControl<T>,
-    loadedState: LoadedState<T>,
+    sourceState: SourceState<T>,
     clearValue: T,
     itemToString: (T) -> String,
     keySelector: ((T) -> Any)? = null,
@@ -267,7 +267,7 @@ fun <T> OutlinedAutocompleteTextField(
         }
 
     OutlinedAutocompleteTextField(
-        loadedState = loadedState,
+        sourceState = sourceState,
         selected = value,
         onSelectItem = { newSelectedItem ->
             control.setValue(newSelectedItem)
