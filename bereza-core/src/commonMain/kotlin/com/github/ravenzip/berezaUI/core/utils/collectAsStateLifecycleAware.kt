@@ -15,12 +15,12 @@ import kotlin.coroutines.EmptyCoroutineContext
  * В случае Android платформы будет использован collectAsStateWithLifecycle
  */
 @Composable
-internal expect fun <T> StateFlow<T>.collectAsStateLifecycleAware(
+expect fun <T> StateFlow<T>.collectAsStateLifecycleAware(
     context: CoroutineContext = EmptyCoroutineContext
 ): State<T>
 
 @Composable
-internal expect fun <T> Flow<T>.collectAsStateLifecycleAware(
+expect fun <T> Flow<T>.collectAsStateLifecycleAware(
     initialValue: T,
     context: CoroutineContext = EmptyCoroutineContext,
 ): State<T>

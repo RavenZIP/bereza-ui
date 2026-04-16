@@ -21,7 +21,7 @@ import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
 @Composable
-internal fun BasicTextField(
+fun BasicTextField(
     value: String,
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
