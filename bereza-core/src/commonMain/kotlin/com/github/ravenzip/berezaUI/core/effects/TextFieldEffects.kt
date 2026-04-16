@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+// TODO вынести в отдельный файл Effects
 @Composable
 fun FocusLostEffect(isFocused: State<Boolean>, onFocusLost: () -> Unit) {
     LaunchedEffect(Unit) {
