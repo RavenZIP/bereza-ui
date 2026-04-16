@@ -13,6 +13,17 @@ import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
 import com.github.ravenzip.kotlinreactiveforms.data.isInvalid
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
+// TODO временно, пока не придумаю как это оформить лучше
+private fun textNotEqualAfterManualCollapse(
+    firstText: String,
+    secondText: String,
+    expandedEvent: DropDownExpandEvent,
+): Boolean {
+    return expandedEvent is DropDownExpandEvent.Collapsed &&
+        !expandedEvent.afterSelect &&
+        firstText != secondText
+}
+
 // TODO уйти от дублирования вычисления переменных в компонентах с контролами (глобально, касается
 // не только Autocomplete)
 @Composable
@@ -62,19 +73,16 @@ fun <T> AutocompleteTextField(
         onFocusChange = onFocusChange,
         onTouchChange = onTouchChange,
         onExpandedChange = { expandedEvent ->
-            // TODO уйти от дубликата тут и ниже
             /**
              * Если после закрытия выпадающего списка введенное значение не совпадает с выбранным,
              * то вызываем событие очистки значения, т.к. считаем, что оно стало невалидным
              *
              * Реализовать такой функционал при вводе текста трудно, поэтому завязываемся на
              * окончание работы с поиском (закрытие выпадающего списка)
+             *
+             * Для [OutlinedAutocompleteTextField] аналогично
              */
-            if (
-                expandedEvent is DropDownExpandEvent.Collapsed &&
-                    !expandedEvent.afterSelect &&
-                    itemToString(selected) != text
-            ) {
+            if (textNotEqualAfterManualCollapse(itemToString(selected), text, expandedEvent)) {
                 onClearSelected()
             }
 
@@ -137,18 +145,8 @@ fun <T> OutlinedAutocompleteTextField(
         enabled = enabled,
         readOnly = readOnly,
         onExpandedChange = { expandedEvent ->
-            /**
-             * Если после закрытия выпадающего списка введенное значение не совпадает с выбранным,
-             * то вызываем событие очистки значения, т.к. считаем, что оно стало невалидным
-             *
-             * Реализовать такой функционал при вводе текста трудно, поэтому завязываемся на
-             * окончание работы с поиском (закрытие выпадающего списка)
-             */
-            if (
-                expandedEvent is DropDownExpandEvent.Collapsed &&
-                    !expandedEvent.afterSelect &&
-                    itemToString(selected) != text
-            ) {
+            /** @see [AutocompleteTextField]] */
+            if (textNotEqualAfterManualCollapse(itemToString(selected), text, expandedEvent)) {
                 onClearSelected()
             }
 
@@ -231,6 +229,7 @@ fun <T> AutocompleteTextField(
         textFieldTrailingIcon = textFieldTrailingIcon,
         dropDownMenuItemContent = dropDownMenuItemContent,
         dropDownMenuEmptyContent = dropDownMenuEmptyContent,
+        dropDownMenuLoadingContent = dropDownMenuLoadingContent,
         shape = shape,
         colors = colors,
     )
