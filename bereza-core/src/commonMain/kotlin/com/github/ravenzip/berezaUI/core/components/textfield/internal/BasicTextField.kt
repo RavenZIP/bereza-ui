@@ -15,9 +15,9 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
-import com.github.ravenzip.berezaUI.core.effects.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
 @Composable

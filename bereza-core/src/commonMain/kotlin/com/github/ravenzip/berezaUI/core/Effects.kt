@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.core.effects
+package com.github.ravenzip.berezaUI.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-// TODO вынести в отдельный файл Effects
 @Composable
 fun FocusLostEffect(isFocused: State<Boolean>, onFocusLost: () -> Unit) {
     LaunchedEffect(Unit) {
