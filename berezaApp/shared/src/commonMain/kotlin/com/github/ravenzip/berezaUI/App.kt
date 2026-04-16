@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -62,37 +59,48 @@ class MyViewModel : ViewModel() {
             Sample(8, "Viktor"),
         )
 
-    val mutableItems = mutableListOf<Sample>().apply { addAll(items + items2) }
+    val items3 = items + items2
 
     val autocompleteTextChanged = MutableSharedFlow<String>()
 
     var dropDownText by mutableStateOf("")
+    var dropDownValue = EMPTY_SAMPLE
 
-    var dropDownSource by mutableStateOf<List<Sample>>(mutableItems)
+    val dropDownSourceState = MutableStateFlow<SourceState<Sample>>(SourceState.Idle)
 
+    val autocompleteSourceState = MutableStateFlow<SourceState<Sample>>(SourceState.Idle)
+
+    // TODO поиск должен выполняться только тогда, когда открыт выпадающий список? Если да, то стоит
+    // ли тогда expanded как состояние поднять наверх?
     init {
         merge(autocompleteTextChanged, autocompleteControl.valueChanges.map { x -> x.name })
+            .onEach { autocompleteSourceState.update { SourceState.Loading } }
             .debounce { 300L }
-            .map { x -> mutableItems.filter { y -> y.name.startsWith(x, ignoreCase = true) } }
-            .onEach { x -> dropDownSource = x }
+            .map { x ->
+                val source = items3.filter { y -> y.name.startsWith(x, ignoreCase = true) }
+                autocompleteSourceState.update { SourceState.Content(source) }
+            }
             .launchIn(viewModelScope)
 
-        autocompleteControl.valueChanges
-            .map { x -> x.name }
-            .onEach { x -> dropDownText = x }
+        snapshotFlow { dropDownText }
+            .debounce { 300L }
+            .map { x ->
+                val source = items3.filter { y -> y.name.startsWith(x, ignoreCase = true) }
+                dropDownSourceState.update { SourceState.Content(source) }
+            }
             .launchIn(viewModelScope)
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
     MaterialTheme {
         val expanded = remember { mutableStateOf(false) }
         val rotation = animateFloatAsState(targetValue = if (expanded.value) 180f else 0f)
 
-        val autocompleteValue = remember { mutableStateOf(EMPTY_SAMPLE) }
-        val autocompleteState =
-            remember(viewModel.dropDownSource) { SourceState.Content(viewModel.dropDownSource) }
+        val autocompleteSourceState by viewModel.autocompleteSourceState.collectAsState()
+        val dropDownSourceState by viewModel.dropDownSourceState.collectAsState()
 
         val coroutineScope = rememberCoroutineScope()
 
@@ -151,11 +159,11 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                 }
 
                 DropdownTextField(
-                    sourceState = autocompleteState,
+                    sourceState = dropDownSourceState,
                     text = viewModel.dropDownText,
                     onTextChange = { viewModel.dropDownText = it },
                     onSelectItem = { x ->
-                        autocompleteValue.value = x
+                        viewModel.dropDownValue = x
                         viewModel.dropDownText = x.name
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },
@@ -164,7 +172,7 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
 
                 AutocompleteTextField(
                     control = viewModel.autocompleteControl,
-                    sourceState = autocompleteState,
+                    sourceState = autocompleteSourceState,
                     clearValue = EMPTY_SAMPLE,
                     itemToString = { x -> x.name },
                     onTextChange = {
