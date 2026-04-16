@@ -20,8 +20,6 @@ private fun textNotEqualAfterManualCollapse(
         firstText != secondText
 }
 
-// TODO уйти от дублирования вычисления переменных в компонентах с контролами (глобально, касается
-// не только Autocomplete)
 @Composable
 @ExperimentalMaterial3Api
 fun <T> AutocompleteTextField(
