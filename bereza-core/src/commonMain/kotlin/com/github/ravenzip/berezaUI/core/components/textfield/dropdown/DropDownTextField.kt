@@ -19,6 +19,7 @@ import com.github.ravenzip.berezaUI.core.data.*
 // TODO ограничить максимальное число видимых элементов в выпадающем списке (желательно через
 // параметр)
 @OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun <T> DropDownTextFieldBox(
     sourceState: SourceState<T>,
@@ -108,6 +109,7 @@ fun <T> DropDownTextFieldBox(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 fun <T> DropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
@@ -172,6 +174,7 @@ fun <T> DropdownTextField(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 fun <T> OutlinedDropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,

@@ -1,6 +1,7 @@
 package com.github.ravenzip.berezaUI.core.components.textfield.dropdown
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
@@ -27,6 +28,7 @@ private fun textNotEqualAfterManualCollapse(
 // TODO уйти от дублирования вычисления переменных в компонентах с контролами (глобально, касается
 // не только Autocomplete)
 @Composable
+@ExperimentalMaterial3Api
 fun <T> AutocompleteTextField(
     sourceState: SourceState<T>,
     selected: T,
@@ -101,6 +103,7 @@ fun <T> AutocompleteTextField(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 fun <T> OutlinedAutocompleteTextField(
     sourceState: SourceState<T>,
     selected: T,
@@ -167,6 +170,7 @@ fun <T> OutlinedAutocompleteTextField(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 fun <T> AutocompleteTextField(
     control: MutableFormControl<T>,
     sourceState: SourceState<T>,
@@ -236,6 +240,7 @@ fun <T> AutocompleteTextField(
 }
 
 @Composable
+@ExperimentalMaterial3Api
 fun <T> OutlinedAutocompleteTextField(
     control: MutableFormControl<T>,
     sourceState: SourceState<T>,
