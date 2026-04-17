@@ -37,7 +37,7 @@ fun <T, K : Any> RadioGroup(
                 RadioButtonWithText(
                     isSelected = selectedKey == itemKey,
                     onClick = { onSelectedItemChange(item) },
-                    text = text,
+                    text = { text(item) },
                     isEnabled = enabled,
                     padding = padding,
                     shape = shape,
