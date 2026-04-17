@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RadioButtonWithText(
-    isSelected: Boolean,
-    isEnabled: Boolean = true,
+    selected: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     text: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -32,7 +32,7 @@ fun RadioButtonWithText(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        RadioButton(selected = isSelected, onClick = null, enabled = isEnabled, colors = colors)
+        RadioButton(selected = selected, onClick = null, enabled = enabled, colors = colors)
 
         text()
     }

@@ -20,8 +20,8 @@ internal fun BasicTextFieldSupportingRow(
     showTextLengthCounterIfZero: Boolean,
     value: String,
     maxLength: Int?,
-    isError: Boolean,
-    isFocused: Boolean,
+    error: Boolean,
+    focused: Boolean,
     colors: TextFieldColors,
 ) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -42,7 +42,7 @@ internal fun BasicTextFieldSupportingRow(
                 CounterLabel(
                     current = value.length,
                     max = maxLength,
-                    color = colors.calculateLabelColor(isInvalid = isError, isFocused = isFocused),
+                    color = colors.calculateLabelColor(invalid = error, focused = focused),
                 )
             }
         }

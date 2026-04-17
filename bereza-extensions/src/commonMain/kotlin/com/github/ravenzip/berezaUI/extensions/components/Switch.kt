@@ -15,8 +15,8 @@ import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
 
 @Composable
 fun SwitchWithText(
-    isSelected: Boolean,
-    isEnabled: Boolean = true,
+    selected: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     label: String,
@@ -35,8 +35,8 @@ fun SwitchWithText(
             else TextStyle.Default.merge(fontSize = 18.sp)
 
     SwitchWithText(
-        isSelected = isSelected,
-        isEnabled = isEnabled,
+        selected = selected,
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier,
         text = {

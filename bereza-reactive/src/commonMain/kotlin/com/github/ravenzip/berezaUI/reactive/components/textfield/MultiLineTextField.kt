@@ -59,8 +59,8 @@ fun MultiLineTextField(
             control.markAsDirty()
         },
         modifier = modifier,
-        isEnabled = status.isEnabled(),
-        isReadonly = isReadonly,
+        enabled = status.isEnabled(),
+        readonly = isReadonly,
         mayHaveAnError = control.hasValidators,
         errorState = errorState,
         onFocusChange = onFocusChange,
@@ -119,8 +119,8 @@ fun OutlinedMultiLineTextField(
             control.markAsDirty()
         },
         modifier = modifier,
-        isEnabled = status.isEnabled(),
-        isReadonly = isReadonly,
+        enabled = status.isEnabled(),
+        readonly = isReadonly,
         mayHaveAnError = control.hasValidators,
         errorState = errorState,
         onFocusChange = onFocusChange,

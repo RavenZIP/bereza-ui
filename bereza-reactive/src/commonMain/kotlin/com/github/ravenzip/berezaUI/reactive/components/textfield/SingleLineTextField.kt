@@ -59,8 +59,8 @@ fun SingleLineTextField(
             control.markAsDirty()
         },
         modifier = modifier,
-        isEnabled = status.isEnabled(),
-        isReadonly = isReadonly,
+        enabled = status.isEnabled(),
+        readonly = isReadonly,
         mayHaveAnError = control.hasValidators,
         errorState = errorState,
         onFocusChange = onFocusChange,
@@ -118,8 +118,8 @@ fun OutlinedSingleLineTextField(
             control.markAsDirty()
         },
         modifier = modifier,
-        isEnabled = status.isEnabled(),
-        isReadonly = isReadonly,
+        enabled = status.isEnabled(),
+        readonly = isReadonly,
         mayHaveAnError = control.hasValidators,
         errorState = errorState,
         onFocusChange = onFocusChange,

@@ -24,7 +24,7 @@ fun SimpleButton(
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     shape: Shape = RoundedCornerShape(14.dp),
     contentPadding: PaddingValues = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
@@ -32,7 +32,7 @@ fun SimpleButton(
     Button(
         onClick = onClick,
         modifier = modifier,
-        enabled = isEnabled,
+        enabled = enabled,
         colors = colors,
         shape = shape,
         contentPadding = contentPadding,
@@ -50,14 +50,14 @@ fun IconButton(
     iconDescription: String? = null,
     iconStyle: IconStyle = IconStyle.Default,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     interactionSource: MutableInteractionSource? = null,
     contentPadding: PaddingValues = PaddingValues(10.dp),
 ) {
     val color = iconStyle.color ?: colors.contentColor
-    val contentColor = if (isEnabled) color else colors.disabledContentColor
+    val contentColor = if (enabled) color else colors.disabledContentColor
 
     IconButton(
         onClick = onClick,
@@ -70,7 +70,7 @@ fun IconButton(
             )
         },
         modifier = modifier,
-        isEnabled = isEnabled,
+        enabled = enabled,
         shape = shape,
         interactionSource = interactionSource,
         contentPadding = contentPadding,
@@ -90,7 +90,7 @@ fun RichButton(
     icon: Painter,
     iconDescription: String? = null,
     iconStyle: IconStyle = IconStyle.Default,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     shape: Shape = RoundedCornerShape(14.dp),
     contentPadding: PaddingValues = PaddingValues(18.dp),
@@ -117,7 +117,7 @@ fun RichButton(
                 tint = iconStyle.color ?: colors.contentColor,
             )
         },
-        isEnabled = isEnabled,
+        enabled = enabled,
         colors = colors,
         shape = shape,
         contentPadding = contentPadding,

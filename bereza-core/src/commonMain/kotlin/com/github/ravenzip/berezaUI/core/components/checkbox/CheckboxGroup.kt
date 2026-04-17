@@ -39,7 +39,7 @@ fun <T, K : Any> CheckboxGroup(
             val isSelected = selectedKeys.contains(itemKey)
 
             CheckboxWithText(
-                isSelected = isSelected,
+                selected = isSelected,
                 onClick = { onSelectedItemChange(item) },
                 text = { text(item) },
                 enabled = enabled,

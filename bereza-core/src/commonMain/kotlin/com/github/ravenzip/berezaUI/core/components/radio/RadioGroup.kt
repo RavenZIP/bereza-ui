@@ -38,10 +38,10 @@ fun <T, K : Any> RadioGroup(
             val itemKey = keySelector(item)
 
             RadioButtonWithText(
-                isSelected = selectedKey == itemKey,
+                selected = selectedKey == itemKey,
                 onClick = { onSelectedItemChange(item) },
                 text = { text(item) },
-                isEnabled = enabled,
+                enabled = enabled,
                 padding = padding,
                 shape = shape,
                 colors = colors,
