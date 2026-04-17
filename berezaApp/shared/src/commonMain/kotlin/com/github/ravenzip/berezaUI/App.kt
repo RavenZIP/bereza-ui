@@ -23,8 +23,8 @@ import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithText
 import com.github.ravenzip.berezaUI.reactive.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchWithText
+import com.github.ravenzip.berezaUI.reactive.components.textfield.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.reactive.components.textfield.dropdown.AutocompleteTextField
-import com.github.ravenzip.berezaUI.reactive.components.textfield.singleLine.OutlinedSingleLineTextField
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import com.github.ravenzip.kotlinreactiveforms.validation.Validator
 import kotlinx.coroutines.FlowPreview

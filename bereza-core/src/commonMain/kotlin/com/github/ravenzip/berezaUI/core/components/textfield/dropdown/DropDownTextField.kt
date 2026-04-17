@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.components.textfield.singleLine.SingleLineTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedSingleLineTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.SingleLineTextField
 import com.github.ravenzip.berezaUI.core.data.*
 
 // TODO ограничить максимальное число видимых элементов в выпадающем списке (желательно через

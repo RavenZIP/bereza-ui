@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.core.components.textfield.internal
+package com.github.ravenzip.berezaUI.core.components.textfield.basic
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Arrangement
