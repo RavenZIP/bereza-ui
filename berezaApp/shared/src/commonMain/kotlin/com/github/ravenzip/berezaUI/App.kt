@@ -23,6 +23,7 @@ import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxGroup
 import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithText
 import com.github.ravenzip.berezaUI.reactive.components.radio.RadioGroup
+import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchGroup
 import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchWithText
 import com.github.ravenzip.berezaUI.reactive.components.textfield.OutlinedSingleLineTextField
 import com.github.ravenzip.berezaUI.reactive.components.textfield.dropdown.AutocompleteTextField
@@ -47,6 +48,8 @@ class MyViewModel : ViewModel() {
     val firstRadioGroupControl = mutableFormControl(Sample(1, "Albert"))
 
     val secondRadioGroupControl = mutableFormControl(Sample(1, "Albert"))
+
+    val switchGroupControl = mutableFormControl(emptyList<Sample>())
 
     val autocompleteControl = mutableFormControl(EMPTY_SAMPLE)
 
@@ -148,6 +151,13 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                     source = viewModel.items,
                     keySelector = { x -> x.id },
                     displayedText = { x -> x.name },
+                )
+
+                SwitchGroup(
+                    control = viewModel.switchGroupControl,
+                    source = viewModel.items,
+                    keySelector = { x -> x.id },
+                    text = { x -> Text(x.name) },
                 )
 
                 ExpandableCard(
