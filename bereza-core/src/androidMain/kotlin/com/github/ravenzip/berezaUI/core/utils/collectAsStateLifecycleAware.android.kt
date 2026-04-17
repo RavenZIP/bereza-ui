@@ -8,12 +8,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlin.coroutines.CoroutineContext
 
 @Composable
-internal actual fun <T> StateFlow<T>.collectAsStateLifecycleAware(
-    context: CoroutineContext
-): State<T> = this.collectAsStateWithLifecycle(context = context)
+actual fun <T> StateFlow<T>.collectAsStateLifecycleAware(context: CoroutineContext): State<T> =
+    this.collectAsStateWithLifecycle(context = context)
 
 @Composable
-internal actual fun <T> Flow<T>.collectAsStateLifecycleAware(
+actual fun <T> Flow<T>.collectAsStateLifecycleAware(
     initialValue: T,
     context: CoroutineContext,
 ): State<T> = this.collectAsStateWithLifecycle(initialValue = initialValue, context = context)

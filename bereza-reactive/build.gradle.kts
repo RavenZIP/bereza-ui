@@ -13,7 +13,7 @@ kotlin {
     jvm()
 
     androidLibrary {
-        namespace = "com.github.RavenZIP.bereza.ui.core"
+        namespace = "com.github.RavenZIP.bereza.ui.reactive"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -24,8 +24,8 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        outputModuleName.set("bereza-ui-core")
-        browser { commonWebpackConfig { outputFileName = "bereza-ui-core.js" } }
+        outputModuleName.set("bereza-ui-reactive")
+        browser { commonWebpackConfig { outputFileName = "bereza-ui-reactive.js" } }
     }
 
     sourceSets {
@@ -37,7 +37,10 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(libs.ravenzip.krex.core)
+            implementation(projects.berezaCore)
+            implementation(projects.berezaExtensions)
+
+            implementation(libs.ravenzip.kotlinReactiveForms.core)
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }
