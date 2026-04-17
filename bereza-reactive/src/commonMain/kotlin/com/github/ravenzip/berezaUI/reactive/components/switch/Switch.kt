@@ -6,14 +6,14 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
-import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
 import com.github.ravenzip.berezaUI.extensions.components.SwitchWithText
-import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
+import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -22,17 +22,16 @@ fun Switch(
     modifier: Modifier = Modifier,
     colors: SwitchColors = SwitchDefaults.colors(),
 ) {
-    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
-    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val state by control.collectComponentState()
 
     Switch(
-        checked = isSelected,
+        checked = state.value,
         onCheckedChange = {
             control.setValue(!control.value)
             control.markAsDirty()
         },
         modifier = modifier,
-        enabled = status.isEnabled(),
+        enabled = state.enabled,
         colors = colors,
     )
 }
@@ -46,12 +45,11 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
-    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val state by control.collectComponentState()
 
     SwitchWithText(
-        selected = isSelected,
-        enabled = status.isEnabled(),
+        selected = state.value,
+        enabled = state.enabled,
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()
@@ -76,12 +74,11 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
-    val status = control.statusChanges.collectAsStateLifecycleAware().value
+    val state by control.collectComponentState()
 
     SwitchWithText(
-        selected = isSelected,
-        enabled = status.isEnabled(),
+        selected = state.value,
+        enabled = state.enabled,
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()
