@@ -19,13 +19,13 @@ fun <T, K : Any> BasicColumnGroup(
     keySelector: (T) -> K,
     modifier: Modifier = Modifier,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
-    content: @Composable (K) -> Unit,
+    content: @Composable (T) -> Unit,
 ) {
     Column(modifier = modifier, verticalArrangement = contentPadding) {
         source.forEach { item ->
-            val itemKey = keySelector(item)
+            val itemKey = remember(item, keySelector) { keySelector(item) }
 
-            key(itemKey) { content(itemKey) }
+            key(itemKey) { content(item) }
         }
     }
 }
@@ -44,17 +44,16 @@ fun <T, K : Any> CheckboxGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
 ) {
-    val sourceMap = remember(source) { source.associateBy(keySelector) }
-    val selectedItemsMap = remember(selectedItems) { selectedItems.associateBy(keySelector) }
+    val selectedKeys = remember(selectedItems) { selectedItems.map(keySelector).toSet() }
 
     BasicColumnGroup(
         source = source,
         keySelector = keySelector,
         modifier = modifier,
         contentPadding = contentPadding,
-    ) { itemKey ->
-        val isSelected = selectedItemsMap.contains(itemKey)
-        val item = sourceMap.getValue(itemKey)
+    ) { item ->
+        val itemKey = remember(item, keySelector) { keySelector(item) }
+        val isSelected = selectedKeys.contains(itemKey)
 
         CheckboxWithText(
             isSelected = isSelected,
