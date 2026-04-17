@@ -27,6 +27,7 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
+    // TODO вынести в функцию?
     val calculatedLabelStyle =
         labelStyle
             ?: if (description != null)
