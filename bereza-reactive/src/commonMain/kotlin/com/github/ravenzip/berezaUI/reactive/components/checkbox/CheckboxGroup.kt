@@ -33,11 +33,15 @@ fun <T, K : Any> CheckboxGroup(
     CheckboxGroup(
         source = source,
         selectedItems = selectedItems,
-        onSelectedItemChange = { value ->
-            val selectedItems =
-                if (value in control.value) control.value - value else control.value + value
+        onSelectedItemChange = { selectedItem ->
+            val selectedItemKey = keySelector(selectedItem)
+            val selected = selectedItems.any { item -> keySelector(item) == selectedItemKey }
+            val newSelectedItems =
+                if (selected)
+                    selectedItems.filterNot { item -> keySelector(item) == selectedItemKey }
+                else selectedItems + selectedItem
 
-            control.setValue(selectedItems)
+            control.setValue(newSelectedItems)
             control.markAsTouched()
         },
         keySelector = keySelector,
