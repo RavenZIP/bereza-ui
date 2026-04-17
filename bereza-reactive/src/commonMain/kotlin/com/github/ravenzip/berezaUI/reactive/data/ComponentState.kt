@@ -7,9 +7,7 @@ import androidx.compose.runtime.produceState
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.kotlinreactiveforms.data.FormControlStatus
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
-import com.github.ravenzip.kotlinreactiveforms.data.isInvalid
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
-import com.github.ravenzip.kotlinreactiveforms.validation.ValidationError
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -25,48 +23,44 @@ fun <T> computeComponentState(
     status: FormControlStatus,
     dirty: Boolean,
     touched: Boolean,
-    errors: List<ValidationError>,
 ): ComponentState<T> {
-    val errorMessage = errors.firstOrNull()?.message ?: ""
     val errorState =
-        computeComponentErrorState(
-            touched = touched,
-            dirty = dirty,
-            invalid = status.isInvalid(),
-            error = errorMessage,
-        )
+        when (status) {
+            FormControlStatus.Disabled,
+            FormControlStatus.Valid -> {
+                ComponentErrorState.Ok
+            }
+
+            is FormControlStatus.Invalid -> {
+                // Не упадем, потому что в случае статуса Invalid текст ошибки должен быть всегда
+                val errorMessage = status.errors.first().message
+
+                if (dirty || touched) ComponentErrorState.Error(errorMessage)
+                else ComponentErrorState.Ok
+            }
+        }
 
     return ComponentState(value = value, enabled = status.isEnabled(), errorState = errorState)
 }
 
 fun <T> MutableFormControl<T>.computeComponentState(): ComponentState<T> =
-    computeComponentState(value, status, touched = touched, dirty = dirty, errors = errors)
-
-fun computeComponentErrorState(
-    touched: Boolean,
-    dirty: Boolean,
-    invalid: Boolean,
-    error: String,
-): ComponentErrorState =
-    if (invalid && (dirty || touched)) ComponentErrorState.Error(error) else ComponentErrorState.Ok
+    computeComponentState(value = value, status = status, touched = touched, dirty = dirty)
 
 // TODO добавить обработку жизненного цикла, по аналогии с collectAsState и
 // collectAsStateWithLifeCycle
 @Composable
 fun <T> MutableFormControl<T>.collectComponentState(): State<ComponentState<T>> =
     produceState(this.computeComponentState(), this) {
-        combine(valueChanges, statusChanges, touchedChanges, dirtyChanges, errorsChanges) {
+        combine(valueChanges, statusChanges, touchedChanges, dirtyChanges) {
                 value,
                 status,
                 touched,
-                dirty,
-                errors ->
+                dirty ->
                 computeComponentState(
                     value = value,
                     status = status,
                     touched = touched,
                     dirty = dirty,
-                    errors = errors,
                 )
             }
             .distinctUntilChanged()
