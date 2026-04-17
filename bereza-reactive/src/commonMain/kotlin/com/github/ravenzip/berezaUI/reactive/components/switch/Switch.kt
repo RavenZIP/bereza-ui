@@ -6,12 +6,12 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
+import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
 import com.github.ravenzip.berezaUI.extensions.components.SwitchWithText
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
@@ -22,8 +22,8 @@ fun Switch(
     modifier: Modifier = Modifier,
     colors: SwitchColors = SwitchDefaults.colors(),
 ) {
-    val isSelected = control.valueChanges.collectAsState().value
-    val status = control.statusChanges.collectAsState().value
+    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     Switch(
         checked = isSelected,
@@ -46,8 +46,8 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val isSelected = control.valueChanges.collectAsState().value
-    val status = control.statusChanges.collectAsState().value
+    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     SwitchWithText(
         isSelected = isSelected,
@@ -76,8 +76,8 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val isSelected = control.valueChanges.collectAsState().value
-    val status = control.statusChanges.collectAsState().value
+    val isSelected = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     SwitchWithText(
         isSelected = isSelected,

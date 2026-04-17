@@ -6,7 +6,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
@@ -14,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
+import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
 import com.github.ravenzip.berezaUI.extensions.components.radio.RadioGroup
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
@@ -30,8 +30,8 @@ fun <T, K : Any> RadioGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-    val value = control.valueChanges.collectAsState().value
-    val status = control.statusChanges.collectAsState().value
+    val value = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     RadioGroup(
         source = source,
@@ -65,8 +65,8 @@ fun <T, K : Any> RadioGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-    val value = control.valueChanges.collectAsState().value
-    val status = control.statusChanges.collectAsState().value
+    val value = control.valueChanges.collectAsStateLifecycleAware().value
+    val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     RadioGroup(
         source = source,
