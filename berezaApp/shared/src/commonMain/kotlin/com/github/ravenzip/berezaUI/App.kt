@@ -20,6 +20,7 @@ import com.github.ravenzip.berezaUI.core.data.SourceState
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
+import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxGroup
 import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithText
 import com.github.ravenzip.berezaUI.reactive.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchWithText
@@ -38,6 +39,8 @@ class MyViewModel : ViewModel() {
     val secondTextFieldControl = mutableFormControl("", validators = listOf(Validator.required))
 
     val checkboxControl = mutableFormControl(false)
+
+    val checkboxGroupControl = mutableFormControl<List<Sample>>(emptyList())
 
     val switchControl = mutableFormControl(false)
 
@@ -119,6 +122,13 @@ fun App(viewModel: MyViewModel = remember { MyViewModel() }) {
                 )
 
                 CheckboxWithText(control = viewModel.checkboxControl, label = "Я чекбокс")
+
+                CheckboxGroup(
+                    control = viewModel.checkboxGroupControl,
+                    source = viewModel.items,
+                    keySelector = { x -> x.id },
+                    text = { x -> Text(x.name) },
+                )
 
                 SwitchWithText(
                     control = viewModel.switchControl,
