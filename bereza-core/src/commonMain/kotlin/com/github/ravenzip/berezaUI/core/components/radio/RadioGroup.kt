@@ -1,13 +1,13 @@
 package com.github.ravenzip.berezaUI.core.components.radio
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -29,21 +29,23 @@ fun <T, K : Any> RadioGroup(
 ) {
     val selectedKey = remember(selectedItem) { keySelector(selectedItem) }
 
-    Column(modifier = modifier, verticalArrangement = contentPadding) {
-        source.forEach { item ->
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = contentPadding,
+        userScrollEnabled = false,
+    ) {
+        items(source, key = keySelector) { item ->
             val itemKey = keySelector(item)
 
-            key(itemKey) {
-                RadioButtonWithText(
-                    isSelected = selectedKey == itemKey,
-                    onClick = { onSelectedItemChange(item) },
-                    text = { text(item) },
-                    isEnabled = enabled,
-                    padding = padding,
-                    shape = shape,
-                    colors = colors,
-                )
-            }
+            RadioButtonWithText(
+                isSelected = selectedKey == itemKey,
+                onClick = { onSelectedItemChange(item) },
+                text = { text(item) },
+                isEnabled = enabled,
+                padding = padding,
+                shape = shape,
+                colors = colors,
+            )
         }
     }
 }
