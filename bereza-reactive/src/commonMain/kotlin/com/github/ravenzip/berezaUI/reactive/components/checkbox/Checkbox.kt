@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
+import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
@@ -55,6 +57,39 @@ fun CheckboxWithText(
         },
         modifier = modifier,
         text = text,
+        enabled = status.isEnabled(),
+        colors = colors,
+        padding = padding,
+        shape = shape,
+    )
+}
+
+@Composable
+fun CheckboxWithText(
+    control: MutableFormControl<Boolean>,
+    modifier: Modifier = Modifier,
+    label: String,
+    labelStyle: TextStyle? = null,
+    description: String? = null,
+    descriptionStyle: TextStyle? = null,
+    colors: CheckboxColors = CheckboxDefaults.colors(),
+    padding: PaddingValues = PaddingValues(15.dp),
+    shape: Shape = RoundedCornerShape(14.dp),
+) {
+    val isSelected = control.valueChanges.collectAsState().value
+    val status = control.statusChanges.collectAsState().value
+
+    CheckboxWithText(
+        isSelected = isSelected,
+        onClick = {
+            control.setValue(!control.value)
+            control.markAsDirty()
+        },
+        modifier = modifier,
+        label = label,
+        labelStyle = labelStyle,
+        description = description,
+        descriptionStyle = descriptionStyle,
         enabled = status.isEnabled(),
         colors = colors,
         padding = padding,

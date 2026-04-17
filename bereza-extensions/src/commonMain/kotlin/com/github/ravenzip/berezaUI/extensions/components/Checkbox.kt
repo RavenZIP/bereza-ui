@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
-import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
 fun CheckboxWithText(
@@ -47,42 +46,6 @@ fun CheckboxWithText(
             )
         },
         enabled = enabled,
-        colors = colors,
-        padding = padding,
-        shape = shape,
-    )
-}
-
-@Composable
-fun CheckboxWithText(
-    control: MutableFormControl<Boolean>,
-    modifier: Modifier = Modifier,
-    label: String,
-    labelStyle: TextStyle? = null,
-    description: String? = null,
-    descriptionStyle: TextStyle? = null,
-    colors: CheckboxColors = CheckboxDefaults.colors(),
-    padding: PaddingValues = PaddingValues(15.dp),
-    shape: Shape = RoundedCornerShape(14.dp),
-) {
-    // TODO вынести в функцию?
-    val calculatedLabelStyle =
-        labelStyle
-            ?: if (description != null)
-                TextStyle.Default.merge(fontSize = 16.sp, fontWeight = FontWeight.Medium)
-            else TextStyle.Default.merge(fontSize = 18.sp)
-
-    CheckboxWithText(
-        control = control,
-        modifier = modifier,
-        text = {
-            LabelWithOptionalDescription(
-                label = label,
-                labelStyle = calculatedLabelStyle,
-                description = description,
-                descriptionStyle = descriptionStyle,
-            )
-        },
         colors = colors,
         padding = padding,
         shape = shape,
