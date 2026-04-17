@@ -38,7 +38,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(projects.berezaCore)
-            implementation(libs.ravenzip.kotlinReactiveForms.core)
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }

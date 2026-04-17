@@ -37,7 +37,6 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(libs.ravenzip.kotlinReactiveForms.core)
             implementation(libs.ravenzip.krex.core)
         }
 
