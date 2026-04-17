@@ -15,7 +15,7 @@ import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
 
 @Composable
 fun CheckboxWithText(
-    isSelected: Boolean,
+    selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     label: String,
@@ -34,7 +34,7 @@ fun CheckboxWithText(
             else TextStyle.Default.merge(fontSize = 18.sp)
 
     CheckboxWithText(
-        isSelected = isSelected,
+        selected = selected,
         onClick = onClick,
         modifier = modifier,
         text = {

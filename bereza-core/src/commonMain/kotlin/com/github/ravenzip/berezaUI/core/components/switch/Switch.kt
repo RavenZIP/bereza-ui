@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SwitchWithText(
-    isSelected: Boolean,
-    isEnabled: Boolean = true,
+    selected: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     text: @Composable () -> Unit,
@@ -35,6 +35,6 @@ fun SwitchWithText(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Switch(checked = isSelected, onCheckedChange = null, enabled = isEnabled, colors = colors)
+        Switch(checked = selected, onCheckedChange = null, enabled = enabled, colors = colors)
     }
 }

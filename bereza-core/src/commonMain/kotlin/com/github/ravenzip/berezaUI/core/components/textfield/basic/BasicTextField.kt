@@ -22,8 +22,8 @@ import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 fun BasicTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    isEnabled: Boolean = true,
-    isReadonly: Boolean = false,
+    enabled: Boolean = true,
+    readonly: Boolean = false,
     mayHaveAnError: Boolean = true,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
@@ -48,7 +48,7 @@ fun BasicTextField(
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
-    FocusLostEffect(isFocused = isFocused, onFocusLost = onTouchedChange)
+    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchedChange)
 
     TextField(
         value = value,
@@ -62,8 +62,8 @@ fun BasicTextField(
                 isFocused.value = x.isFocused
                 onFocusChange(x)
             },
-        enabled = isEnabled,
-        readOnly = isReadonly,
+        enabled = enabled,
+        readOnly = readonly,
         maxLines = maxLines,
         minLines = minLines,
         label = label,
@@ -79,8 +79,8 @@ fun BasicTextField(
                         showTextLengthCounterIfZero = showTextLengthCounterIfZero,
                         value = value,
                         maxLength = maxLength,
-                        isError = isError,
-                        isFocused = isFocused.value,
+                        error = isError,
+                        focused = isFocused.value,
                         colors = colors,
                     )
                 }
@@ -98,8 +98,8 @@ fun BasicTextField(
 fun BasicOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    isEnabled: Boolean = true,
-    isReadonly: Boolean = false,
+    enabled: Boolean = true,
+    readonly: Boolean = false,
     mayHaveAnError: Boolean = true,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
@@ -124,7 +124,7 @@ fun BasicOutlinedTextField(
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
-    FocusLostEffect(isFocused = isFocused, onFocusLost = onTouchedChange)
+    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchedChange)
 
     OutlinedTextField(
         value = value,
@@ -138,8 +138,8 @@ fun BasicOutlinedTextField(
                 isFocused.value = x.isFocused
                 onFocusChange(x)
             },
-        enabled = isEnabled,
-        readOnly = isReadonly,
+        enabled = enabled,
+        readOnly = readonly,
         maxLines = maxLines,
         minLines = minLines,
         label = label,
@@ -155,8 +155,8 @@ fun BasicOutlinedTextField(
                         showTextLengthCounterIfZero = showTextLengthCounterIfZero,
                         value = value,
                         maxLength = maxLength,
-                        isError = isError,
-                        isFocused = isFocused.value,
+                        error = isError,
+                        focused = isFocused.value,
                         colors = colors,
                     )
                 }

@@ -50,7 +50,7 @@ fun CheckboxWithText(
     val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     CheckboxWithText(
-        isSelected = isSelected,
+        selected = isSelected,
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()
@@ -80,7 +80,7 @@ fun CheckboxWithText(
     val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     CheckboxWithText(
-        isSelected = isSelected,
+        selected = isSelected,
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()

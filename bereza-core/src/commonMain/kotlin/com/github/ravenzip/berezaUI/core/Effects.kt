@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun FocusLostEffect(isFocused: State<Boolean>, onFocusLost: () -> Unit) {
+fun FocusLostEffect(focusedState: State<Boolean>, onFocusLost: () -> Unit) {
     LaunchedEffect(Unit) {
-        snapshotFlow { isFocused.value }
+        snapshotFlow { focusedState.value }
             .pairwise()
             .filter { x -> !x.second }
             .onEach { onFocusLost() }

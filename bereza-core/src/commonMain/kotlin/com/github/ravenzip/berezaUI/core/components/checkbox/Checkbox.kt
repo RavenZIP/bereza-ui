@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CheckboxWithText(
-    isSelected: Boolean,
+    selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     text: @Composable () -> Unit,
@@ -33,7 +33,7 @@ fun CheckboxWithText(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Checkbox(checked = isSelected, onCheckedChange = null, enabled = enabled, colors = colors)
+        Checkbox(checked = selected, onCheckedChange = null, enabled = enabled, colors = colors)
 
         text()
     }

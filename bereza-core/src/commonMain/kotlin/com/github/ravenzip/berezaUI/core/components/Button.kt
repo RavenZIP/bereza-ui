@@ -20,19 +20,19 @@ fun IconButton(
     onClick: () -> Unit,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     interactionSource: MutableInteractionSource? = null,
     contentPadding: PaddingValues = PaddingValues(10.dp),
 ) {
-    val containerColor = if (isEnabled) colors.containerColor else colors.disabledContainerColor
+    val containerColor = if (enabled) colors.containerColor else colors.disabledContainerColor
 
     RoundedBox(
         modifier =
             Modifier.clickable(
                     onClick = onClick,
-                    enabled = isEnabled,
+                    enabled = enabled,
                     role = Role.Button,
                     interactionSource = interactionSource,
                 )
@@ -52,7 +52,7 @@ fun RichButton(
     label: @Composable () -> Unit,
     description: @Composable () -> Unit,
     icon: @Composable () -> Unit,
-    isEnabled: Boolean = true,
+    enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     shape: Shape = RoundedCornerShape(14.dp),
     contentPadding: PaddingValues = PaddingValues(18.dp),
@@ -60,7 +60,7 @@ fun RichButton(
     Button(
         onClick = onClick,
         modifier = modifier,
-        enabled = isEnabled,
+        enabled = enabled,
         colors = colors,
         shape = shape,
         contentPadding = contentPadding,

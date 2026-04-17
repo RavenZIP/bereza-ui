@@ -5,11 +5,11 @@ import androidx.compose.ui.graphics.Color
 
 internal fun TextFieldColors.calculateLabelColor(
     customIndicatorColor: Color? = null,
-    isInvalid: Boolean,
-    isFocused: Boolean,
+    invalid: Boolean,
+    focused: Boolean,
 ): Color =
     when {
-        isInvalid -> this.errorLabelColor
-        isFocused -> customIndicatorColor ?: this.focusedIndicatorColor
+        invalid -> this.errorLabelColor
+        focused -> customIndicatorColor ?: this.focusedIndicatorColor
         else -> this.unfocusedIndicatorColor
     }

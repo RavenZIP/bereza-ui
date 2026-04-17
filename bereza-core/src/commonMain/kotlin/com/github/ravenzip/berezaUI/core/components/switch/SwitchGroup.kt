@@ -39,10 +39,10 @@ fun <T, K : Any> SwitchGroup(
             val isSelected = selectedKeys.contains(itemKey)
 
             SwitchWithText(
-                isSelected = isSelected,
+                selected = isSelected,
                 onClick = { onSelectedItemChange(item) },
                 text = { text(item) },
-                isEnabled = enabled,
+                enabled = enabled,
                 padding = padding,
                 shape = shape,
                 colors = colors,

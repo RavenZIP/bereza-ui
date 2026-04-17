@@ -50,8 +50,8 @@ fun SwitchWithText(
     val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     SwitchWithText(
-        isSelected = isSelected,
-        isEnabled = status.isEnabled(),
+        selected = isSelected,
+        enabled = status.isEnabled(),
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()
@@ -80,8 +80,8 @@ fun SwitchWithText(
     val status = control.statusChanges.collectAsStateLifecycleAware().value
 
     SwitchWithText(
-        isSelected = isSelected,
-        isEnabled = status.isEnabled(),
+        selected = isSelected,
+        enabled = status.isEnabled(),
         onClick = {
             control.setValue(!control.value)
             control.markAsDirty()
