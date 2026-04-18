@@ -11,8 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxGroup
-import com.github.ravenzip.berezaUI.core.utils.collectAsStateLifecycleAware
-import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -27,19 +26,17 @@ fun <T, K : Any> CheckboxGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
 ) {
-    val selectedItems by control.valueChanges.collectAsStateLifecycleAware()
-    val status by control.statusChanges.collectAsStateLifecycleAware()
+    val state by control.collectAsComponentState()
 
     CheckboxGroup(
         source = source,
-        selectedItems = selectedItems,
+        selectedItems = state.value,
         onSelectedItemChange = { selectedItem ->
             val selectedItemKey = keySelector(selectedItem)
-            val selected = selectedItems.any { item -> keySelector(item) == selectedItemKey }
+            val selected = state.value.any { item -> keySelector(item) == selectedItemKey }
             val newSelectedItems =
-                if (selected)
-                    selectedItems.filterNot { item -> keySelector(item) == selectedItemKey }
-                else selectedItems + selectedItem
+                if (selected) state.value.filterNot { item -> keySelector(item) == selectedItemKey }
+                else state.value + selectedItem
 
             control.setValue(newSelectedItems)
             control.markAsTouched()
@@ -47,7 +44,7 @@ fun <T, K : Any> CheckboxGroup(
         keySelector = keySelector,
         modifier = modifier,
         text = text,
-        enabled = status.isEnabled(),
+        enabled = state.enabled,
         contentPadding = contentPadding,
         padding = padding,
         shape = shape,
