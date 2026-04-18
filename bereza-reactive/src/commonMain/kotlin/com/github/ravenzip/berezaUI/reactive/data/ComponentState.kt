@@ -11,7 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.kotlinreactiveforms.data.FormControlStatus
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
-import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
+import com.github.ravenzip.kotlinreactiveforms.form.FormControl
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -47,11 +47,11 @@ fun <T> computeComponentState(
     return ComponentState(value = value, enabled = status.isEnabled(), errorState = errorState)
 }
 
-fun <T> MutableFormControl<T>.computeComponentState(): ComponentState<T> =
+fun <T> FormControl<T>.computeComponentState(): ComponentState<T> =
     computeComponentState(value = value, status = status, touched = touched, dirty = dirty)
 
 @Composable
-fun <T> MutableFormControl<T>.collectAsComponentState(
+fun <T> FormControl<T>.collectAsComponentState(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
 ): State<ComponentState<T>> = collectAsComponentState(lifecycleOwner.lifecycle, minActiveState)
@@ -65,7 +65,7 @@ fun <T> MutableFormControl<T>.collectAsComponentState(
  * @see [androidx.lifecycle.compose.collectAsStateWithLifecycle]
  */
 @Composable
-fun <T> MutableFormControl<T>.collectAsComponentState(
+fun <T> FormControl<T>.collectAsComponentState(
     lifecycle: Lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
 ): State<ComponentState<T>> =
