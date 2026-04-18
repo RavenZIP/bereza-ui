@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
 import com.github.ravenzip.berezaUI.extensions.components.SwitchWithText
-import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -22,7 +22,7 @@ fun Switch(
     modifier: Modifier = Modifier,
     colors: SwitchColors = SwitchDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     Switch(
         checked = state.value,
@@ -45,7 +45,7 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     SwitchWithText(
         selected = state.value,
@@ -74,7 +74,7 @@ fun SwitchWithText(
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     SwitchWithText(
         selected = state.value,

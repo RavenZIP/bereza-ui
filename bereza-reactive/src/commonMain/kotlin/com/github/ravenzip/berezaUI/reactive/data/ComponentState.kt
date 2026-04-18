@@ -4,6 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.kotlinreactiveforms.data.FormControlStatus
 import com.github.ravenzip.kotlinreactiveforms.data.isEnabled
@@ -46,23 +50,40 @@ fun <T> computeComponentState(
 fun <T> MutableFormControl<T>.computeComponentState(): ComponentState<T> =
     computeComponentState(value = value, status = status, touched = touched, dirty = dirty)
 
-// TODO добавить обработку жизненного цикла, по аналогии с collectAsState и
-// collectAsStateWithLifeCycle
 @Composable
-fun <T> MutableFormControl<T>.collectComponentState(): State<ComponentState<T>> =
+fun <T> MutableFormControl<T>.collectAsComponentState(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+): State<ComponentState<T>> = collectAsComponentState(lifecycleOwner.lifecycle, minActiveState)
+
+/**
+ * Согласно документации, с недавнего времени Lifecycle появился и на остальных платформах, кроме
+ * Android. Поэтому реализовал такой же механизм, как и в collectAsStateWithLifecycle, но без
+ * прокидывания контекста корутин и начального значения
+ *
+ * @see [https://kotlinlang.org/docs/multiplatform/compose-lifecycle.html]
+ * @see [androidx.lifecycle.compose.collectAsStateWithLifecycle]
+ */
+@Composable
+fun <T> MutableFormControl<T>.collectAsComponentState(
+    lifecycle: Lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+): State<ComponentState<T>> =
     produceState(this.computeComponentState(), this) {
-        combine(valueChanges, statusChanges, touchedChanges, dirtyChanges) {
-                value,
-                status,
-                touched,
-                dirty ->
-                computeComponentState(
-                    value = value,
-                    status = status,
-                    touched = touched,
-                    dirty = dirty,
-                )
-            }
-            .distinctUntilChanged()
-            .collect { x -> value = x }
+        lifecycle.repeatOnLifecycle(minActiveState) {
+            combine(valueChanges, statusChanges, touchedChanges, dirtyChanges) {
+                    value,
+                    status,
+                    touched,
+                    dirty ->
+                    computeComponentState(
+                        value = value,
+                        status = status,
+                        touched = touched,
+                        dirty = dirty,
+                    )
+                }
+                .distinctUntilChanged()
+                .collect { x -> value = x }
+        }
     }

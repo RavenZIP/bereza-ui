@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxGroup
-import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -26,7 +26,7 @@ fun <T, K : Any> CheckboxGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     CheckboxGroup(
         source = source,

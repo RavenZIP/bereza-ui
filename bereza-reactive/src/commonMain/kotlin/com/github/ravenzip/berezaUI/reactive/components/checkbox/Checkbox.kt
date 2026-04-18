@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
 import com.github.ravenzip.berezaUI.extensions.components.CheckboxWithText
-import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -22,7 +22,7 @@ fun Checkbox(
     modifier: Modifier = Modifier,
     colors: CheckboxColors = CheckboxDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     Checkbox(
         checked = state.value,
@@ -45,7 +45,7 @@ fun CheckboxWithText(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     CheckboxWithText(
         selected = state.value,
@@ -74,7 +74,7 @@ fun CheckboxWithText(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     CheckboxWithText(
         selected = state.value,

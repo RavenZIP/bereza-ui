@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.components.radio.RadioGroup
 import com.github.ravenzip.berezaUI.extensions.components.radio.RadioGroup
-import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 @Composable
@@ -30,7 +30,7 @@ fun <T, K : Any> RadioGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     RadioGroup(
         source = source,
@@ -64,7 +64,7 @@ fun <T, K : Any> RadioGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     RadioGroup(
         source = source,

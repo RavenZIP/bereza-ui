@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AutocompleteTextField
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.core.data.*
-import com.github.ravenzip.berezaUI.reactive.data.collectComponentState
+import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
 // TODO уйти от дублирования вычисления переменных в компонентах с контролами (глобально, касается
@@ -40,7 +40,7 @@ fun <T> AutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     AutocompleteTextField(
         sourceState = sourceState,
@@ -99,7 +99,7 @@ fun <T> OutlinedAutocompleteTextField(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = OutlinedDropDownTextFieldDefaults.colors(),
 ) {
-    val state by control.collectComponentState()
+    val state by control.collectAsComponentState()
 
     OutlinedAutocompleteTextField(
         sourceState = sourceState,
