@@ -20,6 +20,8 @@ dependencyResolutionManagement {
 
 plugins { id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" }
 
-include("bereza-core", "bereza-extensions")
+/** Библиотечные модули, доступные публично */
+include("bereza-core", "bereza-extensions", "bereza-reactive")
 
+/** Библиотечные модули, недоступные публично */
 include("berezaApp:shared", "berezaApp:desktopApp", "berezaApp:androidApp", "berezaApp:webApp")

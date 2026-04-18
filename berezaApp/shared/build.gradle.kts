@@ -42,6 +42,7 @@ kotlin {
 
         // Модули bereza ui
         implementation(projects.berezaCore)
+        implementation(projects.berezaReactive)
         implementation(projects.berezaExtensions)
 
         // Модули других библиотек собственного производства

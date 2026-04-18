@@ -16,8 +16,8 @@ import com.github.ravenzip.berezaUI.core.components.radio.RadioButtonWithText
 
 @Composable
 fun RadioButtonWithText(
-    isSelected: Boolean,
-    isEnabled: Boolean = true,
+    selected: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     text: String,
     textStyle: TextStyle =
@@ -28,8 +28,8 @@ fun RadioButtonWithText(
     shape: Shape = RoundedCornerShape(14.dp),
 ) {
     RadioButtonWithText(
-        isSelected = isSelected,
-        isEnabled = isEnabled,
+        selected = selected,
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier,
         text = { Text(text = text, style = textStyle) },
