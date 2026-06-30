@@ -95,6 +95,9 @@ dependencies {
 }
 ```
 
+## 🤝 Интеграции
+[kotlin-reactive-forms](https://github.com/RavenZIP/kotlin-reactive-forms)
+
 ## 🚬 Использование
 
 Временно не оформлено, смотрите berezaApp модуль
