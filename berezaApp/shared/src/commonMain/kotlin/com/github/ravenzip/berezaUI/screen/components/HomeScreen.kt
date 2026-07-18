@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.screen
+package com.github.ravenzip.berezaUI.screen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,12 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     Text(text = "Компоненты", fontSize = 18.sp)
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        item { SimpleButton({}, "Текстовые поля") }
+                        item {
+                            SimpleButton(
+                                { navigationViewModel.navigateTo(Screen.TextField) },
+                                "Текстовые поля",
+                            )
+                        }
 
                         item {
                             SimpleButton(
@@ -47,9 +52,16 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                             )
                         }
 
-                        item { SimpleButton({}, "Свичи") }
+                        item {
+                            SimpleButton({ navigationViewModel.navigateTo(Screen.Switch) }, "Свичи")
+                        }
 
-                        item { SimpleButton({}, "Радиогруппы") }
+                        item {
+                            SimpleButton(
+                                { navigationViewModel.navigateTo(Screen.RadioButton) },
+                                "Радиогруппы",
+                            )
+                        }
                     }
                 }
             }
@@ -62,9 +74,19 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     Text(text = "Примеры экранов с компонентами", fontSize = 18.sp)
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        item { SimpleButton({}, "Форма регистрации пользователя") }
+                        item {
+                            SimpleButton(
+                                { navigationViewModel.navigateTo(Screen.Login) },
+                                "Форма регистрации пользователя",
+                            )
+                        }
 
-                        item { SimpleButton({}, "Профиль пользователя") }
+                        item {
+                            SimpleButton(
+                                { navigationViewModel.navigateTo(Screen.Profile) },
+                                "Профиль пользователя",
+                            )
+                        }
                     }
                 }
             }
