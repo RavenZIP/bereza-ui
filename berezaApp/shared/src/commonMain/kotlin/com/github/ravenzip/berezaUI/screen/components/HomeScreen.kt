@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 
 @Composable
@@ -38,28 +38,10 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     Text(text = "Компоненты", fontSize = 18.sp)
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        item {
+                        items(navigationViewModel.componentScreens) { screen ->
                             SimpleButton(
-                                { navigationViewModel.navigateTo(Screen.TextField) },
-                                "Текстовые поля",
-                            )
-                        }
-
-                        item {
-                            SimpleButton(
-                                { navigationViewModel.navigateTo(Screen.Checkbox) },
-                                "Чекбосксы",
-                            )
-                        }
-
-                        item {
-                            SimpleButton({ navigationViewModel.navigateTo(Screen.Switch) }, "Свичи")
-                        }
-
-                        item {
-                            SimpleButton(
-                                { navigationViewModel.navigateTo(Screen.RadioButton) },
-                                "Радиогруппы",
+                                { navigationViewModel.navigateTo(screen) },
+                                navigationViewModel.screenRouteToScreenName.getValue(screen),
                             )
                         }
                     }
@@ -74,17 +56,10 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     Text(text = "Примеры экранов с компонентами", fontSize = 18.sp)
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        item {
+                        items(navigationViewModel.formScreens) { screen ->
                             SimpleButton(
-                                { navigationViewModel.navigateTo(Screen.Login) },
-                                "Форма регистрации пользователя",
-                            )
-                        }
-
-                        item {
-                            SimpleButton(
-                                { navigationViewModel.navigateTo(Screen.Profile) },
-                                "Профиль пользователя",
+                                { navigationViewModel.navigateTo(screen) },
+                                navigationViewModel.formRouteToFormName.getValue(screen),
                             )
                         }
                     }
