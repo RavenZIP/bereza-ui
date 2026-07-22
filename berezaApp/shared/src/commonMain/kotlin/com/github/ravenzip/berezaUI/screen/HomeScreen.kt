@@ -1,17 +1,23 @@
 package com.github.ravenzip.berezaUI.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
+import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 
 @Composable
@@ -26,7 +32,7 @@ fun HomeScreenGroup(
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Column {
-                Text(text = title, fontSize = 20.sp)
+                Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.W500)
                 Text(text = description)
             }
 
@@ -43,7 +49,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
         modifier = Modifier.padding(15.dp).fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(30.dp),
     ) {
-        Row {
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -60,40 +66,55 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                             "расширяющая возможности стандартной Material библиотеки"
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Card {
-                        Row(modifier = Modifier.padding(10.dp)) {
-                            Text(text = "Версия: ")
-                            Text(text = "0.4.0")
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    item {
+                        Card {
+                            Column(modifier = Modifier.padding(10.dp)) {
+                                Text(text = "Версия", fontWeight = FontWeight.W500)
+                                Text(text = "0.4.0")
+                            }
                         }
                     }
 
-                    Card {
-                        Row(modifier = Modifier.padding(10.dp)) {
-                            Text(text = "Модулей: ")
-                            Text(text = "4")
-                        }
-                    }
-                }
-
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Card {
-                        Row(modifier = Modifier.padding(10.dp)) {
-                            Text(text = "Компонентов: ")
-                            Text(text = "6")
+                    item {
+                        Card {
+                            Column(modifier = Modifier.padding(10.dp)) {
+                                Text(text = "Модули", fontWeight = FontWeight.W500)
+                                Text(text = "4")
+                            }
                         }
                     }
 
-                    Card {
-                        Row(modifier = Modifier.padding(10.dp)) {
-                            Text(text = "Пользовательских форм: ")
-                            Text(text = "2")
+                    item {
+                        Card {
+                            Column(modifier = Modifier.padding(10.dp)) {
+                                Text(text = "Компоненты", fontWeight = FontWeight.W500)
+                                Text(text = "6")
+                            }
+                        }
+                    }
+
+                    item {
+                        Card {
+                            Column(modifier = Modifier.padding(10.dp)) {
+                                Text(text = "Формы", fontWeight = FontWeight.W500)
+                                Text(text = "2")
+                            }
                         }
                     }
                 }
             }
 
-            Card(modifier = Modifier.weight(1f)) {
+            Card(
+                modifier =
+                    Modifier.weight(1.25f).clip(CardDefaults.shape).clickable {
+                        navigationViewModel.navigateTo(Screen.LastChanges)
+                    }
+            ) {
                 Column(
                     modifier = Modifier.padding(15.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp),

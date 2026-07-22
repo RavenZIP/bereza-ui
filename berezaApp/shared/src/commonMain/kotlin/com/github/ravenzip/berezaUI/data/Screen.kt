@@ -22,6 +22,8 @@ sealed interface Screen : NavKey {
     @Serializable data object Login : Screen, NavKey
 
     @Serializable data object Profile : Screen, NavKey
+
+    @Serializable data object LastChanges : Screen, NavKey
 }
 
 fun createRouteNavigationConfig(): SavedStateConfiguration = SavedStateConfiguration {

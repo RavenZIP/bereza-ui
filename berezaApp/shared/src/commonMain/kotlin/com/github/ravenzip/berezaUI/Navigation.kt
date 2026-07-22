@@ -8,6 +8,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.screen.HomeScreen
+import com.github.ravenzip.berezaUI.screen.LastChangesScreen
 import com.github.ravenzip.berezaUI.screen.components.CheckboxScreen
 import com.github.ravenzip.berezaUI.screen.components.RadioButtonScreen
 import com.github.ravenzip.berezaUI.screen.components.SwitchScreen
@@ -57,6 +58,10 @@ fun RootNavigation(
 
                     is Screen.Profile -> {
                         ProfileScreen(navigationViewModel)
+                    }
+
+                    is Screen.LastChanges -> {
+                        LastChangesScreen(navigationViewModel)
                     }
                 }
             }
