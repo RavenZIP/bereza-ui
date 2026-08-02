@@ -46,6 +46,16 @@ fun HomeScreenGroup(
 }
 
 @Composable
+fun HomeScreenShortImportantInfo(name: String, value: String) {
+    Card {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(text = name, fontWeight = FontWeight.W500)
+            Text(text = value)
+        }
+    }
+}
+
+@Composable
 fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
     Column(
         modifier = Modifier.padding(15.dp).fillMaxWidth(),
@@ -74,39 +84,19 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {
-                        Card {
-                            Column(modifier = Modifier.padding(10.dp)) {
-                                Text(text = "Версия", fontWeight = FontWeight.W500)
-                                Text(text = "0.4.0")
-                            }
-                        }
+                        HomeScreenShortImportantInfo("Версия", "0.4.0")
                     }
 
                     item {
-                        Card {
-                            Column(modifier = Modifier.padding(10.dp)) {
-                                Text(text = "Модули", fontWeight = FontWeight.W500)
-                                Text(text = "4")
-                            }
-                        }
+                        HomeScreenShortImportantInfo("Модули", "4")
                     }
 
                     item {
-                        Card {
-                            Column(modifier = Modifier.padding(10.dp)) {
-                                Text(text = "Компоненты", fontWeight = FontWeight.W500)
-                                Text(text = "6")
-                            }
-                        }
+                        HomeScreenShortImportantInfo("Компоненты", "6")
                     }
 
                     item {
-                        Card {
-                            Column(modifier = Modifier.padding(10.dp)) {
-                                Text(text = "Формы", fontWeight = FontWeight.W500)
-                                Text(text = "2")
-                            }
-                        }
+                        HomeScreenShortImportantInfo("Формы", "2")
                     }
                 }
             }
