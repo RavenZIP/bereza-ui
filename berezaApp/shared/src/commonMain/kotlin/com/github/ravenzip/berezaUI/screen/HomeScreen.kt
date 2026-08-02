@@ -33,7 +33,9 @@ fun HomeScreenGroup(
         ) {
             Column {
                 Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.W500)
-                Text(text = description)
+                if (description.isNotBlank()) {
+                    Text(text = description)
+                }
             }
 
             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
