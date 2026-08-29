@@ -33,6 +33,7 @@ fun RootNavigation(
                         HomeScreen(navigationViewModel)
                     }
 
+                    // Текстовые поля
                     is Screen.SingleLineTextField -> {
                         SingleLineTextFieldScreen(navigationViewModel)
                     }
@@ -41,18 +42,26 @@ fun RootNavigation(
                         MultiLineTextFieldScreen(navigationViewModel)
                     }
 
+                    // Чекбоксы
                     is Screen.CheckboxWithText -> {
                         CheckboxWithTextScreen(navigationViewModel)
                     }
 
+                    is Screen.CheckboxGroup -> {
+                        CheckboxGroupScreen(navigationViewModel)
+                    }
+
+                    // Свичи
                     is Screen.SwitchWithText -> {
                         SwitchWithTextScreen(navigationViewModel)
                     }
 
+                    // Радиокнопки
                     is Screen.RadioButtonWithText -> {
                         RadioButtonWithTextScreen(navigationViewModel)
                     }
 
+                    // Формы
                     is Screen.Login -> {
                         LoginScreen(navigationViewModel)
                     }
@@ -61,6 +70,7 @@ fun RootNavigation(
                         ProfileScreen(navigationViewModel)
                     }
 
+                    // Инфа по последнему апдейту
                     is Screen.LastChanges -> {
                         LastChangesScreen(navigationViewModel)
                     }
