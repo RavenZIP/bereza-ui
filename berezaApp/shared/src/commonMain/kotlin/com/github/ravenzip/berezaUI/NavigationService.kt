@@ -8,13 +8,14 @@ class RootNavigationViewModel : ViewModel() {
     val backStack = mutableStateListOf<Screen>(Screen.Home)
 
     val componentScreens =
-        mutableStateListOf<Screen>(
+        mutableStateListOf(
             Screen.SingleLineTextField,
             Screen.MultiLineTextField,
             Screen.SwitchWithText,
             Screen.CheckboxWithText,
             Screen.RadioButtonWithText,
             Screen.CheckboxGroup,
+            Screen.RadioGroup,
         )
 
     val formRouteToFormName =
