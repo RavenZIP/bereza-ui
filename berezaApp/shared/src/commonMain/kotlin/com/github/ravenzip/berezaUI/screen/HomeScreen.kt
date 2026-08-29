@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -98,7 +100,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            HomeScreenGroup("Компоненты", "Демонстрация отдельных элементов интерфейса") {
+            HomeScreenGridGroup("Компоненты", "Демонстрация отдельных элементов интерфейса") {
                 items(navigationViewModel.componentScreens) { screen ->
                     SimpleButton(
                         { navigationViewModel.navigateTo(screen) },
@@ -107,7 +109,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                 }
             }
 
-            HomeScreenGroup("Формы", "Готовые примеры использования компонентов") {
+            HomeScreenRowGroup("Формы", "Готовые примеры использования компонентов") {
                 items(navigationViewModel.formScreens) { screen ->
                     SimpleButton(
                         { navigationViewModel.navigateTo(screen) },
@@ -116,7 +118,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                 }
             }
 
-            HomeScreenGroup("Ссылки") {
+            HomeScreenRowGroup("Ссылки") {
                 item {
                     SimpleButton({}, "GitHub")
                 }
@@ -133,7 +135,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
 fun HomeScreenGroup(
     title: String,
     description: String = "",
-    content: LazyListScope.() -> Unit,
+    content: @Composable () -> Unit,
 ) {
     Card {
         Column(
@@ -147,9 +149,37 @@ fun HomeScreenGroup(
                 }
             }
 
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                content()
-            }
+            content()
+        }
+    }
+}
+
+@Composable
+fun HomeScreenRowGroup(
+    title: String,
+    description: String = "",
+    content: LazyListScope.() -> Unit,
+) {
+    HomeScreenGroup(title, description) {
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun HomeScreenGridGroup(
+    title: String,
+    description: String = "",
+    content: LazyGridScope.() -> Unit,
+) {
+    HomeScreenGroup(title, description) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(4),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            content()
         }
     }
 }
