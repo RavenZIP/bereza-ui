@@ -16,14 +16,13 @@ import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithTex
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
-fun CheckboxScreen(navigationViewModel: RootNavigationViewModel) {
+fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
     val firstCheckboxControl = remember { mutableFormControl(false) }
     val secondCheckboxControl = remember { mutableFormControl(false) }
 
     ComponentScreen(
-        title = "Checkbox",
-        description =
-            "Checkbox позволяет пользователю выбрать или снять выбор одного или нескольких вариантов.",
+        title = "CheckboxWithText",
+        description = "Переключатель, аналогичный Checkbox из Material 3, но с текстовой подписью.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
             Row {

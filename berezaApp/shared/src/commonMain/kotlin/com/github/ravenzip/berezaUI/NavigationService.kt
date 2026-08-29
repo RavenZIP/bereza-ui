@@ -12,7 +12,7 @@ class RootNavigationViewModel : ViewModel() {
             Screen.SingleLineTextField,
             Screen.MultiLineTextField,
             Screen.Switch,
-            Screen.Checkbox,
+            Screen.CheckboxWithText,
             Screen.RadioButton,
         )
 

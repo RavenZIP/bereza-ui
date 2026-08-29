@@ -41,8 +41,8 @@ fun RootNavigation(
                         MultiLineTextFieldScreen(navigationViewModel)
                     }
 
-                    is Screen.Checkbox -> {
-                        CheckboxScreen(navigationViewModel)
+                    is Screen.CheckboxWithText -> {
+                        CheckboxWithTextScreen(navigationViewModel)
                     }
 
                     is Screen.Switch -> {
