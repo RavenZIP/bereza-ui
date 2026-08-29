@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.screen.components
+package com.github.ravenzip.berezaUI.screen.components.shared
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -130,7 +130,7 @@ fun ComponentScreen(
 }
 
 @Composable
-fun ComponentScreenGroup(content: @Composable () -> Unit) {
+private fun ComponentScreenGroup(content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         content()
     }
