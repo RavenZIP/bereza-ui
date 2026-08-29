@@ -11,7 +11,9 @@ import kotlinx.serialization.modules.polymorphic
 sealed interface Screen : NavKey {
     @Serializable data object Home : Screen, NavKey
 
-    @Serializable data object TextField : Screen, NavKey
+    @Serializable data object SingleLineTextField : Screen, NavKey
+
+    @Serializable data object MultiLineTextField : Screen, NavKey
 
     @Serializable data object Checkbox : Screen, NavKey
 
@@ -30,7 +32,7 @@ fun createRouteNavigationConfig(): SavedStateConfiguration = SavedStateConfigura
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(Screen.Home::class, Screen.Home.serializer())
-            subclass(Screen.TextField::class, Screen.TextField.serializer())
+            subclass(Screen.SingleLineTextField::class, Screen.SingleLineTextField.serializer())
         }
     }
 }
