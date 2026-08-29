@@ -13,7 +13,7 @@ class RootNavigationViewModel : ViewModel() {
             Screen.MultiLineTextField,
             Screen.SwitchWithText,
             Screen.CheckboxWithText,
-            Screen.RadioButton,
+            Screen.RadioButtonWithText,
         )
 
     val formRouteToFormName =
