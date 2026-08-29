@@ -17,7 +17,7 @@ import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
-fun SwitchScreen(navigationViewModel: RootNavigationViewModel) {
+fun SwitchWithTextScreen(navigationViewModel: RootNavigationViewModel) {
     val firstControl = remember { mutableFormControl(false) }
     val secondControl = remember { mutableFormControl(false) }
 

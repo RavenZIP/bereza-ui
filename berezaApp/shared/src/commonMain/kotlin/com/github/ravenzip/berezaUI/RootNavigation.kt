@@ -46,7 +46,7 @@ fun RootNavigation(
                     }
 
                     is Screen.SwitchWithText -> {
-                        SwitchScreen(navigationViewModel)
+                        SwitchWithTextScreen(navigationViewModel)
                     }
 
                     is Screen.RadioButtonWithText -> {
