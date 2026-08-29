@@ -20,8 +20,9 @@ fun SwitchGroupScreen(navigationViewModel: RootNavigationViewModel) {
     val source = remember { listOf("Русский", "Английский", "Прочее") }
     val firstControl = remember { mutableFormControl(listOf<String>()) }
 
+    // TODO не хардкодить названия
     ComponentScreen(
-        title = "SwitchGroupScreen",
+        title = "SwitchGroup",
         description = "Группа из нескольких Switch с текстовой подписью",
         goBack = { navigationViewModel.navigateBack() },
         content = {
