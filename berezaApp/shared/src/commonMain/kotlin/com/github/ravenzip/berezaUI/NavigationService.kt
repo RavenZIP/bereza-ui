@@ -16,6 +16,7 @@ class RootNavigationViewModel : ViewModel() {
             Screen.RadioButtonWithText,
             Screen.CheckboxGroup,
             Screen.RadioGroup,
+            Screen.SwitchGroup,
         )
 
     val formRouteToFormName =

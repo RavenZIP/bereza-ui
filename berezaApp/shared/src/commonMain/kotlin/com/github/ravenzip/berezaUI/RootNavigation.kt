@@ -11,11 +11,12 @@ import com.github.ravenzip.berezaUI.screen.HomeScreen
 import com.github.ravenzip.berezaUI.screen.LastChangesScreen
 import com.github.ravenzip.berezaUI.screen.components.MultiLineTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.components.SingleLineTextFieldScreen
-import com.github.ravenzip.berezaUI.screen.components.SwitchWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxGroupScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.radiobutton.RadioButtonWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.radiobutton.RadioGroupScreen
+import com.github.ravenzip.berezaUI.screen.components.switch.SwitchGroupScreen
+import com.github.ravenzip.berezaUI.screen.components.switch.SwitchWithTextScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.LoginScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.ProfileScreen
 
@@ -60,6 +61,10 @@ fun RootNavigation(
                     // Свичи
                     is Screen.SwitchWithText -> {
                         SwitchWithTextScreen(navigationViewModel)
+                    }
+
+                    is Screen.SwitchGroup -> {
+                        SwitchGroupScreen(navigationViewModel)
                     }
 
                     // Радиокнопки

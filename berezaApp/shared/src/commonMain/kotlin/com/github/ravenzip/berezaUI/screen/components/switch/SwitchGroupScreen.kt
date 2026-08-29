@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.screen.components.radiobutton
+package com.github.ravenzip.berezaUI.screen.components.switch
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,18 +11,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.reactive.components.radio.RadioGroup
+import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchGroup
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
-fun RadioGroupScreen(navigationViewModel: RootNavigationViewModel) {
+fun SwitchGroupScreen(navigationViewModel: RootNavigationViewModel) {
     val source = remember { listOf("Русский", "Английский", "Прочее") }
-    val firstControl = remember { mutableFormControl(source.first()) }
+    val firstControl = remember { mutableFormControl(listOf<String>()) }
 
     ComponentScreen(
-        title = "RadioGroup",
-        description = "Группа из нескольких RadioButton с текстовой подписью",
+        title = "SwitchGroupScreen",
+        description = "Группа из нескольких Switch с текстовой подписью",
         goBack = { navigationViewModel.navigateBack() },
         content = {
             Row {
@@ -31,7 +31,7 @@ fun RadioGroupScreen(navigationViewModel: RootNavigationViewModel) {
                         modifier = Modifier.padding(10.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        RadioGroup(
+                        SwitchGroup(
                             control = firstControl,
                             source = source,
                             keySelector = { x -> x },

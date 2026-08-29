@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.screen.components
+package com.github.ravenzip.berezaUI.screen.components.switch
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
