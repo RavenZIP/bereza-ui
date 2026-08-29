@@ -17,8 +17,8 @@ import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
 fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
-    val firstCheckboxControl = remember { mutableFormControl(false) }
-    val secondCheckboxControl = remember { mutableFormControl(false) }
+    val firstControl = remember { mutableFormControl(false) }
+    val secondControl = remember { mutableFormControl(false) }
 
     ComponentScreen(
         title = "CheckboxWithText",
@@ -32,12 +32,12 @@ fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         CheckboxWithText(
-                            control = firstCheckboxControl,
+                            control = firstControl,
                             text = { Text("С текстом") },
                         )
 
                         CheckboxWithText(
-                            control = secondCheckboxControl,
+                            control = secondControl,
                             label = "С заголовком",
                             description = "И описанием",
                             descriptionStyle = TextStyle(),
