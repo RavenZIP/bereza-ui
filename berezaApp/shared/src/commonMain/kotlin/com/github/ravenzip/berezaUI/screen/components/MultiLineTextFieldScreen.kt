@@ -9,21 +9,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithText
+import com.github.ravenzip.berezaUI.reactive.components.textfield.MultiLineTextField
+import com.github.ravenzip.berezaUI.reactive.components.textfield.OutlinedMultiLineTextField
 import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
-fun CheckboxScreen(navigationViewModel: RootNavigationViewModel) {
-    val firstCheckboxControl = remember { mutableFormControl(false) }
-    val secondCheckboxControl = remember { mutableFormControl(false) }
+fun MultiLineTextFieldScreen(navigationViewModel: RootNavigationViewModel) {
+    val firstControl = remember { mutableFormControl("") }
+    val secondControl = remember { mutableFormControl("") }
 
     ComponentScreen(
-        title = "Checkbox",
-        description =
-            "Checkbox позволяет пользователю выбрать или снять выбор одного или нескольких вариантов.",
+        title = "MultiLineTextField",
+        description = "Текстовое поле для ввода многострочного текста.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
             Row {
@@ -32,16 +31,14 @@ fun CheckboxScreen(navigationViewModel: RootNavigationViewModel) {
                         modifier = Modifier.padding(10.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        CheckboxWithText(
-                            control = firstCheckboxControl,
-                            text = { Text("С текстом") },
+                        MultiLineTextField(
+                            control = firstControl,
+                            label = { Text("MultiLineTextField") },
                         )
 
-                        CheckboxWithText(
-                            control = secondCheckboxControl,
-                            label = "С заголовком",
-                            description = "И описанием",
-                            descriptionStyle = TextStyle(),
+                        OutlinedMultiLineTextField(
+                            control = secondControl,
+                            label = { Text("OutlinedMultiLineTextField") },
                         )
                     }
                 }

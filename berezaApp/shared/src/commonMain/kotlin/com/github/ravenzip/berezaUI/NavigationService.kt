@@ -7,14 +7,14 @@ import com.github.ravenzip.berezaUI.data.Screen
 class RootNavigationViewModel : ViewModel() {
     val backStack = mutableStateListOf<Screen>(Screen.Home)
 
-    val screenRouteToScreenName =
-        mapOf(
-            Screen.TextField to "Текстовые поля",
-            Screen.Checkbox to "Чекбосксы",
-            Screen.Switch to "Свичи",
-            Screen.RadioButton to "Радиогруппы",
+    val componentScreens =
+        mutableStateListOf<Screen>(
+            Screen.SingleLineTextField,
+            Screen.MultiLineTextField,
+            Screen.Switch,
+            Screen.Checkbox,
+            Screen.RadioButton,
         )
-    val componentScreens = screenRouteToScreenName.keys.toList()
 
     val formRouteToFormName =
         mapOf(

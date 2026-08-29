@@ -21,41 +21,6 @@ import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 
 @Composable
-fun HomeScreenGroup(
-    title: String,
-    description: String = "",
-    content: LazyListScope.() -> Unit,
-) {
-    Card {
-        Column(
-            modifier = Modifier.padding(15.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-        ) {
-            Column {
-                Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.W500)
-                if (description.isNotBlank()) {
-                    Text(text = description)
-                }
-            }
-
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                content()
-            }
-        }
-    }
-}
-
-@Composable
-fun HomeScreenShortImportantInfo(name: String, value: String) {
-    Card {
-        Column(modifier = Modifier.padding(10.dp)) {
-            Text(text = name, fontWeight = FontWeight.W500)
-            Text(text = value)
-        }
-    }
-}
-
-@Composable
 fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
     Column(
         modifier = Modifier.padding(15.dp).fillMaxWidth(),
@@ -137,7 +102,7 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                 items(navigationViewModel.componentScreens) { screen ->
                     SimpleButton(
                         { navigationViewModel.navigateTo(screen) },
-                        navigationViewModel.screenRouteToScreenName.getValue(screen),
+                        screen.toString(),
                     )
                 }
             }
@@ -160,6 +125,41 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
                     SimpleButton({}, "Telegram")
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun HomeScreenGroup(
+    title: String,
+    description: String = "",
+    content: LazyListScope.() -> Unit,
+) {
+    Card {
+        Column(
+            modifier = Modifier.padding(15.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+        ) {
+            Column {
+                Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.W500)
+                if (description.isNotBlank()) {
+                    Text(text = description)
+                }
+            }
+
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                content()
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeScreenShortImportantInfo(name: String, value: String) {
+    Card {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Text(text = name, fontWeight = FontWeight.W500)
+            Text(text = value)
         }
     }
 }
