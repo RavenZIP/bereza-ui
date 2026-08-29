@@ -45,7 +45,7 @@ fun RootNavigation(
                         CheckboxWithTextScreen(navigationViewModel)
                     }
 
-                    is Screen.Switch -> {
+                    is Screen.SwitchWithText -> {
                         SwitchScreen(navigationViewModel)
                     }
 

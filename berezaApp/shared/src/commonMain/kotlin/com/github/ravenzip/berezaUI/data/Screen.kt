@@ -17,7 +17,7 @@ sealed interface Screen : NavKey {
 
     @Serializable data object CheckboxWithText : Screen, NavKey
 
-    @Serializable data object Switch : Screen, NavKey
+    @Serializable data object SwitchWithText : Screen, NavKey
 
     @Serializable data object RadioButton : Screen, NavKey
 

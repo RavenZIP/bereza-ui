@@ -11,7 +11,7 @@ class RootNavigationViewModel : ViewModel() {
         mutableStateListOf<Screen>(
             Screen.SingleLineTextField,
             Screen.MultiLineTextField,
-            Screen.Switch,
+            Screen.SwitchWithText,
             Screen.CheckboxWithText,
             Screen.RadioButton,
         )
