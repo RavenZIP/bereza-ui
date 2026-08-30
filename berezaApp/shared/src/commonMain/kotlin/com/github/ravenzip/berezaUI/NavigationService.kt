@@ -21,6 +21,8 @@ class RootNavigationViewModel : ViewModel() {
             Screen.SwitchGroup,
         )
 
+    val layoutScreen = mutableStateListOf(Screen.ExpandableCard)
+
     val formRouteToFormName =
         mapOf(
             Screen.Login to "Форма регистрации пользователя",

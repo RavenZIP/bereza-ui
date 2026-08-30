@@ -100,8 +100,23 @@ fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            HomeScreenGridGroup("Компоненты", "Демонстрация отдельных элементов интерфейса") {
+            HomeScreenGridGroup(
+                "Компоненты",
+                "Демонстрация компонентов, существующих в рамках всех модулей",
+            ) {
                 items(navigationViewModel.componentScreens) { screen ->
+                    SimpleButton(
+                        { navigationViewModel.navigateTo(screen) },
+                        screen.toString(),
+                    )
+                }
+            }
+
+            HomeScreenGridGroup(
+                "Лейауты",
+                "Демонстрация лейаутов, существующих в рамках всех модулей",
+            ) {
+                items(navigationViewModel.layoutScreen) { screen ->
                     SimpleButton(
                         { navigationViewModel.navigateTo(screen) },
                         screen.toString(),

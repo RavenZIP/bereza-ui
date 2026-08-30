@@ -19,6 +19,7 @@ import com.github.ravenzip.berezaUI.screen.components.textfield.AutocompleteText
 import com.github.ravenzip.berezaUI.screen.components.textfield.DropDownTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.MultiLineTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.SingleLineTextFieldScreen
+import com.github.ravenzip.berezaUI.screen.layout.ExpandableCardScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.LoginScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.ProfileScreen
 
@@ -84,6 +85,11 @@ fun RootNavigation(
 
                     is Screen.RadioGroup -> {
                         RadioGroupScreen(navigationViewModel)
+                    }
+
+                    // Лейауты
+                    is Screen.ExpandableCard -> {
+                        ExpandableCardScreen(navigationViewModel)
                     }
 
                     // Формы
