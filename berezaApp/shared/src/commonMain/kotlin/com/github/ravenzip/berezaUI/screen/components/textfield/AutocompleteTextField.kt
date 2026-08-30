@@ -48,6 +48,8 @@ class AutocompleteTextFieldScreenViewModel : ViewModel() {
     val secondAutocompleteTextChanged = MutableSharedFlow<String>()
 
     /** Реализация поиска */
+    // TODO поиск должен выполняться только тогда, когда открыт выпадающий список? Если да, то стоит
+    // ли тогда expanded как состояние поднять наверх?
     //    init {
     //    merge(autocompleteTextChanged, autocompleteControl.valueChanges.map { x -> x.name })
     //    .onEach { autocompleteSourceState.update { SourceState.Loading } }
