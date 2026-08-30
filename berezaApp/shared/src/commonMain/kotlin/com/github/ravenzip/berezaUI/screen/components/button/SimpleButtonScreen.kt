@@ -1,0 +1,35 @@
+package com.github.ravenzip.berezaUI.screen.components.button
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.RootNavigationViewModel
+import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
+import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
+
+@Composable
+fun SimpleButtonScreen(navigationViewModel: RootNavigationViewModel) {
+    ComponentScreen(
+        title = "SimpleButton",
+        description = "Кнопка с текстом",
+        hasIntegrationWithReactiveForms = false,
+        goBack = { navigationViewModel.navigateBack() },
+        content = {
+            Row {
+                Card {
+                    Column(
+                        modifier = Modifier.padding(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        SimpleButton(onClick = {}, text = "Да, все кнопки назад оформлены мной")
+                    }
+                }
+            }
+        },
+    )
+}

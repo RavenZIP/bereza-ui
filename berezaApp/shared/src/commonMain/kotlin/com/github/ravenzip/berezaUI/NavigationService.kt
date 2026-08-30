@@ -19,6 +19,9 @@ class RootNavigationViewModel : ViewModel() {
             Screen.CheckboxGroup,
             Screen.RadioGroup,
             Screen.SwitchGroup,
+            Screen.IconButton,
+            Screen.SimpleButton,
+            Screen.RichButton,
         )
 
     val layoutScreen = mutableStateListOf(Screen.ExpandableCard)

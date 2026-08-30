@@ -9,6 +9,9 @@ import androidx.navigation3.ui.NavDisplay
 import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.screen.HomeScreen
 import com.github.ravenzip.berezaUI.screen.LastChangesScreen
+import com.github.ravenzip.berezaUI.screen.components.button.IconButtonScreen
+import com.github.ravenzip.berezaUI.screen.components.button.RichButtonScreen
+import com.github.ravenzip.berezaUI.screen.components.button.SimpleButtonScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxGroupScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.radiobutton.RadioButtonWithTextScreen
@@ -85,6 +88,19 @@ fun RootNavigation(
 
                     is Screen.RadioGroup -> {
                         RadioGroupScreen(navigationViewModel)
+                    }
+
+                    // Кнопки
+                    is Screen.SimpleButton -> {
+                        SimpleButtonScreen(navigationViewModel)
+                    }
+
+                    is Screen.IconButton -> {
+                        IconButtonScreen(navigationViewModel)
+                    }
+
+                    is Screen.RichButton -> {
+                        RichButtonScreen(navigationViewModel)
                     }
 
                     // Лейауты
