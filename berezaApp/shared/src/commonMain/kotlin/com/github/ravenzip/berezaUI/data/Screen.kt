@@ -15,6 +15,10 @@ sealed interface Screen : NavKey {
 
     @Serializable data object MultiLineTextField : Screen, NavKey
 
+    @Serializable data object DropDownTextField : Screen, NavKey
+
+    @Serializable data object AutocompleteTextField : Screen, NavKey
+
     @Serializable data object CheckboxWithText : Screen, NavKey
 
     @Serializable data object CheckboxGroup : Screen, NavKey
