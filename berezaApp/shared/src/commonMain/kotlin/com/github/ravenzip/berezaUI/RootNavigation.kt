@@ -23,6 +23,7 @@ import com.github.ravenzip.berezaUI.screen.components.textfield.DropDownTextFiel
 import com.github.ravenzip.berezaUI.screen.components.textfield.MultiLineTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.SingleLineTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.layout.ExpandableCardScreen
+import com.github.ravenzip.berezaUI.screen.layout.RoundedBoxScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.LoginScreen
 import com.github.ravenzip.berezaUI.screen.scenarios.ProfileScreen
 
@@ -106,6 +107,10 @@ fun RootNavigation(
                     // Лейауты
                     is Screen.ExpandableCard -> {
                         ExpandableCardScreen(navigationViewModel)
+                    }
+
+                    is Screen.RoundedBox -> {
+                        RoundedBoxScreen(navigationViewModel)
                     }
 
                     // Формы

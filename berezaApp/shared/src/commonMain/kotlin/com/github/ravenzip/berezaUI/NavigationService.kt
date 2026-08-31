@@ -24,7 +24,7 @@ class RootNavigationViewModel : ViewModel() {
             Screen.RichButton,
         )
 
-    val layoutScreen = mutableStateListOf(Screen.ExpandableCard)
+    val layoutScreen = mutableStateListOf(Screen.ExpandableCard, Screen.RoundedBox)
 
     val formRouteToFormName =
         mapOf(
