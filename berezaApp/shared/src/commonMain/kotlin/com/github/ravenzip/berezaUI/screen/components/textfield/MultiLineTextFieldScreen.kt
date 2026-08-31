@@ -2,9 +2,7 @@ package com.github.ravenzip.berezaUI.screen.components.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,23 +24,19 @@ fun MultiLineTextFieldScreen(navigationViewModel: RootNavigationViewModel) {
         description = "Текстовое поле для ввода многострочного текста.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            Row {
-                Card {
-                    Column(
-                        modifier = Modifier.padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        MultiLineTextField(
-                            control = firstControl,
-                            label = { Text("MultiLineTextField") },
-                        )
+            Column(
+                modifier = Modifier.padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                MultiLineTextField(
+                    control = firstControl,
+                    label = { Text("MultiLineTextField") },
+                )
 
-                        OutlinedMultiLineTextField(
-                            control = secondControl,
-                            label = { Text("OutlinedMultiLineTextField") },
-                        )
-                    }
-                }
+                OutlinedMultiLineTextField(
+                    control = secondControl,
+                    label = { Text("OutlinedMultiLineTextField") },
+                )
             }
         },
     )

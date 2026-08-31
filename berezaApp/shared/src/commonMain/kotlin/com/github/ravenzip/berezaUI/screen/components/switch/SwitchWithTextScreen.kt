@@ -2,9 +2,7 @@ package com.github.ravenzip.berezaUI.screen.components.switch
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,25 +24,21 @@ fun SwitchWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         description = "Переключатель, аналогичный Switch из Material 3, но с текстовой подписью.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            Row {
-                Card {
-                    Column(
-                        modifier = Modifier.padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        SwitchWithText(
-                            control = firstControl,
-                            text = { Text("С текстом") },
-                        )
+            Column(
+                modifier = Modifier.padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                SwitchWithText(
+                    control = firstControl,
+                    text = { Text("С текстом") },
+                )
 
-                        SwitchWithText(
-                            control = secondControl,
-                            label = "С заголовком",
-                            description = "И описанием",
-                            descriptionStyle = TextStyle(),
-                        )
-                    }
-                }
+                SwitchWithText(
+                    control = secondControl,
+                    label = "С заголовком",
+                    description = "И описанием",
+                    descriptionStyle = TextStyle(),
+                )
             }
         },
     )

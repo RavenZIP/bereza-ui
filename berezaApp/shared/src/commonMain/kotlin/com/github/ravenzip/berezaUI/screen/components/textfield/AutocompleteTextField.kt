@@ -2,9 +2,7 @@ package com.github.ravenzip.berezaUI.screen.components.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -79,41 +77,37 @@ fun AutocompleteTextFieldScreen(
         description = "Текстовое поле с выпадающим списком и автодополнением.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            Row {
-                Card {
-                    Column(
-                        modifier = Modifier.padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        AutocompleteTextField(
-                            control = screenViewModel.firstAutocompleteControl,
-                            sourceState = firstSourceState,
-                            clearValue = EMPTY_SAMPLE,
-                            itemToString = { x -> x.name },
-                            onTextChange = {
-                                coroutineScope.launch {
-                                    screenViewModel.firstAutocompleteTextChanged.emit(it)
-                                }
-                            },
-                            dropDownMenuItemContent = { x -> Text(x.name) },
-                            dropDownMenuEmptyContent = { Text("Нет результатов") },
-                        )
+            Column(
+                modifier = Modifier.padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                AutocompleteTextField(
+                    control = screenViewModel.firstAutocompleteControl,
+                    sourceState = firstSourceState,
+                    clearValue = EMPTY_SAMPLE,
+                    itemToString = { x -> x.name },
+                    onTextChange = {
+                        coroutineScope.launch {
+                            screenViewModel.firstAutocompleteTextChanged.emit(it)
+                        }
+                    },
+                    dropDownMenuItemContent = { x -> Text(x.name) },
+                    dropDownMenuEmptyContent = { Text("Нет результатов") },
+                )
 
-                        OutlinedAutocompleteTextField(
-                            control = screenViewModel.secondAutocompleteControl,
-                            sourceState = secondSourceState,
-                            clearValue = EMPTY_SAMPLE,
-                            itemToString = { x -> x.name },
-                            onTextChange = {
-                                coroutineScope.launch {
-                                    screenViewModel.secondAutocompleteTextChanged.emit(it)
-                                }
-                            },
-                            dropDownMenuItemContent = { x -> Text(x.name) },
-                            dropDownMenuEmptyContent = { Text("Нет результатов") },
-                        )
-                    }
-                }
+                OutlinedAutocompleteTextField(
+                    control = screenViewModel.secondAutocompleteControl,
+                    sourceState = secondSourceState,
+                    clearValue = EMPTY_SAMPLE,
+                    itemToString = { x -> x.name },
+                    onTextChange = {
+                        coroutineScope.launch {
+                            screenViewModel.secondAutocompleteTextChanged.emit(it)
+                        }
+                    },
+                    dropDownMenuItemContent = { x -> Text(x.name) },
+                    dropDownMenuEmptyContent = { Text("Нет результатов") },
+                )
             }
         },
     )

@@ -2,9 +2,7 @@ package com.github.ravenzip.berezaUI.screen.components.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,23 +24,19 @@ fun SingleLineTextFieldScreen(navigationViewModel: RootNavigationViewModel) {
         description = "Текстовое поле для ввода однострочного текста.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            Row {
-                Card {
-                    Column(
-                        modifier = Modifier.padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        SingleLineTextField(
-                            control = firstControl,
-                            label = { Text("SingleLineTextField") },
-                        )
+            Column(
+                modifier = Modifier.padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                SingleLineTextField(
+                    control = firstControl,
+                    label = { Text("SingleLineTextField") },
+                )
 
-                        OutlinedSingleLineTextField(
-                            control = secondControl,
-                            label = { Text("OutlinedSingleLineTextField") },
-                        )
-                    }
-                }
+                OutlinedSingleLineTextField(
+                    control = secondControl,
+                    label = { Text("OutlinedSingleLineTextField") },
+                )
             }
         },
     )

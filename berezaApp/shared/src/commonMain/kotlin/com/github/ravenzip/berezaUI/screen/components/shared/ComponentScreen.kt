@@ -1,8 +1,6 @@
 package com.github.ravenzip.berezaUI.screen.components.shared
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -124,6 +122,7 @@ fun ComponentScreen(
         }
 
         item {
+            Spacer(modifier = Modifier.height(20.dp))
             SimpleButton(onClick = goBack, text = "Назад")
         }
     }
