@@ -16,7 +16,7 @@ fun main() = application {
                 position = WindowPosition(Alignment.Center),
                 size = DpSize(1000.dp, 720.dp),
             ),
-        title = "BerezaUI",
+        title = "Bereza UI",
     ) {
         App()
     }
