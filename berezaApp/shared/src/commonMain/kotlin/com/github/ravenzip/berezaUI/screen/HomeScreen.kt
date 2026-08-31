@@ -22,6 +22,7 @@ import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 
+// TODO переработать меню так, чтобы не нужен был скролл
 @Composable
 fun HomeScreen(navigationViewModel: RootNavigationViewModel) {
     Column(
