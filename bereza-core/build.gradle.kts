@@ -12,7 +12,7 @@ plugins {
 kotlin {
     jvm()
 
-    androidLibrary {
+    android {
         namespace = "com.github.RavenZIP.bereza.ui.core"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -20,7 +20,7 @@ kotlin {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
 
-    js(IR) { browser() }
+    js { browser() }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
