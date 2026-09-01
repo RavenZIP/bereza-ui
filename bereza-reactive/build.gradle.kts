@@ -38,7 +38,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(projects.berezaCore)
-            implementation(projects.berezaExtensions)
 
             implementation(libs.ravenzip.kotlinReactiveForms.core)
         }

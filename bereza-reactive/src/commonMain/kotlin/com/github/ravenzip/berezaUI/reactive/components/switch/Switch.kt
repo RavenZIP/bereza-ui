@@ -9,10 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
-import com.github.ravenzip.berezaUI.extensions.components.SwitchWithText
 import com.github.ravenzip.berezaUI.reactive.data.collectAsComponentState
 import com.github.ravenzip.kotlinreactiveforms.form.MutableFormControl
 
@@ -56,38 +54,6 @@ fun SwitchWithText(
         },
         modifier = modifier,
         text = text,
-        padding = padding,
-        colors = colors,
-        shape = shape,
-    )
-}
-
-@Composable
-fun SwitchWithText(
-    control: MutableFormControl<Boolean>,
-    modifier: Modifier = Modifier,
-    label: String,
-    labelStyle: TextStyle? = null,
-    description: String? = null,
-    descriptionStyle: TextStyle? = null,
-    padding: PaddingValues = PaddingValues(15.dp),
-    colors: SwitchColors = SwitchDefaults.colors(),
-    shape: Shape = RoundedCornerShape(14.dp),
-) {
-    val state by control.collectAsComponentState()
-
-    SwitchWithText(
-        selected = state.value,
-        enabled = state.enabled,
-        onClick = {
-            control.setValue(!control.value)
-            control.markAsDirty()
-        },
-        modifier = modifier,
-        label = label,
-        labelStyle = labelStyle,
-        description = description,
-        descriptionStyle = descriptionStyle,
         padding = padding,
         colors = colors,
         shape = shape,
