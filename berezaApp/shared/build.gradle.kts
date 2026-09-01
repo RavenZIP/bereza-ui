@@ -13,7 +13,7 @@ plugins {
 kotlin {
     jvm()
 
-    androidLibrary {
+    android {
         namespace = "com.github.ravenzip.berezaUI"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -25,7 +25,7 @@ kotlin {
         withHostTest { isIncludeAndroidResources = true }
     }
 
-    js(IR) { browser() }
+    js { browser() }
 
     @OptIn(ExperimentalWasmDsl::class) wasmJs { browser() }
 
