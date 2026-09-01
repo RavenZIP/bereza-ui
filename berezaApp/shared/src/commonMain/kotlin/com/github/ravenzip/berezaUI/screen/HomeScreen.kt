@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
+import com.github.ravenzip.berezaUI.SimpleButton
 import com.github.ravenzip.berezaUI.data.Screen
-import com.github.ravenzip.berezaUI.extensions.components.SimpleButton
 
 // TODO переработать меню так, чтобы не нужен был скролл
 @Composable

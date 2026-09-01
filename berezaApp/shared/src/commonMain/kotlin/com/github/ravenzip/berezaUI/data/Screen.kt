@@ -39,8 +39,6 @@ sealed interface Screen : NavKey {
 
     @Serializable data object RichButton : Screen, NavKey
 
-    @Serializable data object SimpleButton : Screen, NavKey
-
     @Serializable data object Login : Screen, NavKey
 
     @Serializable data object Profile : Screen, NavKey

@@ -20,7 +20,6 @@ class RootNavigationViewModel : ViewModel() {
             Screen.RadioGroup,
             Screen.SwitchGroup,
             Screen.IconButton,
-            Screen.SimpleButton,
             Screen.RichButton,
         )
 
