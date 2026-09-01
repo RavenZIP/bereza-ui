@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
+// TODO если это будет в каком-то отдельном проекте, то подключить его и удалить это
 @Composable
 fun SimpleButton(onClick: () -> Unit, text: String) {
     Button(
