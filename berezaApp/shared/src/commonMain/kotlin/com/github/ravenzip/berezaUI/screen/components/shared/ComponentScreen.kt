@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.ravenzip.berezaUI.SimpleButton
+import com.github.ravenzip.compose.material3.SimpleButton
 
 // Это должно быть общей оберткой для экранов с компонентами
 // Для экранов с формами мооожет быть будет такая же, но это выясниться позже

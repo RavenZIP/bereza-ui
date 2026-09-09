@@ -46,10 +46,10 @@ kotlin {
 
         // Модули bereza ui
         implementation(projects.berezaCore)
-        implementation(projects.berezaReactive)
 
         // Модули других библиотек собственного производства
         implementation(libs.ravenzip.kotlinReactiveForms.core)
+        implementation(libs.ravenzip.compose.extensions)
 
         testImplementation(libs.kotlin.test)
     }
