@@ -1,17 +1,14 @@
 package com.github.ravenzip.berezaUI.screen.components.switch
 
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.reactive.components.switch.SwitchWithText
+import com.github.ravenzip.berezaUI.core.components.switch.SwitchWithText
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
-import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
 fun SwitchWithTextScreen(navigationViewModel: RootNavigationViewModel) {
-    val firstControl = remember { mutableFormControl(false) }
-    val secondControl = remember { mutableFormControl(false) }
+    var selected by remember { mutableStateOf(false) }
 
     ComponentScreen(
         title = "SwitchWithText",
@@ -19,7 +16,8 @@ fun SwitchWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         goBack = { navigationViewModel.navigateBack() },
         content = {
             SwitchWithText(
-                control = firstControl,
+                selected = selected,
+                onClick = { selected = !selected },
                 text = { Text("С текстом") },
             )
         },

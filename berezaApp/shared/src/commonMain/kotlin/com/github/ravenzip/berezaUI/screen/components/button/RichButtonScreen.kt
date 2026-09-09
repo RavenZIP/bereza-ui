@@ -14,7 +14,6 @@ fun RichButtonScreen(navigationViewModel: RootNavigationViewModel) {
     ComponentScreen(
         title = "RichButton",
         description = "Кнопка с иконкой, заголовком и описанием",
-        hasIntegrationWithReactiveForms = false,
         goBack = { navigationViewModel.navigateBack() },
         content = {
             RichButton(

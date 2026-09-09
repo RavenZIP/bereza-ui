@@ -1,16 +1,14 @@
 package com.github.ravenzip.berezaUI.screen.components.checkbox
 
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.reactive.components.checkbox.CheckboxWithText
+import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
-import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 
 @Composable
 fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
-    val firstControl = remember { mutableFormControl(false) }
+    var selected by remember { mutableStateOf(false) }
 
     ComponentScreen(
         title = "CheckboxWithText",
@@ -18,7 +16,8 @@ fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         goBack = { navigationViewModel.navigateBack() },
         content = {
             CheckboxWithText(
-                control = firstControl,
+                selected = selected,
+                onClick = { selected = !selected },
                 text = { Text("С текстом") },
             )
         },

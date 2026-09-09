@@ -95,7 +95,6 @@ import com.github.ravenzip.berezaUI.SimpleButton
 fun ComponentScreen(
     title: String,
     description: String,
-    hasIntegrationWithReactiveForms: Boolean = true,
     goBack: () -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -107,10 +106,6 @@ fun ComponentScreen(
             ComponentScreenGroup {
                 Text(text = title, fontSize = 20.sp, fontWeight = FontWeight.W500)
                 Text(description)
-                Text(
-                    text =
-                        "Интеграция с Kotlin Reactive Forms: ${if (hasIntegrationWithReactiveForms) "Есть" else "Отсутствует"}"
-                )
             }
         }
 
