@@ -13,6 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
+// TODO касается всех подобных компонентов
+// 1. keySelector сделать опциональным
+// 2. В onSelectedItemChange передавать T и текущее состояние (выбран или нет)
+// 3. Принимать в качестве source SnapshotStateList
 @Composable
 fun <T, K : Any> SwitchGroup(
     source: List<T>,

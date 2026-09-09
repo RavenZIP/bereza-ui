@@ -15,7 +15,6 @@ fun RoundedBoxScreen(navigationViewModel: RootNavigationViewModel) {
     ComponentScreen(
         title = "RoundedBox",
         description = "Box со скругленными углами.",
-        hasIntegrationWithReactiveForms = false,
         goBack = { navigationViewModel.navigateBack() },
         content = {
             RoundedBox(modifier = Modifier.padding(8.dp)) {

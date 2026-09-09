@@ -10,13 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
+import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AutocompleteTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.core.data.SourceState
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
-import com.github.ravenzip.berezaUI.reactive.components.textfield.dropdown.AutocompleteTextField
-import com.github.ravenzip.berezaUI.reactive.components.textfield.dropdown.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
-import com.github.ravenzip.kotlinreactiveforms.form.mutableFormControl
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -34,16 +33,19 @@ class AutocompleteTextFieldScreenViewModel : ViewModel() {
             Sample(8, "Viktor"),
         )
 
-    val firstAutocompleteControl = mutableFormControl(EMPTY_SAMPLE)
-    val secondAutocompleteControl = mutableFormControl(EMPTY_SAMPLE)
+    val firstValue = MutableStateFlow(EMPTY_SAMPLE)
+    val secondValue = MutableStateFlow(EMPTY_SAMPLE)
 
     val firstSourceState =
         MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
     val secondSourceState =
         MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
 
-    val firstAutocompleteTextChanged = MutableSharedFlow<String>()
-    val secondAutocompleteTextChanged = MutableSharedFlow<String>()
+    val firstValueChanged = MutableSharedFlow<Sample>()
+    val secondValueChanged = MutableSharedFlow<Sample>()
+
+    val firstTextChanged = MutableSharedFlow<String>()
+    val secondTextChanged = MutableSharedFlow<String>()
 
     /** Реализация поиска */
     // TODO поиск должен выполняться только тогда, когда открыт выпадающий список? Если да, то стоит
@@ -69,6 +71,8 @@ fun AutocompleteTextFieldScreen(
     },
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val firstValue by screenViewModel.firstValue.collectAsState()
+    val secondValue by screenViewModel.secondValue.collectAsState()
     val firstSourceState by screenViewModel.firstSourceState.collectAsState()
     val secondSourceState by screenViewModel.secondSourceState.collectAsState()
 
@@ -82,13 +86,20 @@ fun AutocompleteTextFieldScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 AutocompleteTextField(
-                    control = screenViewModel.firstAutocompleteControl,
+                    selected = firstValue,
                     sourceState = firstSourceState,
-                    clearValue = EMPTY_SAMPLE,
+                    onSelectItem = { x ->
+                        coroutineScope.launch { screenViewModel.firstValueChanged.emit(x) }
+                    },
+                    onClearSelected = {
+                        coroutineScope.launch {
+                            screenViewModel.firstValueChanged.emit(EMPTY_SAMPLE)
+                        }
+                    },
                     itemToString = { x -> x.name },
                     onTextChange = {
                         coroutineScope.launch {
-                            screenViewModel.firstAutocompleteTextChanged.emit(it)
+                            screenViewModel.firstTextChanged.emit(it)
                         }
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },
@@ -96,13 +107,20 @@ fun AutocompleteTextFieldScreen(
                 )
 
                 OutlinedAutocompleteTextField(
-                    control = screenViewModel.secondAutocompleteControl,
+                    selected = secondValue,
                     sourceState = secondSourceState,
-                    clearValue = EMPTY_SAMPLE,
+                    onSelectItem = { x ->
+                        coroutineScope.launch { screenViewModel.secondValueChanged.emit(x) }
+                    },
+                    onClearSelected = {
+                        coroutineScope.launch {
+                            screenViewModel.secondValueChanged.emit(EMPTY_SAMPLE)
+                        }
+                    },
                     itemToString = { x -> x.name },
                     onTextChange = {
                         coroutineScope.launch {
-                            screenViewModel.secondAutocompleteTextChanged.emit(it)
+                            screenViewModel.secondTextChanged.emit(it)
                         }
                     },
                     dropDownMenuItemContent = { x -> Text(x.name) },

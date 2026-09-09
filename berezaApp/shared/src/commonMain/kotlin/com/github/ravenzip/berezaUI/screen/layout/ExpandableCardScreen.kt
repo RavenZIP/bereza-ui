@@ -24,7 +24,6 @@ fun ExpandableCardScreen(navigationViewModel: RootNavigationViewModel) {
     ComponentScreen(
         title = "ExpandableCard",
         description = "Card, который умеет скрывать свое содержимое по клику.",
-        hasIntegrationWithReactiveForms = false,
         goBack = { navigationViewModel.navigateBack() },
         content = {
             ExpandableCard(

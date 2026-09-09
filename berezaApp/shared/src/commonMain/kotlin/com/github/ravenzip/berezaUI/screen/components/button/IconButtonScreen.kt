@@ -16,7 +16,6 @@ fun IconButtonScreen(navigationViewModel: RootNavigationViewModel) {
     ComponentScreen(
         title = "IconButton",
         description = "Кнопка с иконкой",
-        hasIntegrationWithReactiveForms = false,
         goBack = { navigationViewModel.navigateBack() },
         content = {
             IconButton(

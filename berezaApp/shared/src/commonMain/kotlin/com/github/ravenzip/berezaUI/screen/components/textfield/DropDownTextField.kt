@@ -61,7 +61,6 @@ fun DropDownTextFieldScreen(
     ComponentScreen(
         title = "DropDownTextField",
         description = "Текстовое поле с выпадающим списком.",
-        hasIntegrationWithReactiveForms = false,
         goBack = { navigationViewModel.navigateBack() },
         content = {
             DropdownTextField(
