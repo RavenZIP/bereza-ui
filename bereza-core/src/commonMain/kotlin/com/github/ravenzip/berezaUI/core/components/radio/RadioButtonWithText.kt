@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RadioButtonWithText(
     selected: Boolean,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit,
     text: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),

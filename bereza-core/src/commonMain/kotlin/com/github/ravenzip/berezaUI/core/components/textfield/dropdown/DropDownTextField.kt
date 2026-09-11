@@ -24,11 +24,11 @@ import com.github.ravenzip.berezaUI.core.data.*
 fun <T> DropDownTextFieldBox(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
+    modifier: Modifier = Modifier,
     keySelector: ((T) -> Any)? = null,
     expanded: Boolean,
     onExpandedChange: (DropDownExpandEvent) -> Unit,
     collapseAfterSelect: Boolean = true,
-    modifier: Modifier = Modifier,
     textField: @Composable (Modifier) -> Unit,
     itemContent: @Composable (T) -> Unit,
     emptyContent: @Composable () -> Unit,

@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SwitchWithText(
     selected: Boolean,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     text: @Composable () -> Unit,
     padding: PaddingValues = PaddingValues(15.dp),
     colors: SwitchColors = SwitchDefaults.colors(),
