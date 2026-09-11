@@ -74,7 +74,6 @@ fun <T> DropDownTextFieldBox(
                     if (sourceState.items.isEmpty()) {
                         DisabledDropDownMenuItem(text = emptyContent)
                     } else {
-                        // TODO попробовать перейти на LazyColumn
                         sourceState.items.forEach { item ->
                             val key = if (keySelector != null) keySelector(item) else item
 
