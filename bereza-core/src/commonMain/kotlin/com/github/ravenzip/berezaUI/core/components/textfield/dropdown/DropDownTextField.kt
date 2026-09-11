@@ -113,10 +113,10 @@ fun <T> DropDownTextFieldBox(
 fun <T> DropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
-    keySelector: ((T) -> Any)? = null,
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keySelector: ((T) -> Any)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -178,10 +178,10 @@ fun <T> DropdownTextField(
 fun <T> OutlinedDropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
-    keySelector: ((T) -> Any)? = null,
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keySelector: ((T) -> Any)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
