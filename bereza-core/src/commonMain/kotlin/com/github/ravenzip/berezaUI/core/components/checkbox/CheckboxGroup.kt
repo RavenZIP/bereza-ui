@@ -2,8 +2,8 @@ package com.github.ravenzip.berezaUI.core.components.checkbox
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
@@ -28,7 +28,7 @@ fun <T> CheckboxGroup(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
-    content: @Composable ColumnScope.(T) -> Unit,
+    content: @Composable RowScope.(T) -> Unit,
 ) {
     Column(
         modifier = modifier,
