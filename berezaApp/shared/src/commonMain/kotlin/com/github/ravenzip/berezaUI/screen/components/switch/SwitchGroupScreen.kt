@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.switch.SwitchGroup
+import com.github.ravenzip.berezaUI.core.data.SelectionChange
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
@@ -22,18 +23,15 @@ fun SwitchGroupScreen(navigationViewModel: RootNavigationViewModel) {
             SwitchGroup(
                 source = source,
                 selectedItems = selectedItems,
-                onSelectedItemChange = { x ->
-                    // TODO не дублировать
-                    val newSelectedItems = selectedItems.toMutableList()
-                    val existingIndex = newSelectedItems.indexOfFirst { s -> s == x }
-
-                    if (existingIndex >= 0) newSelectedItems.removeAt(existingIndex)
-                    else newSelectedItems.add(x)
-
-                    selectedItems.clear()
-                    selectedItems.addAll(newSelectedItems)
+                onSelectionItemChange = { item, selectionChange ->
+                    when (selectionChange) {
+                        SelectionChange.Deselect -> {
+                            val existingIndex = selectedItems.indexOfFirst { s -> s == item }
+                            selectedItems.removeAt(existingIndex)
+                        }
+                        else -> selectedItems.add(item)
+                    }
                 },
-                keySelector = { x -> x },
                 text = { x -> Text(x) },
             )
         },

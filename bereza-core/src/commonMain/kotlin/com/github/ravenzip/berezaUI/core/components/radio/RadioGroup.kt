@@ -9,17 +9,18 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <T, K : Any> RadioGroup(
-    source: List<T>,
+fun <T> RadioGroup(
+    source: SnapshotStateList<T>,
     selectedItem: T,
-    onSelectedItemChange: (T) -> Unit,
-    keySelector: (T) -> K,
+    onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
+    key: (T) -> Any? = { it },
     text: @Composable (T) -> Unit,
     enabled: Boolean = true,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
@@ -27,19 +28,19 @@ fun <T, K : Any> RadioGroup(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-    val selectedKey = remember(selectedItem) { keySelector(selectedItem) }
+    val selectedKey = remember(selectedItem) { key(selectedItem) }
 
     Column(
         modifier = modifier,
         verticalArrangement = contentPadding,
     ) {
         source.forEach { item ->
-            val itemKey = keySelector(item)
+            val itemKey = key(item)
 
             key(itemKey) {
                 RadioButtonWithText(
                     selected = selectedKey == itemKey,
-                    onClick = { onSelectedItemChange(item) },
+                    onClick = { onSelectionItemChange(item) },
                     text = { text(item) },
                     enabled = enabled,
                     padding = padding,
