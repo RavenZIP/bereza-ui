@@ -2,6 +2,7 @@ package com.github.ravenzip.berezaUI.core.components.radio
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButtonColors
@@ -26,7 +27,7 @@ fun <T> RadioGroup(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
-    content: @Composable (T) -> Unit,
+    content: @Composable ColumnScope.(T) -> Unit,
 ) {
     val selectedKey = remember(selectedItem) { key(selectedItem) }
 
@@ -41,12 +42,13 @@ fun <T> RadioGroup(
                 RadioButton(
                     selected = selectedKey == itemKey,
                     onClick = { onSelectionItemChange(item) },
-                    content = { content(item) },
                     enabled = enabled,
                     padding = padding,
                     shape = shape,
                     colors = colors,
-                )
+                ) {
+                    content(item)
+                }
             }
         }
     }

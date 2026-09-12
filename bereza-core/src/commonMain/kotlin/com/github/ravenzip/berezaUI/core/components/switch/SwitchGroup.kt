@@ -2,6 +2,7 @@ package com.github.ravenzip.berezaUI.core.components.switch
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.SwitchColors
@@ -27,7 +28,7 @@ fun <T> SwitchGroup(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: SwitchColors = SwitchDefaults.colors(),
-    content: @Composable (T) -> Unit,
+    content: @Composable ColumnScope.(T) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -46,12 +47,13 @@ fun <T> SwitchGroup(
                             if (selected) SelectionChange.Deselect else SelectionChange.Select,
                         )
                     },
-                    content = { content(item) },
                     enabled = enabled,
                     padding = padding,
                     shape = shape,
                     colors = colors,
-                )
+                ) {
+                    content(item)
+                }
             }
         }
     }
