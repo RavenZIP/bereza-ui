@@ -17,15 +17,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CheckboxWithText(
+fun Checkbox(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text: @Composable () -> Unit,
     enabled: Boolean = true,
     colors: CheckboxColors = CheckboxDefaults.colors(),
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
+    content: @Composable () -> Unit,
 ) {
     Row(
         modifier =
@@ -35,6 +35,6 @@ fun CheckboxWithText(
     ) {
         Checkbox(checked = selected, onCheckedChange = null, enabled = enabled, colors = colors)
 
-        text()
+        content()
     }
 }

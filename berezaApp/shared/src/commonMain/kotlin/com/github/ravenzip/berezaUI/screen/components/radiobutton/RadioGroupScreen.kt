@@ -8,7 +8,7 @@ import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
 fun RadioGroupScreen(navigationViewModel: RootNavigationViewModel) {
-    val source = remember { listOf("Русский", "Английский", "Прочее") }
+    val source = remember { mutableStateListOf("Русский", "Английский", "Прочее") }
     var selectedItem by remember { mutableStateOf("") }
 
     ComponentScreen(
@@ -20,7 +20,7 @@ fun RadioGroupScreen(navigationViewModel: RootNavigationViewModel) {
                 source = source,
                 selectedItem = selectedItem,
                 onSelectionItemChange = { x -> selectedItem = x },
-                text = { x -> Text(x) },
+                content = { x -> Text(x) },
             )
         },
     )

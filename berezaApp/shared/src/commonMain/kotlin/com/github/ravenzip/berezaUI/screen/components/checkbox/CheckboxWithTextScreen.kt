@@ -3,7 +3,7 @@ package com.github.ravenzip.berezaUI.screen.components.checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.checkbox.CheckboxWithText
+import com.github.ravenzip.berezaUI.core.components.checkbox.Checkbox
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
@@ -15,10 +15,10 @@ fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         description = "Переключатель, аналогичный Checkbox из Material 3, но с текстовой подписью.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            CheckboxWithText(
+            Checkbox(
                 selected = selected,
                 onClick = { selected = !selected },
-                text = { Text("С текстом") },
+                content = { Text("С текстом") },
             )
         },
     )

@@ -22,12 +22,12 @@ fun <T> CheckboxGroup(
     onSelectionItemChange: (T, SelectionChange) -> Unit,
     modifier: Modifier = Modifier,
     key: (T) -> Any? = { it },
-    text: @Composable (T) -> Unit,
     enabled: Boolean = true,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    content: @Composable (T) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -38,7 +38,7 @@ fun <T> CheckboxGroup(
             val selected = selectedItems.any { key(it) == itemKey }
 
             key(itemKey) {
-                CheckboxWithText(
+                Checkbox(
                     selected = selected,
                     onClick = {
                         onSelectionItemChange(
@@ -46,7 +46,7 @@ fun <T> CheckboxGroup(
                             if (selected) SelectionChange.Deselect else SelectionChange.Select,
                         )
                     },
-                    text = { text(item) },
+                    content = { content(item) },
                     enabled = enabled,
                     padding = padding,
                     shape = shape,

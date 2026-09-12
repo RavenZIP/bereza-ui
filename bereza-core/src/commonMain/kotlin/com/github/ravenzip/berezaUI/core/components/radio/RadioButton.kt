@@ -17,15 +17,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RadioButtonWithText(
+fun RadioButton(
     selected: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit,
-    text: @Composable () -> Unit,
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    content: @Composable () -> Unit,
 ) {
     Row(
         modifier = modifier.clip(shape).clickable { onClick() }.padding(padding),
@@ -34,6 +34,6 @@ fun RadioButtonWithText(
     ) {
         RadioButton(selected = selected, onClick = null, enabled = enabled, colors = colors)
 
-        text()
+        content()
     }
 }

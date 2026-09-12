@@ -11,7 +11,7 @@ import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
 fun SwitchGroupScreen(navigationViewModel: RootNavigationViewModel) {
-    val source = remember { listOf("Русский", "Английский", "Прочее") }
+    val source = remember { mutableStateListOf("Русский", "Английский", "Прочее") }
     val selectedItems = remember { mutableStateListOf<String>() }
 
     // TODO не хардкодить названия
@@ -32,7 +32,7 @@ fun SwitchGroupScreen(navigationViewModel: RootNavigationViewModel) {
                         else -> selectedItems.add(item)
                     }
                 },
-                text = { x -> Text(x) },
+                content = { x -> Text(x) },
             )
         },
     )

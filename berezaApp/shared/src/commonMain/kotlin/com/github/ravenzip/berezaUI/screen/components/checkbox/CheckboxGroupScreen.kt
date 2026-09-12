@@ -11,7 +11,7 @@ import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
 fun CheckboxGroupScreen(navigationViewModel: RootNavigationViewModel) {
-    val source = remember { listOf("Русский", "Английский", "Прочее") }
+    val source = remember { mutableStateListOf("Русский", "Английский", "Прочее") }
     val selectedItems = remember { mutableStateListOf<String>() }
 
     ComponentScreen(
@@ -31,7 +31,7 @@ fun CheckboxGroupScreen(navigationViewModel: RootNavigationViewModel) {
                         else -> selectedItems.add(item)
                     }
                 },
-                text = { x -> Text(x) },
+                content = { x -> Text(x) },
             )
         },
     )

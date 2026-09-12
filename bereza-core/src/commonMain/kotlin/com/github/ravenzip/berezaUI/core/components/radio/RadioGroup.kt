@@ -21,12 +21,12 @@ fun <T> RadioGroup(
     onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
     key: (T) -> Any? = { it },
-    text: @Composable (T) -> Unit,
     enabled: Boolean = true,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    content: @Composable (T) -> Unit,
 ) {
     val selectedKey = remember(selectedItem) { key(selectedItem) }
 
@@ -38,10 +38,10 @@ fun <T> RadioGroup(
             val itemKey = key(item)
 
             key(itemKey) {
-                RadioButtonWithText(
+                RadioButton(
                     selected = selectedKey == itemKey,
                     onClick = { onSelectionItemChange(item) },
-                    text = { text(item) },
+                    content = { content(item) },
                     enabled = enabled,
                     padding = padding,
                     shape = shape,

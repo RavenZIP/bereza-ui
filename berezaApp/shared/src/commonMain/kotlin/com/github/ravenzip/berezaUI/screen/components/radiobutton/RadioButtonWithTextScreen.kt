@@ -3,7 +3,7 @@ package com.github.ravenzip.berezaUI.screen.components.radiobutton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.radio.RadioButtonWithText
+import com.github.ravenzip.berezaUI.core.components.radio.RadioButton
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
@@ -16,10 +16,10 @@ fun RadioButtonWithTextScreen(navigationViewModel: RootNavigationViewModel) {
             "Радиокнопка, аналогичная RadioButton из Material 3, но с текстовой подписью.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            RadioButtonWithText(
+            RadioButton(
                 selected = selected,
                 onClick = { selected = !selected },
-                text = { Text("С текстом") },
+                content = { Text("С текстом") },
             )
         },
     )

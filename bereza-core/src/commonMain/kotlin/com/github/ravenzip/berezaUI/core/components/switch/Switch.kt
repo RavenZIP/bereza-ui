@@ -1,9 +1,9 @@
 package com.github.ravenzip.berezaUI.core.components.switch
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Switch
@@ -17,24 +17,23 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SwitchWithText(
+fun Switch(
     selected: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit,
-    text: @Composable () -> Unit,
     padding: PaddingValues = PaddingValues(15.dp),
     colors: SwitchColors = SwitchDefaults.colors(),
     shape: Shape = RoundedCornerShape(14.dp),
+    content: @Composable () -> Unit,
 ) {
     Row(
         modifier = modifier.clip(shape).clickable { onClick() }.padding(padding),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        text()
-
-        Spacer(modifier = Modifier.weight(1f))
-
         Switch(checked = selected, onCheckedChange = null, enabled = enabled, colors = colors)
+
+        content()
     }
 }
