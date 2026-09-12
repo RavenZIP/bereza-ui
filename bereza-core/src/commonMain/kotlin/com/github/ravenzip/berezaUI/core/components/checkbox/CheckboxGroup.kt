@@ -35,7 +35,7 @@ fun <T> CheckboxGroup(
         verticalArrangement = contentPadding,
     ) {
         source.forEach { item ->
-            val itemKey = remember(key) { key(item) }
+            val itemKey = remember(key, item) { key(item) }
             val selected = selectedItems.any { key(it) == itemKey }
 
             key(itemKey) {

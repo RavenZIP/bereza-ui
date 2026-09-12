@@ -36,7 +36,7 @@ fun <T> RadioGroup(
         verticalArrangement = contentPadding,
     ) {
         source.forEach { item ->
-            val itemKey = key(item)
+            val itemKey = remember(key, item) { key(item) }
 
             key(itemKey) {
                 RadioButton(
