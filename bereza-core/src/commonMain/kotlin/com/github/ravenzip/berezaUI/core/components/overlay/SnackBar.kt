@@ -5,6 +5,8 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,10 +16,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-// 1. TODO учитывать тип снэкбара для определения цвета +
-// 2. TODO стоит поработать над шириной. Не должно быть сильно много пространства, но и маленький
+// TODO стоит поработать над шириной. Не должно быть сильно много пространства, но и маленький
 // снэкбар нужен ли? (мб убрать minWidth)
-// 3. TODO не учитывается withDismissAction
 @Composable
 fun Snackbar(
     duration: SnackbarDuration,
@@ -85,6 +85,7 @@ fun Snackbar(
     colors: SnackbarColors = SnackbarColors.Default,
     containerPadding: PaddingValues = PaddingValues(vertical = 10.dp, horizontal = 15.dp),
     iconTextSpacedBy: Dp = 10.dp,
+    buttonSpaceBy: Dp = 10.dp,
     textActionNewLineSpacedBy: Dp = 10.dp,
     shape: Shape = RoundedCornerShape(14.dp),
     shadowElevation: Dp = 6.dp,
@@ -92,6 +93,7 @@ fun Snackbar(
     val visuals = data.visuals as SnackbarVisuals
     val actionLabel = visuals.actionLabel
     val icon = visuals.icon
+    val withDismissAction = visuals.withDismissAction
 
     val actionComposable: (@Composable () -> Unit)? =
         if (actionLabel != null) {
@@ -102,6 +104,24 @@ fun Snackbar(
                     shape = RoundedCornerShape(14.dp),
                 ) {
                     Text(actionLabel)
+                }
+            }
+        } else {
+            null
+        }
+
+    val dismissActionComposable: (@Composable () -> Unit)? =
+        if (withDismissAction) {
+            @Composable {
+                IconButton(
+                    onClick = { data.dismiss() },
+                    shapes = IconButtonShapes(RoundedCornerShape(14.dp)),
+                ) {
+                    Icon(
+                        Icons.Outlined.Close,
+                        contentDescription = "Snackbar Dismiss Action",
+                        tint = colors.iconColor,
+                    )
                 }
             }
         } else {
@@ -137,14 +157,32 @@ fun Snackbar(
                 Text(visuals.message, color = colors.textColor)
             }
 
-            if (actionComposable != null && !actionOnNewLine) {
-                actionComposable()
+            if (
+                !actionOnNewLine && (actionComposable !== null || dismissActionComposable != null)
+            ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(buttonSpaceBy)) {
+                    if (actionComposable != null) {
+                        actionComposable()
+                    }
+
+                    if (dismissActionComposable != null) {
+                        dismissActionComposable()
+                    }
+                }
             }
         }
 
-        if (actionComposable != null && actionOnNewLine) {
+        if (actionOnNewLine) {
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-                actionComposable()
+                Row(horizontalArrangement = Arrangement.spacedBy(buttonSpaceBy)) {
+                    if (actionComposable != null) {
+                        actionComposable()
+                    }
+
+                    if (dismissActionComposable != null) {
+                        dismissActionComposable()
+                    }
+                }
             }
         }
     }
