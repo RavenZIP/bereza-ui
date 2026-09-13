@@ -99,8 +99,10 @@ fun Snackbar(
                 TextButton(
                     colors = ButtonDefaults.textButtonColors(contentColor = colors.actionColor),
                     onClick = { data.performAction() },
-                    content = { Text(actionLabel) },
-                )
+                    shape = RoundedCornerShape(14.dp),
+                ) {
+                    Text(actionLabel)
+                }
             }
         } else {
             null
