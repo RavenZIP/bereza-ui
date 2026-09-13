@@ -215,6 +215,3 @@ data class SnackbarColors(
                 )
     }
 }
-
-suspend fun SnackbarHostState.showMessage(visuals: SnackbarVisuals): SnackbarResult =
-    showSnackbar(visuals)
