@@ -19,7 +19,6 @@ class RootNavigationViewModel : ViewModel() {
             Screen.CheckboxGroup,
             Screen.RadioGroup,
             Screen.SwitchGroup,
-            Screen.IconButton,
             Screen.RichButton,
         )
 

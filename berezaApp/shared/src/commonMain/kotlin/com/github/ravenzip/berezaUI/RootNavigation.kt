@@ -9,7 +9,6 @@ import androidx.navigation3.ui.NavDisplay
 import com.github.ravenzip.berezaUI.data.Screen
 import com.github.ravenzip.berezaUI.screen.HomeScreen
 import com.github.ravenzip.berezaUI.screen.LastChangesScreen
-import com.github.ravenzip.berezaUI.screen.components.button.IconButtonScreen
 import com.github.ravenzip.berezaUI.screen.components.button.RichButtonScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxGroupScreen
 import com.github.ravenzip.berezaUI.screen.components.checkbox.CheckboxWithTextScreen
@@ -91,10 +90,6 @@ fun RootNavigation(
                     }
 
                     // Кнопки
-                    is Screen.IconButton -> {
-                        IconButtonScreen(navigationViewModel)
-                    }
-
                     is Screen.RichButton -> {
                         RichButtonScreen(navigationViewModel)
                     }
