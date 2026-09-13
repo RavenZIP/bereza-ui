@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,7 +17,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-// 1. TODO учитывать тип снэкбара для определения цвета
+// 1. TODO учитывать тип снэкбара для определения цвета +
 // 2. TODO стоит поработать над шириной. Не должно быть сильно много пространства, но и маленький
 // снэкбар нужен ли? (мб убрать minWidth)
 // 3. TODO не учитывается withDismissAction
@@ -84,25 +85,23 @@ fun Snackbar(
     actionOnNewLine: Boolean = false,
     minWidth: Dp = 400.dp,
     maxWidth: Dp = 600.dp,
-    labelColor: Color? = null,
-    iconColor: Color? = null,
-    actionColor: Color = MaterialTheme.colorScheme.primary,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    colors: SnackbarColors? = null,
     containerPadding: PaddingValues = PaddingValues(vertical = 10.dp, horizontal = 15.dp),
     iconTextSpacedBy: Dp = 10.dp,
     textActionNewLineSpacedBy: Dp = 10.dp,
     shape: Shape = RoundedCornerShape(14.dp),
     shadowElevation: Dp = 6.dp,
 ) {
-    val actionLabel = data.visuals.actionLabel
-    val icon = (data.visuals as BerezaSnackbarVisuals).icon
+    val visuals = data.visuals as BerezaSnackbarVisuals
+    val actionLabel = visuals.actionLabel
+    val icon = visuals.icon
+    val colors = colors ?: visuals.type.colors()
 
     val actionComposable: (@Composable () -> Unit)? =
         if (actionLabel != null) {
             @Composable {
                 TextButton(
-                    colors = ButtonDefaults.textButtonColors(contentColor = actionColor),
+                    colors = ButtonDefaults.textButtonColors(contentColor = colors.actionColor),
                     onClick = { data.performAction() },
                     content = { Text(actionLabel) },
                 )
@@ -112,10 +111,10 @@ fun Snackbar(
         }
 
     Snackbar(
-        duration = data.visuals.duration,
+        duration = visuals.duration,
         showProgressBar = showProgressBar,
-        containerColor = containerColor,
-        contentColor = contentColor,
+        containerColor = colors.containerColor,
+        contentColor = colors.progressBarColor,
         containerPadding = containerPadding,
         contentSpacedBy = textActionNewLineSpacedBy,
         minWidth = minWidth,
@@ -133,11 +132,11 @@ fun Snackbar(
                     Icon(
                         icon,
                         contentDescription = "Snackbar Icon",
-                        tint = iconColor ?: contentColor,
+                        tint = colors.iconColor,
                     )
                 }
 
-                Text(data.visuals.message, color = labelColor ?: contentColor)
+                Text(visuals.message, color = colors.textColor)
             }
 
             if (actionComposable != null && !actionOnNewLine) {
@@ -161,3 +160,53 @@ private fun SnackbarDuration.toMs(): Long {
         SnackbarDuration.Short -> 4000L
     }
 }
+
+@Immutable
+data class SnackbarColors(
+    val containerColor: Color,
+    val textColor: Color,
+    val progressBarColor: Color,
+    val actionColor: Color,
+    val iconColor: Color,
+)
+
+@Composable
+private fun SnackbarType.colors() =
+    when (this) {
+        SnackbarType.Default ->
+            SnackbarColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                textColor = MaterialTheme.colorScheme.onSurface,
+                progressBarColor = MaterialTheme.colorScheme.onSurface,
+                actionColor = MaterialTheme.colorScheme.primary,
+                iconColor = MaterialTheme.colorScheme.onSurface,
+            )
+
+        // TODO вынести куда-то
+        SnackbarType.Success ->
+            SnackbarColors(
+                containerColor = Color(0xFFE8F5E9),
+                textColor = Color(0xFF1B5E20),
+                progressBarColor = Color(0xFF1B5E20),
+                actionColor = Color(0xFF2E7D32),
+                iconColor = Color(0xFF2E7D32),
+            )
+
+        SnackbarType.Warning ->
+            SnackbarColors(
+                containerColor = Color(0xFFFFF8E1),
+                textColor = Color(0xFF5D4037),
+                progressBarColor = Color(0xFF5D4037),
+                actionColor = Color(0xFFF57F17),
+                iconColor = Color(0xFFF57F17),
+            )
+
+        SnackbarType.Error ->
+            SnackbarColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                textColor = MaterialTheme.colorScheme.onErrorContainer,
+                progressBarColor = MaterialTheme.colorScheme.onErrorContainer,
+                actionColor = MaterialTheme.colorScheme.primary,
+                iconColor = MaterialTheme.colorScheme.error,
+            )
+    }
