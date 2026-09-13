@@ -1,10 +1,7 @@
 package com.github.ravenzip.berezaUI.core.components.checkbox
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
@@ -17,15 +14,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CheckboxWithText(
+fun Checkbox(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text: @Composable () -> Unit,
     enabled: Boolean = true,
     colors: CheckboxColors = CheckboxDefaults.colors(),
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
+    content: @Composable RowScope.() -> Unit,
 ) {
     Row(
         modifier =
@@ -35,6 +32,6 @@ fun CheckboxWithText(
     ) {
         Checkbox(checked = selected, onCheckedChange = null, enabled = enabled, colors = colors)
 
-        text()
+        content()
     }
 }

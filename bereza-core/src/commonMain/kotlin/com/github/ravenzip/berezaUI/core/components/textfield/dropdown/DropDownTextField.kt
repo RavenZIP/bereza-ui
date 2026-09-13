@@ -24,11 +24,11 @@ import com.github.ravenzip.berezaUI.core.data.*
 fun <T> DropDownTextFieldBox(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
+    modifier: Modifier = Modifier,
     keySelector: ((T) -> Any)? = null,
     expanded: Boolean,
     onExpandedChange: (DropDownExpandEvent) -> Unit,
     collapseAfterSelect: Boolean = true,
-    modifier: Modifier = Modifier,
     textField: @Composable (Modifier) -> Unit,
     itemContent: @Composable (T) -> Unit,
     emptyContent: @Composable () -> Unit,
@@ -74,7 +74,6 @@ fun <T> DropDownTextFieldBox(
                     if (sourceState.items.isEmpty()) {
                         DisabledDropDownMenuItem(text = emptyContent)
                     } else {
-                        // TODO попробовать перейти на LazyColumn
                         sourceState.items.forEach { item ->
                             val key = if (keySelector != null) keySelector(item) else item
 
@@ -113,10 +112,10 @@ fun <T> DropDownTextFieldBox(
 fun <T> DropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
-    keySelector: ((T) -> Any)? = null,
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keySelector: ((T) -> Any)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -178,10 +177,10 @@ fun <T> DropdownTextField(
 fun <T> OutlinedDropdownTextField(
     sourceState: SourceState<T>,
     onSelectItem: (T) -> Unit,
-    keySelector: ((T) -> Any)? = null,
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keySelector: ((T) -> Any)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     enabled: Boolean = true,
     readOnly: Boolean = false,

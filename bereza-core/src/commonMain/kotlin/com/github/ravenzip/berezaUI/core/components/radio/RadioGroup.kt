@@ -1,51 +1,55 @@
 package com.github.ravenzip.berezaUI.core.components.radio
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <T, K : Any> RadioGroup(
-    source: List<T>,
+fun <T> RadioGroup(
+    source: SnapshotStateList<T>,
     selectedItem: T,
-    onSelectedItemChange: (T) -> Unit,
-    keySelector: (T) -> K,
+    onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
-    text: @Composable (T) -> Unit,
+    key: (T) -> Any? = { it },
     enabled: Boolean = true,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    content: @Composable RowScope.(T) -> Unit,
 ) {
-    val selectedKey = remember(selectedItem) { keySelector(selectedItem) }
+    val selectedKey = remember(selectedItem) { key(selectedItem) }
 
-    LazyColumn(
+    Column(
         modifier = modifier,
         verticalArrangement = contentPadding,
-        userScrollEnabled = false,
     ) {
-        items(source, key = keySelector) { item ->
-            val itemKey = keySelector(item)
+        source.forEach { item ->
+            val itemKey = remember(key, item) { key(item) }
 
-            RadioButtonWithText(
-                selected = selectedKey == itemKey,
-                onClick = { onSelectedItemChange(item) },
-                text = { text(item) },
-                enabled = enabled,
-                padding = padding,
-                shape = shape,
-                colors = colors,
-            )
+            key(itemKey) {
+                RadioButton(
+                    selected = selectedKey == itemKey,
+                    onClick = { onSelectionItemChange(item) },
+                    enabled = enabled,
+                    padding = padding,
+                    shape = shape,
+                    colors = colors,
+                ) {
+                    content(item)
+                }
+            }
         }
     }
 }

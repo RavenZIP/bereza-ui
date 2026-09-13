@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 fun ExpandableCard(
     text: @Composable (() -> Unit),
     icon: @Composable (() -> Unit),
-    onExpandedChange: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier,
+    onExpandedChange: (Boolean) -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(10.dp),
     shape: Shape = CardDefaults.shape,
     colors: CardColors = CardDefaults.cardColors(),

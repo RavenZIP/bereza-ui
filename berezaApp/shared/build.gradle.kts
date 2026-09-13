@@ -7,12 +7,13 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
     jvm()
 
-    androidLibrary {
+    android {
         namespace = "com.github.ravenzip.berezaUI"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -24,7 +25,7 @@ kotlin {
         withHostTest { isIncludeAndroidResources = true }
     }
 
-    js(IR) { browser() }
+    js { browser() }
 
     @OptIn(ExperimentalWasmDsl::class) wasmJs { browser() }
 
@@ -39,14 +40,16 @@ kotlin {
         implementation(libs.androidx.lifecycle.viewmodelCompose)
         implementation(libs.androidx.lifecycle.runtimeCompose)
         implementation(libs.material.icons.extended)
+        implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+        implementation(libs.androidx.navigation3.ui)
+        implementation(libs.kotlinx.serialization.json)
 
         // Модули bereza ui
         implementation(projects.berezaCore)
-        implementation(projects.berezaReactive)
-        implementation(projects.berezaExtensions)
 
         // Модули других библиотек собственного производства
         implementation(libs.ravenzip.kotlinReactiveForms.core)
+        implementation(libs.ravenzip.compose.extensions)
 
         testImplementation(libs.kotlin.test)
     }
