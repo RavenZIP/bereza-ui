@@ -73,15 +73,17 @@ private class BerezaSnackbarVisualsImpl(
             actionLabel == other.actionLabel &&
             withDismissAction == other.withDismissAction &&
             duration == other.duration &&
-            icon == other.icon
+            icon == other.icon &&
+            type == other.type
     }
 
     override fun hashCode(): Int {
         var result = message.hashCode()
-        result = 31 * result + (actionLabel?.hashCode() ?: 0)
+        result = 31 * result + actionLabel.hashCode()
         result = 31 * result + withDismissAction.hashCode()
         result = 31 * result + duration.hashCode()
-        result = 31 * result + (icon?.hashCode() ?: 0)
+        result = 31 * result + icon.hashCode()
+        result = 31 * result + type.hashCode()
         return result
     }
 }
