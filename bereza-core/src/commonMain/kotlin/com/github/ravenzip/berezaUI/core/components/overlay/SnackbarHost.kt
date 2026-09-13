@@ -4,12 +4,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.SnackbarVisuals as Material3SnackbarVisuals
 
 @Composable
 fun SnackbarHost(
@@ -49,9 +53,8 @@ class SnackbarHostPosition(val alignment: Alignment, val padding: PaddingValues)
     }
 }
 
-interface BerezaSnackbarVisuals : SnackbarVisuals {
+interface SnackbarVisuals : Material3SnackbarVisuals {
     val icon: Painter?
-    val type: SnackbarType
 }
 
 private class BerezaSnackbarVisualsImpl(
@@ -60,8 +63,7 @@ private class BerezaSnackbarVisualsImpl(
     override val withDismissAction: Boolean,
     override val duration: SnackbarDuration,
     override val icon: Painter?,
-    override val type: SnackbarType,
-) : BerezaSnackbarVisuals {
+) : SnackbarVisuals {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -73,8 +75,7 @@ private class BerezaSnackbarVisualsImpl(
             actionLabel == other.actionLabel &&
             withDismissAction == other.withDismissAction &&
             duration == other.duration &&
-            icon == other.icon &&
-            type == other.type
+            icon == other.icon
     }
 
     override fun hashCode(): Int {
@@ -83,94 +84,6 @@ private class BerezaSnackbarVisualsImpl(
         result = 31 * result + withDismissAction.hashCode()
         result = 31 * result + duration.hashCode()
         result = 31 * result + icon.hashCode()
-        result = 31 * result + type.hashCode()
         return result
     }
-}
-
-suspend fun SnackbarHostState.showMessage(
-    message: String,
-    actionLabel: String? = null,
-    withDismissAction: Boolean = false,
-    duration: SnackbarDuration =
-        if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
-    icon: Painter? = null,
-    type: SnackbarType = SnackbarType.Default,
-): SnackbarResult =
-    showMessage(
-        BerezaSnackbarVisualsImpl(
-            message,
-            actionLabel,
-            withDismissAction,
-            duration,
-            icon,
-            type,
-        )
-    )
-
-suspend fun SnackbarHostState.showSuccess(
-    message: String,
-    actionLabel: String? = null,
-    withDismissAction: Boolean = false,
-    duration: SnackbarDuration =
-        if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
-    icon: Painter? = null,
-): SnackbarResult =
-    showMessage(
-        BerezaSnackbarVisualsImpl(
-            message,
-            actionLabel,
-            withDismissAction,
-            duration,
-            icon,
-            SnackbarType.Success,
-        )
-    )
-
-suspend fun SnackbarHostState.showWarning(
-    message: String,
-    actionLabel: String? = null,
-    withDismissAction: Boolean = false,
-    duration: SnackbarDuration =
-        if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
-    icon: Painter? = null,
-): SnackbarResult =
-    showMessage(
-        BerezaSnackbarVisualsImpl(
-            message,
-            actionLabel,
-            withDismissAction,
-            duration,
-            icon,
-            SnackbarType.Warning,
-        )
-    )
-
-suspend fun SnackbarHostState.showError(
-    message: String,
-    actionLabel: String? = null,
-    withDismissAction: Boolean = false,
-    duration: SnackbarDuration =
-        if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
-    icon: Painter? = null,
-): SnackbarResult =
-    showMessage(
-        BerezaSnackbarVisualsImpl(
-            message,
-            actionLabel,
-            withDismissAction,
-            duration,
-            icon,
-            SnackbarType.Error,
-        )
-    )
-
-suspend fun SnackbarHostState.showMessage(visuals: BerezaSnackbarVisuals): SnackbarResult =
-    showSnackbar(visuals)
-
-enum class SnackbarType {
-    Default,
-    Success,
-    Warning,
-    Error,
 }

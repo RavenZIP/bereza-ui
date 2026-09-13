@@ -6,10 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -85,17 +82,16 @@ fun Snackbar(
     actionOnNewLine: Boolean = false,
     minWidth: Dp = 400.dp,
     maxWidth: Dp = 600.dp,
-    colors: SnackbarColors? = null,
+    colors: SnackbarColors = SnackbarColors.Default,
     containerPadding: PaddingValues = PaddingValues(vertical = 10.dp, horizontal = 15.dp),
     iconTextSpacedBy: Dp = 10.dp,
     textActionNewLineSpacedBy: Dp = 10.dp,
     shape: Shape = RoundedCornerShape(14.dp),
     shadowElevation: Dp = 6.dp,
 ) {
-    val visuals = data.visuals as BerezaSnackbarVisuals
+    val visuals = data.visuals as SnackbarVisuals
     val actionLabel = visuals.actionLabel
     val icon = visuals.icon
-    val colors = colors ?: visuals.type.colors()
 
     val actionComposable: (@Composable () -> Unit)? =
         if (actionLabel != null) {
@@ -168,45 +164,57 @@ data class SnackbarColors(
     val progressBarColor: Color,
     val actionColor: Color,
     val iconColor: Color,
-)
+) {
+    companion object {
+        @Stable
+        val Default
+            @Composable
+            get() =
+                SnackbarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    textColor = MaterialTheme.colorScheme.onSurface,
+                    progressBarColor = MaterialTheme.colorScheme.onSurface,
+                    actionColor = MaterialTheme.colorScheme.primary,
+                    iconColor = MaterialTheme.colorScheme.onSurface,
+                )
 
-@Composable
-private fun SnackbarType.colors() =
-    when (this) {
-        SnackbarType.Default ->
-            SnackbarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                textColor = MaterialTheme.colorScheme.onSurface,
-                progressBarColor = MaterialTheme.colorScheme.onSurface,
-                actionColor = MaterialTheme.colorScheme.primary,
-                iconColor = MaterialTheme.colorScheme.onSurface,
-            )
+        @Stable
+        val Success
+            @Composable
+            get() =
+                SnackbarColors(
+                    containerColor = Color(0xFFE8F5E9),
+                    textColor = Color(0xFF1B5E20),
+                    progressBarColor = Color(0xFF1B5E20),
+                    actionColor = Color(0xFF2E7D32),
+                    iconColor = Color(0xFF2E7D32),
+                )
 
-        // TODO вынести куда-то
-        SnackbarType.Success ->
-            SnackbarColors(
-                containerColor = Color(0xFFE8F5E9),
-                textColor = Color(0xFF1B5E20),
-                progressBarColor = Color(0xFF1B5E20),
-                actionColor = Color(0xFF2E7D32),
-                iconColor = Color(0xFF2E7D32),
-            )
+        @Stable
+        val Warning
+            @Composable
+            get() =
+                SnackbarColors(
+                    containerColor = Color(0xFFFFF8E1),
+                    textColor = Color(0xFF5D4037),
+                    progressBarColor = Color(0xFF5D4037),
+                    actionColor = Color(0xFFF57F17),
+                    iconColor = Color(0xFFF57F17),
+                )
 
-        SnackbarType.Warning ->
-            SnackbarColors(
-                containerColor = Color(0xFFFFF8E1),
-                textColor = Color(0xFF5D4037),
-                progressBarColor = Color(0xFF5D4037),
-                actionColor = Color(0xFFF57F17),
-                iconColor = Color(0xFFF57F17),
-            )
-
-        SnackbarType.Error ->
-            SnackbarColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                textColor = MaterialTheme.colorScheme.onErrorContainer,
-                progressBarColor = MaterialTheme.colorScheme.onErrorContainer,
-                actionColor = MaterialTheme.colorScheme.primary,
-                iconColor = MaterialTheme.colorScheme.error,
-            )
+        @Stable
+        val Error
+            @Composable
+            get() =
+                SnackbarColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    textColor = MaterialTheme.colorScheme.onErrorContainer,
+                    progressBarColor = MaterialTheme.colorScheme.onErrorContainer,
+                    actionColor = MaterialTheme.colorScheme.error,
+                    iconColor = MaterialTheme.colorScheme.error,
+                )
     }
+}
+
+suspend fun SnackbarHostState.showMessage(visuals: SnackbarVisuals): SnackbarResult =
+    showSnackbar(visuals)
