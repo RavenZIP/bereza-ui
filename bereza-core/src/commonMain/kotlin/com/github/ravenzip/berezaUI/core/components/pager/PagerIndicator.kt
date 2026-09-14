@@ -2,63 +2,80 @@ package com.github.ravenzip.berezaUI.core.components.pager
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.style.PagerIndicatorStyle
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorColors
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorDefaults
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorShapes
 
 @Composable
 private fun PagerIndicator(
-    pagerState: PagerState,
-    selectedIndicatorConfig: PagerIndicatorStyle,
-    unselectedIndicatorConfig: PagerIndicatorStyle,
+    pageCount: Int,
+    currentPage: Int,
+    size: DpSize = DpSize(10.dp, 20.dp),
+    shapes: PagerIndicatorShapes = PagerIndicatorDefaults.roundedCornerShapes(),
+    colors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
 ) {
-    repeat(pagerState.pageCount) { page ->
-        val config =
-            if (pagerState.currentPage == page) selectedIndicatorConfig
-            else unselectedIndicatorConfig
 
-        Box(
-            modifier =
-                Modifier.padding(2.dp)
-                    .clip(config.shape)
-                    .background(config.color)
-                    .size(height = config.height.dp, width = config.width.dp)
-        )
+    ButtonDefaults.buttonColors()
+    repeat(pageCount) { page ->
+        val selected = page == currentPage
+        val color = if (selected) colors.selected else colors.unselected
+        val shape = if (selected) shapes.selected else shapes.unselected
+
+        Box(modifier = Modifier.padding(2.dp).clip(shape).background(color).size(size))
     }
 }
 
 @Composable
 fun HorizontalPagerIndicator(
-    pagerState: PagerState,
-    selectedIndicatorConfig: PagerIndicatorStyle = PagerIndicatorStyle.SelectedHorizontalRectangle,
-    unselectedIndicatorConfig: PagerIndicatorStyle =
-        PagerIndicatorStyle.UnselectedHorizontalRectangle,
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+    size: DpSize = DpSize(20.dp, 10.dp),
     spaceBetweenIndicators: Dp = 10.dp,
+    shapes: PagerIndicatorShapes = PagerIndicatorDefaults.roundedCornerShapes(),
+    colors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(spaceBetweenIndicators),
     ) {
-        PagerIndicator(pagerState, selectedIndicatorConfig, unselectedIndicatorConfig)
+        PagerIndicator(
+            pageCount = pageCount,
+            currentPage = currentPage,
+            size = size,
+            shapes = shapes,
+            colors = colors,
+        )
     }
 }
 
 @Composable
 fun VerticalPagerIndicator(
-    pagerState: PagerState,
-    selectedIndicatorConfig: PagerIndicatorStyle = PagerIndicatorStyle.SelectedVerticalRectangle,
-    unselectedIndicatorConfig: PagerIndicatorStyle =
-        PagerIndicatorStyle.UnselectedVerticalRectangle,
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+    size: DpSize = DpSize(10.dp, 20.dp),
     spaceBetweenIndicators: Dp = 10.dp,
+    shapes: PagerIndicatorShapes = PagerIndicatorDefaults.roundedCornerShapes(),
+    colors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
 ) {
     Column(
-        modifier = Modifier.fillMaxHeight(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(spaceBetweenIndicators),
     ) {
-        PagerIndicator(pagerState, selectedIndicatorConfig, unselectedIndicatorConfig)
+        PagerIndicator(
+            pageCount = pageCount,
+            currentPage = currentPage,
+            size = size,
+            shapes = shapes,
+            colors = colors,
+        )
     }
 }

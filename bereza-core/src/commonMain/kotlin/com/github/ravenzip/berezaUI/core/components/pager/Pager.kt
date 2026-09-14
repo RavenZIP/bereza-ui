@@ -4,9 +4,7 @@ import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.TargetedFlingBehavior
 import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.runtime.Composable
@@ -14,11 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.style.PagerIndicatorStyle
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorColors
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorDefaults
+import com.github.ravenzip.berezaUI.core.data.PagerIndicatorShapes
 
 @Composable
-fun VerticalHPagerWithIndicator(
+fun VerticalPagerWithIndicator(
     state: PagerState,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -34,8 +35,10 @@ fun VerticalHPagerWithIndicator(
         PagerDefaults.pageNestedScrollConnection(state, Orientation.Vertical),
     snapPosition: SnapPosition = SnapPosition.Start,
     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
-    selectedIndicatorStyle: PagerIndicatorStyle = PagerIndicatorStyle.SelectedVerticalRectangle,
-    unselectedIndicatorStyle: PagerIndicatorStyle = PagerIndicatorStyle.UnselectedVerticalRectangle,
+    indicatorSize: DpSize = DpSize(20.dp, 10.dp),
+    spaceBetweenIndicators: Dp = 10.dp,
+    indicatorShapes: PagerIndicatorShapes = PagerIndicatorDefaults.roundedCornerShapes(),
+    indicatorColors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
     pageContent: @Composable (PagerScope.(Int) -> Unit),
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -58,13 +61,15 @@ fun VerticalHPagerWithIndicator(
             pageContent(content)
         }
 
-        Box(modifier = Modifier.align(Alignment.CenterEnd)) {
-            VerticalPagerIndicator(
-                pagerState = state,
-                selectedIndicatorConfig = selectedIndicatorStyle,
-                unselectedIndicatorConfig = unselectedIndicatorStyle,
-            )
-        }
+        VerticalPagerIndicator(
+            pageCount = state.pageCount,
+            currentPage = state.currentPage,
+            modifier = Modifier.wrapContentHeight().fillMaxHeight().align(Alignment.CenterEnd),
+            size = indicatorSize,
+            spaceBetweenIndicators = spaceBetweenIndicators,
+            shapes = indicatorShapes,
+            colors = indicatorColors,
+        )
     }
 }
 
@@ -85,9 +90,10 @@ fun HorizontalPagerWithIndicator(
         PagerDefaults.pageNestedScrollConnection(state, Orientation.Vertical),
     snapPosition: SnapPosition = SnapPosition.Start,
     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
-    selectedIndicatorStyle: PagerIndicatorStyle = PagerIndicatorStyle.SelectedHorizontalRectangle,
-    unselectedIndicatorStyle: PagerIndicatorStyle =
-        PagerIndicatorStyle.UnselectedHorizontalRectangle,
+    indicatorSize: DpSize = DpSize(20.dp, 10.dp),
+    spaceBetweenIndicators: Dp = 10.dp,
+    indicatorShapes: PagerIndicatorShapes = PagerIndicatorDefaults.roundedCornerShapes(),
+    indicatorColors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
     pageContent: @Composable (PagerScope.(Int) -> Unit),
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -110,12 +116,14 @@ fun HorizontalPagerWithIndicator(
             pageContent(content)
         }
 
-        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-            HorizontalPagerIndicator(
-                pagerState = state,
-                selectedIndicatorConfig = selectedIndicatorStyle,
-                unselectedIndicatorConfig = unselectedIndicatorStyle,
-            )
-        }
+        HorizontalPagerIndicator(
+            pageCount = state.pageCount,
+            currentPage = state.currentPage,
+            modifier = Modifier.wrapContentWidth().fillMaxWidth().align(Alignment.BottomCenter),
+            size = indicatorSize,
+            spaceBetweenIndicators = spaceBetweenIndicators,
+            shapes = indicatorShapes,
+            colors = indicatorColors,
+        )
     }
 }
