@@ -81,7 +81,7 @@ fun HorizontalPagerWithIndicator(
     pageSize: PageSize = PageSize.Fill,
     beyondViewportPageCount: Int = PagerDefaults.BeyondViewportPageCount,
     pageSpacing: Dp = 0.dp,
-    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     flingBehavior: TargetedFlingBehavior = PagerDefaults.flingBehavior(state = state),
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
@@ -97,14 +97,14 @@ fun HorizontalPagerWithIndicator(
     pageContent: @Composable (PagerScope.(Int) -> Unit),
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        VerticalPager(
+        HorizontalPager(
             state = state,
             modifier = modifier,
             contentPadding = contentPadding,
             pageSize = pageSize,
             beyondViewportPageCount = beyondViewportPageCount,
             pageSpacing = pageSpacing,
-            horizontalAlignment = horizontalAlignment,
+            verticalAlignment = verticalAlignment,
             flingBehavior = flingBehavior,
             userScrollEnabled = userScrollEnabled,
             reverseLayout = reverseLayout,
