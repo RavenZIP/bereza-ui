@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.core.components.textfield.basic
+package com.github.ravenzip.berezaUI.core.components.textfield
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,12 +14,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.FocusLostEffect
+import com.github.ravenzip.berezaUI.core.components.textfield.basic.TextFieldSupportingRow
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
 @Composable
-fun BasicTextField(
+fun TextFieldWithSupportingRow(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -28,7 +29,7 @@ fun BasicTextField(
     mayHaveAnError: Boolean = true,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
-    onTouchedChange: () -> Unit,
+    onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -48,7 +49,7 @@ fun BasicTextField(
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchedChange)
+    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     TextField(
         value = value,
@@ -73,7 +74,7 @@ fun BasicTextField(
         supportingText =
             if (mayHaveAnError || showTextLengthCounter) {
                 {
-                    BasicTextFieldSupportingRow(
+                    TextFieldSupportingRow(
                         errorMessage = errorMessage,
                         showTextLengthCounter = showTextLengthCounter,
                         showTextLengthCounterIfZero = showTextLengthCounterIfZero,
@@ -95,7 +96,7 @@ fun BasicTextField(
 }
 
 @Composable
-fun BasicOutlinedTextField(
+fun OutlinedTextFieldWithSupportingRow(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -104,7 +105,7 @@ fun BasicOutlinedTextField(
     mayHaveAnError: Boolean = true,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
-    onTouchedChange: () -> Unit,
+    onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -124,7 +125,7 @@ fun BasicOutlinedTextField(
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
 
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchedChange)
+    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     OutlinedTextField(
         value = value,
@@ -149,7 +150,7 @@ fun BasicOutlinedTextField(
         supportingText =
             if (mayHaveAnError || showTextLengthCounter) {
                 {
-                    BasicTextFieldSupportingRow(
+                    TextFieldSupportingRow(
                         errorMessage = errorMessage,
                         showTextLengthCounter = showTextLengthCounter,
                         showTextLengthCounterIfZero = showTextLengthCounterIfZero,

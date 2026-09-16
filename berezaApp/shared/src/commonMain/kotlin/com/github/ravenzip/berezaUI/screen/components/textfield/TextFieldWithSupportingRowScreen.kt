@@ -8,17 +8,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.components.textfield.SingleLineTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedTextFieldWithSupportingRow
+import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
 @Composable
-fun SingleLineTextFieldScreen(navigationViewModel: RootNavigationViewModel) {
+fun TextFieldWithSupportingRowScreen(navigationViewModel: RootNavigationViewModel) {
     var firstValue by remember { mutableStateOf("") }
     var secondValue by remember { mutableStateOf("") }
 
     ComponentScreen(
-        title = "SingleLineTextField",
+        title = "TextFieldWithSupportingRow",
         description = "Текстовое поле для ввода однострочного текста.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
@@ -26,13 +26,13 @@ fun SingleLineTextFieldScreen(navigationViewModel: RootNavigationViewModel) {
                 modifier = Modifier.padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                SingleLineTextField(
+                TextFieldWithSupportingRow(
                     value = firstValue,
                     onValueChange = { x -> firstValue = x },
                     label = { Text("SingleLineTextField") },
                 )
 
-                OutlinedSingleLineTextField(
+                OutlinedTextFieldWithSupportingRow(
                     value = secondValue,
                     onValueChange = { x -> secondValue = x },
                     label = { Text("OutlinedSingleLineTextField") },

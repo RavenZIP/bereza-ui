@@ -18,8 +18,7 @@ import com.github.ravenzip.berezaUI.screen.components.switch.SwitchGroupScreen
 import com.github.ravenzip.berezaUI.screen.components.switch.SwitchWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.AutocompleteTextFieldScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.DropDownTextFieldScreen
-import com.github.ravenzip.berezaUI.screen.components.textfield.MultiLineTextFieldScreen
-import com.github.ravenzip.berezaUI.screen.components.textfield.SingleLineTextFieldScreen
+import com.github.ravenzip.berezaUI.screen.components.textfield.TextFieldWithSupportingRowScreen
 import com.github.ravenzip.berezaUI.screen.layout.ExpandableCardScreen
 import com.github.ravenzip.berezaUI.screen.layout.HorizontalPagerWithIndicatorScreen
 import com.github.ravenzip.berezaUI.screen.layout.RoundedBoxScreen
@@ -48,12 +47,8 @@ fun RootNavigation(
                     }
 
                     // Текстовые поля
-                    is Screen.SingleLineTextField -> {
-                        SingleLineTextFieldScreen(navigationViewModel)
-                    }
-
-                    is Screen.MultiLineTextField -> {
-                        MultiLineTextFieldScreen(navigationViewModel)
+                    is Screen.TextFieldWithSupportingRow -> {
+                        TextFieldWithSupportingRowScreen(navigationViewModel)
                     }
 
                     is Screen.DropDownTextField -> {

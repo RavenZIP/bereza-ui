@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedSingleLineTextField
-import com.github.ravenzip.berezaUI.core.components.textfield.SingleLineTextField
+import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedTextFieldWithSupportingRow
+import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.data.*
 
 // TODO ограничить максимальное число видимых элементов в выпадающем списке (желательно через
@@ -146,7 +146,7 @@ fun <T> DropdownTextField(
         collapseAfterSelect = collapseAfterSelect,
         modifier = modifier,
         textField = { menuAnchor ->
-            SingleLineTextField(
+            TextFieldWithSupportingRow(
                 value = text,
                 onValueChange = { x -> onTextChange(x) },
                 modifier = Modifier.then(menuAnchor),
@@ -211,7 +211,7 @@ fun <T> OutlinedDropdownTextField(
         collapseAfterSelect = collapseAfterSelect,
         modifier = modifier,
         textField = { menuAnchor ->
-            OutlinedSingleLineTextField(
+            OutlinedTextFieldWithSupportingRow(
                 value = text,
                 onValueChange = { x -> onTextChange(x) },
                 modifier = Modifier.then(menuAnchor),
