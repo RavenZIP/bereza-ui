@@ -25,7 +25,8 @@ fun RadioButton(
     content: @Composable RowScope.() -> Unit,
 ) {
     Row(
-        modifier = modifier.clip(shape).clickable { onClick() }.padding(padding),
+        modifier =
+            modifier.clip(shape).clickable(enabled = enabled, onClick = onClick).padding(padding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
