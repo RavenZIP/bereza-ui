@@ -27,6 +27,10 @@ sealed interface Screen : NavKey {
 
     @Serializable data object ExpandableCard : Screen, NavKey
 
+    @Serializable data object HorizontalPagerWithIndicator : Screen, NavKey
+
+    @Serializable data object VerticalPagerWithIndicator : Screen, NavKey
+
     @Serializable data object RoundedBox : Screen, NavKey
 
     @Serializable data object SwitchWithText : Screen, NavKey
