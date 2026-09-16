@@ -123,6 +123,33 @@ fun ComponentScreen(
     }
 }
 
+// TODO будет ли отличаться? Может стоит перейти на общую функцию,
+//  если нет отличий (но тогда скорее всего придется убирать LazyColumn из ComponentScreen)
+@Composable
+fun LayoutScreen(
+    title: String,
+    description: String,
+    goBack: () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(15.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+    ) {
+        ComponentScreenGroup {
+            Text(text = title, fontSize = 20.sp, fontWeight = FontWeight.W500)
+            Text(description)
+        }
+
+        ComponentScreenGroup {
+            Text(text = "Примеры", fontWeight = FontWeight.W600)
+            content()
+        }
+
+        SimpleButton(onClick = goBack, text = "Назад")
+    }
+}
+
 @Composable
 private fun ComponentScreenGroup(content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
