@@ -4,7 +4,9 @@ import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.TargetedFlingBehavior
 import androidx.compose.foundation.gestures.snapping.SnapPosition
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.runtime.Composable
@@ -41,10 +43,10 @@ fun VerticalPagerWithIndicator(
     indicatorColors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
     pageContent: @Composable (PagerScope.(Int) -> Unit),
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier) {
         VerticalPager(
             state = state,
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
             pageSize = pageSize,
             beyondViewportPageCount = beyondViewportPageCount,
@@ -64,7 +66,7 @@ fun VerticalPagerWithIndicator(
         VerticalPagerIndicator(
             pageCount = state.pageCount,
             currentPage = state.currentPage,
-            modifier = Modifier.wrapContentHeight().fillMaxHeight().align(Alignment.CenterEnd),
+            modifier = Modifier.align(Alignment.CenterEnd),
             size = indicatorSize,
             spaceBetweenIndicators = spaceBetweenIndicators,
             shapes = indicatorShapes,
@@ -96,10 +98,10 @@ fun HorizontalPagerWithIndicator(
     indicatorColors: PagerIndicatorColors = PagerIndicatorDefaults.colors(),
     pageContent: @Composable (PagerScope.(Int) -> Unit),
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier) {
         HorizontalPager(
             state = state,
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
             pageSize = pageSize,
             beyondViewportPageCount = beyondViewportPageCount,
@@ -119,7 +121,7 @@ fun HorizontalPagerWithIndicator(
         HorizontalPagerIndicator(
             pageCount = state.pageCount,
             currentPage = state.currentPage,
-            modifier = Modifier.wrapContentWidth().fillMaxWidth().align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter),
             size = indicatorSize,
             spaceBetweenIndicators = spaceBetweenIndicators,
             shapes = indicatorShapes,
