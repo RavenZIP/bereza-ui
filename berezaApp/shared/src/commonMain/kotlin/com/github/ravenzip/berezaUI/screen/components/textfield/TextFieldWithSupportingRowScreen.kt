@@ -10,12 +10,15 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedTextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
+import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
+import com.github.ravenzip.compose.material3.SimpleButton
 
 @Composable
 fun TextFieldWithSupportingRowScreen(navigationViewModel: RootNavigationViewModel) {
     var firstValue by remember { mutableStateOf("") }
     var secondValue by remember { mutableStateOf("") }
+    val errorState = remember { mutableStateOf<ComponentErrorState>(ComponentErrorState.Ok) }
 
     ComponentScreen(
         title = "TextFieldWithSupportingRow",
@@ -30,12 +33,28 @@ fun TextFieldWithSupportingRowScreen(navigationViewModel: RootNavigationViewMode
                     value = firstValue,
                     onValueChange = { x -> firstValue = x },
                     label = { Text("SingleLineTextField") },
+                    showTextLengthCounter = true,
+                    reserveSupportingContentSpace = false,
                 )
 
                 OutlinedTextFieldWithSupportingRow(
                     value = secondValue,
                     onValueChange = { x -> secondValue = x },
                     label = { Text("OutlinedSingleLineTextField") },
+                    errorState = errorState.value,
+                    reserveSupportingContentSpace = false,
+                )
+
+                SimpleButton(
+                    {
+                        errorState.value =
+                            when (errorState.value) {
+                                ComponentErrorState.Ok ->
+                                    ComponentErrorState.Error("Введено неверное кол-во символов")
+                                else -> ComponentErrorState.Ok
+                            }
+                    },
+                    "Показать/скрыть ошибку",
                 )
             }
         },

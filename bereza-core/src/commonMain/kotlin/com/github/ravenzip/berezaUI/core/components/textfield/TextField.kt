@@ -1,5 +1,7 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -7,18 +9,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.FocusLostEffect
-import com.github.ravenzip.berezaUI.core.components.textfield.basic.TextFieldSupportingRow
+import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
+import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
+import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
+/**
+ * @param reserveSupportingContentSpace резервирует место под дополнительный контент снизу
+ *   текстового поля. Если false, то компонент сам вычисляет исходя из [showTextLengthCounter],
+ *   текущего [value] и [showTextLengthCounterIfZero] или исходя из [errorState], а затем анимирует
+ *   вычисленный контент
+ */
 @Composable
 fun TextFieldWithSupportingRow(
     value: String,
@@ -26,7 +42,7 @@ fun TextFieldWithSupportingRow(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readonly: Boolean = false,
-    mayHaveAnError: Boolean = true,
+    reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
@@ -51,50 +67,62 @@ fun TextFieldWithSupportingRow(
 
     FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
-    TextField(
-        value = value,
-        onValueChange = { x ->
-            if (canAddCharacter(currentLength = x.length, maxLength = maxLength)) {
-                onValueChange(x)
-            }
-        },
-        modifier =
-            modifier.onFocusChanged { x ->
-                isFocused.value = x.isFocused
-                onFocusChange(x)
-            },
-        enabled = enabled,
-        readOnly = readonly,
-        maxLines = maxLines,
-        minLines = minLines,
-        label = label,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        supportingText =
-            if (mayHaveAnError || showTextLengthCounter) {
-                {
-                    TextFieldSupportingRow(
-                        errorMessage = errorMessage,
-                        showTextLengthCounter = showTextLengthCounter,
-                        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
-                        value = value,
-                        maxLength = maxLength,
-                        error = isError,
-                        focused = isFocused.value,
-                        colors = colors,
-                    )
+    Box(modifier = Modifier.animateContentSizeIf(!reserveSupportingContentSpace)) {
+        TextField(
+            value = value,
+            onValueChange = { x ->
+                if (canAddCharacter(currentLength = x.length, maxLength = maxLength)) {
+                    onValueChange(x)
                 }
-            } else null,
-        isError = isError,
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        singleLine = singleLine,
-        shape = shape,
-        colors = colors,
-    )
+            },
+            modifier =
+                modifier.onFocusChanged { x ->
+                    isFocused.value = x.isFocused
+                    onFocusChange(x)
+                },
+            enabled = enabled,
+            readOnly = readonly,
+            maxLines = maxLines,
+            minLines = minLines,
+            label = label,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            supportingText =
+                if (
+                    reserveSupportingContentSpace ||
+                        errorMessage.isNotEmpty() ||
+                        showTextLengthCounter && (value.isNotEmpty() || showTextLengthCounterIfZero)
+                ) {
+                    {
+                        TextFieldSupportingRow(
+                            errorMessage = errorMessage,
+                            showTextLengthCounter = showTextLengthCounter,
+                            showTextLengthCounterIfZero = showTextLengthCounterIfZero,
+                            value = value,
+                            maxLength = maxLength,
+                            error = isError,
+                            focused = isFocused.value,
+                            colors = colors,
+                        )
+                    }
+                } else null,
+            isError = isError,
+            visualTransformation = visualTransformation,
+            keyboardOptions = keyboardOptions,
+            singleLine = singleLine,
+            shape = shape,
+            colors = colors,
+        )
+    }
 }
 
+/**
+ * @param reserveSupportingContentSpace резервирует место под дополнительный контент снизу
+ *   текстового поля. Если false, то компонент сам вычисляет исходя из [showTextLengthCounter],
+ *   текущего [value] и [showTextLengthCounterIfZero] или исходя из [errorState], а затем анимирует
+ *   вычисленный контент
+ */
 @Composable
 fun OutlinedTextFieldWithSupportingRow(
     value: String,
@@ -102,7 +130,7 @@ fun OutlinedTextFieldWithSupportingRow(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readonly: Boolean = false,
-    mayHaveAnError: Boolean = true,
+    reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
@@ -127,46 +155,117 @@ fun OutlinedTextFieldWithSupportingRow(
 
     FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
-    OutlinedTextField(
-        value = value,
-        onValueChange = { x ->
-            if (canAddCharacter(currentLength = x.length, maxLength = maxLength)) {
-                onValueChange(x)
-            }
-        },
-        modifier =
-            modifier.onFocusChanged { x ->
-                isFocused.value = x.isFocused
-                onFocusChange(x)
-            },
-        enabled = enabled,
-        readOnly = readonly,
-        maxLines = maxLines,
-        minLines = minLines,
-        label = label,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        supportingText =
-            if (mayHaveAnError || showTextLengthCounter) {
-                {
-                    TextFieldSupportingRow(
-                        errorMessage = errorMessage,
-                        showTextLengthCounter = showTextLengthCounter,
-                        showTextLengthCounterIfZero = showTextLengthCounterIfZero,
-                        value = value,
-                        maxLength = maxLength,
-                        error = isError,
-                        focused = isFocused.value,
-                        colors = colors,
-                    )
+    Box(modifier = Modifier.animateContentSizeIf(!reserveSupportingContentSpace)) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { x ->
+                if (canAddCharacter(currentLength = x.length, maxLength = maxLength)) {
+                    onValueChange(x)
                 }
-            } else null,
-        isError = isError,
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        singleLine = singleLine,
-        shape = shape,
-        colors = colors,
-    )
+            },
+            modifier =
+                modifier.onFocusChanged { x ->
+                    isFocused.value = x.isFocused
+                    onFocusChange(x)
+                },
+            enabled = enabled,
+            readOnly = readonly,
+            maxLines = maxLines,
+            minLines = minLines,
+            label = label,
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            supportingText =
+                if (
+                    reserveSupportingContentSpace ||
+                        errorMessage.isNotEmpty() ||
+                        showTextLengthCounter && (value.isNotEmpty() || showTextLengthCounterIfZero)
+                ) {
+                    {
+                        TextFieldSupportingRow(
+                            errorMessage = errorMessage,
+                            showTextLengthCounter = showTextLengthCounter,
+                            showTextLengthCounterIfZero = showTextLengthCounterIfZero,
+                            value = value,
+                            maxLength = maxLength,
+                            error = isError,
+                            focused = isFocused.value,
+                            colors = colors,
+                        )
+                    }
+                } else null,
+            isError = isError,
+            visualTransformation = visualTransformation,
+            keyboardOptions = keyboardOptions,
+            singleLine = singleLine,
+            shape = shape,
+            colors = colors,
+        )
+    }
+}
+
+private fun Modifier.animateContentSizeIf(condition: Boolean) =
+    if (condition) animateContentSize() else this
+
+@Composable
+private fun TextFieldSupportingRow(
+    errorMessage: String,
+    showTextLengthCounter: Boolean,
+    showTextLengthCounterIfZero: Boolean,
+    value: String,
+    maxLength: Int?,
+    error: Boolean,
+    focused: Boolean,
+    colors: TextFieldColors,
+) {
+    val minHeight = rememberSupportingTextHeight()
+
+    /**
+     * minHeight нужно вычислить для того, чтобы корректно среагировать на появление анимированного
+     * контента. [Row] сразу будет отрисован, тогда как [HintText] и [CounterLabel] отрисовываются
+     * по условию, которое не факт, что в момент отображения [Row] выполнено
+     */
+    Row(
+        modifier = Modifier.fillMaxWidth().heightIn(minHeight),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        AnimatedVisibility(
+            visible = errorMessage.isNotEmpty(),
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
+        ) {
+            HintText(text = errorMessage, color = colors.errorLabelColor)
+        }
+
+        AnimatedVisibility(
+            visible = showTextLengthCounter && (value.isNotEmpty() || showTextLengthCounterIfZero),
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
+        ) {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                CounterLabel(
+                    current = value.length,
+                    max = maxLength,
+                    color = colors.calculateLabelColor(invalid = error, focused = focused),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun rememberSupportingTextHeight(): Dp {
+    val textMeasurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+
+    val result =
+        textMeasurer.measure(
+            text = "M",
+            style = TextStyle(fontSize = 12.sp),
+        )
+
+    return with(density) {
+        result.size.height.toDp()
+    }
 }
