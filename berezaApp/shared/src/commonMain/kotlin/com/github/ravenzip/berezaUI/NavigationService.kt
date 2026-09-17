@@ -9,8 +9,7 @@ class RootNavigationViewModel : ViewModel() {
 
     val componentScreens =
         mutableStateListOf(
-            Screen.SingleLineTextField,
-            Screen.MultiLineTextField,
+            Screen.TextFieldWithSupportingRow,
             Screen.DropDownTextField,
             Screen.AutocompleteTextField,
             Screen.SwitchWithText,
