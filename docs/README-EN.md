@@ -11,15 +11,35 @@
 </p>
 
 > 🌐 **Languages:**  
->  [English](README-EN.md) | [Русский](../README.md)
+> [English](README-EN.md) | [Русский](../README.md)
 
 ## 🔎 What is Bereza UI?
 
-Coming soon...
+Bereza UI is a component library for Compose Multiplatform that extends the Material3 library,
+providing additional UI components and tools not found in the Material library.
 
 ## 🌍 Supported platforms
 
 Coming soon...
+
+## 🌳 Project Structure
+
+### - bereza-core
+
+The library's core module.
+
+### - berezaApp
+
+A demo application for the library. It allows you to launch Bereza UI, explore available components, and test their
+functionality in real-world scenarios.
+
+### - docs
+
+Project documentation.
+
+### - images
+
+Images used in the README and documentation.
 
 ## 🚀 Installation
 
@@ -65,7 +85,7 @@ dependencies {
 
 ## 🚬 Using
 
-Coming Soon...
+Coming Soon... See berezaApp module
 
 ## 📜 License
 
