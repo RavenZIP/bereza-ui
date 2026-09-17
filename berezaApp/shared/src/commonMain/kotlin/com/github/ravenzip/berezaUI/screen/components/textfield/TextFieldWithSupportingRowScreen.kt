@@ -32,7 +32,7 @@ fun TextFieldWithSupportingRowScreen(navigationViewModel: RootNavigationViewMode
                 TextFieldWithSupportingRow(
                     value = firstValue,
                     onValueChange = { x -> firstValue = x },
-                    label = { Text("SingleLineTextField") },
+                    label = { Text("TextFieldWithSupportingRow") },
                     showTextLengthCounter = true,
                     reserveSupportingContentSpace = false,
                 )
