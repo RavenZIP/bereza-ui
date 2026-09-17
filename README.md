@@ -2,8 +2,8 @@
 
 <img alt="Logo" src="images/logo.png" width="100%">
 
-<img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.3.10-A831F5">
-<img alt="Compose Multiplatform" src="https://img.shields.io/badge/Compose Multiplatform-1.10.1-3b83f8">
+<img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.4.20-A831F5">
+<img alt="Compose Multiplatform" src="https://img.shields.io/badge/Compose Multiplatform-1.12.0-3b83f8">
 <img alt="Static Badge" src="https://img.shields.io/badge/API-24+-39ad31">
 <a href="https://jitpack.io/#RavenZIP/bereza-ui">
   <img src="https://jitpack.io/v/RavenZIP/bereza-ui.svg">
