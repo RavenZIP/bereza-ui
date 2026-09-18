@@ -4,21 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AutocompleteTextField
-import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.OutlinedAutocompleteTextField
 import com.github.ravenzip.berezaUI.core.data.SourceState
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 
 class AutocompleteTextFieldScreenViewModel : ViewModel() {
     val source =
@@ -85,47 +81,49 @@ fun AutocompleteTextFieldScreen(
                 modifier = Modifier.padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                AutocompleteTextField(
-                    selected = firstValue,
-                    sourceState = firstSourceState,
-                    onSelectItem = { x ->
-                        coroutineScope.launch { screenViewModel.firstValueChanged.emit(x) }
-                    },
-                    onClearSelected = {
-                        coroutineScope.launch {
-                            screenViewModel.firstValueChanged.emit(EMPTY_SAMPLE)
-                        }
-                    },
-                    itemToString = { x -> x.name },
-                    onTextChange = {
-                        coroutineScope.launch {
-                            screenViewModel.firstTextChanged.emit(it)
-                        }
-                    },
-                    dropDownMenuItemContent = { x -> Text(x.name) },
-                    dropDownMenuEmptyContent = { Text("Нет результатов") },
-                )
-
-                OutlinedAutocompleteTextField(
-                    selected = secondValue,
-                    sourceState = secondSourceState,
-                    onSelectItem = { x ->
-                        coroutineScope.launch { screenViewModel.secondValueChanged.emit(x) }
-                    },
-                    onClearSelected = {
-                        coroutineScope.launch {
-                            screenViewModel.secondValueChanged.emit(EMPTY_SAMPLE)
-                        }
-                    },
-                    itemToString = { x -> x.name },
-                    onTextChange = {
-                        coroutineScope.launch {
-                            screenViewModel.secondTextChanged.emit(it)
-                        }
-                    },
-                    dropDownMenuItemContent = { x -> Text(x.name) },
-                    dropDownMenuEmptyContent = { Text("Нет результатов") },
-                )
+                //                AutocompleteTextField(
+                //                    selected = firstValue,
+                //                    sourceState = firstSourceState,
+                //                    onSelectItem = { x ->
+                //                        coroutineScope.launch {
+                // screenViewModel.firstValueChanged.emit(x) }
+                //                    },
+                //                    onClearSelected = {
+                //                        coroutineScope.launch {
+                //                            screenViewModel.firstValueChanged.emit(EMPTY_SAMPLE)
+                //                        }
+                //                    },
+                //                    itemToString = { x -> x.name },
+                //                    onTextChange = {
+                //                        coroutineScope.launch {
+                //                            screenViewModel.firstTextChanged.emit(it)
+                //                        }
+                //                    },
+                //                    dropDownMenuItemContent = { x -> Text(x.name) },
+                //                    dropDownMenuEmptyContent = { Text("Нет результатов") },
+                //                )
+                //
+                //                OutlinedAutocompleteTextField(
+                //                    selected = secondValue,
+                //                    sourceState = secondSourceState,
+                //                    onSelectItem = { x ->
+                //                        coroutineScope.launch {
+                // screenViewModel.secondValueChanged.emit(x) }
+                //                    },
+                //                    onClearSelected = {
+                //                        coroutineScope.launch {
+                //                            screenViewModel.secondValueChanged.emit(EMPTY_SAMPLE)
+                //                        }
+                //                    },
+                //                    itemToString = { x -> x.name },
+                //                    onTextChange = {
+                //                        coroutineScope.launch {
+                //                            screenViewModel.secondTextChanged.emit(it)
+                //                        }
+                //                    },
+                //                    dropDownMenuItemContent = { x -> Text(x.name) },
+                //                    dropDownMenuEmptyContent = { Text("Нет результатов") },
+                //                )
             }
         },
     )

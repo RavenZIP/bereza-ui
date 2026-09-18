@@ -3,7 +3,5 @@ package com.github.ravenzip.berezaUI.core.data
 sealed class SourceState<out T> {
     object Loading : SourceState<Nothing>()
 
-    object Idle : SourceState<Nothing>()
-
     data class Content<T>(val items: List<T>) : SourceState<T>()
 }

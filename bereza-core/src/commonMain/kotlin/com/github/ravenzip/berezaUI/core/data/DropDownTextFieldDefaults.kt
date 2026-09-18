@@ -14,36 +14,24 @@ class DropDownTextFieldColors(
     val menuColors: DropDownMenuColors,
 )
 
+@Immutable class DropDownMenuColors(val containerColor: Color, val borderColor: Color? = null)
+
 @Immutable
 object DropDownTextFieldDefaults {
     @Composable
     fun colors(): DropDownTextFieldColors = DropDownTextFieldColors(textFieldColors(), menuColors())
 
+    @Composable
+    fun outlinedColors(): DropDownTextFieldColors =
+        DropDownTextFieldColors(outlinedTextFieldColors(), outlinedMenuColors())
+
     @Composable fun textFieldColors(): TextFieldColors = TextFieldDefaults.colors()
 
+    @Composable fun outlinedTextFieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors()
+
     @Composable fun menuColors(): DropDownMenuColors = DropDownMenuDefaults.colors()
-}
 
-@Immutable
-object OutlinedDropDownTextFieldDefaults {
-    @Composable
-    fun colors(): DropDownTextFieldColors = DropDownTextFieldColors(textFieldColors(), menuColors())
-
-    @Composable fun textFieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors()
-
-    @Composable fun menuColors(): DropDownMenuColors = OutlinedDropDownMenuDefaults.colors()
-}
-
-@Immutable class DropDownMenuColors(val containerColor: Color, val borderColor: Color? = null)
-
-@Immutable
-object OutlinedDropDownMenuDefaults {
-    @Composable
-    fun colors(): DropDownMenuColors =
-        DropDownMenuColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            borderColor = OutlinedTextFieldDefaults.colors().focusedLabelColor,
-        )
+    @Composable fun outlinedMenuColors(): DropDownMenuColors = DropDownMenuDefaults.outlinedColors()
 }
 
 @Immutable
@@ -51,4 +39,11 @@ object DropDownMenuDefaults {
     @Composable
     fun colors(): DropDownMenuColors =
         DropDownMenuColors(containerColor = MaterialTheme.colorScheme.surface)
+
+    @Composable
+    fun outlinedColors(): DropDownMenuColors =
+        DropDownMenuColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            borderColor = OutlinedTextFieldDefaults.colors().focusedLabelColor,
+        )
 }

@@ -1,12 +1,9 @@
 package com.github.ravenzip.berezaUI.screen.components.textfield
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.DropdownTextField
-import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.OutlinedDropdownTextField
 import com.github.ravenzip.berezaUI.core.data.SourceState
 import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
 import com.github.ravenzip.berezaUI.data.Sample
@@ -53,7 +50,7 @@ class DropDownTextFieldViewModel : ViewModel() {
 @Composable
 fun DropDownTextFieldScreen(
     navigationViewModel: RootNavigationViewModel,
-    screenViewModel: DropDownTextFieldViewModel = remember { DropDownTextFieldViewModel() },
+    screenViewModel: SelectScreenViewModel = remember { SelectScreenViewModel() },
 ) {
     val firstSourceState by screenViewModel.firstSourceState.collectAsState()
     val secondSourceState by screenViewModel.secondSourceState.collectAsState()
@@ -63,29 +60,29 @@ fun DropDownTextFieldScreen(
         description = "Текстовое поле с выпадающим списком.",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            DropdownTextField(
-                sourceState = firstSourceState,
-                text = screenViewModel.firstDropDownText,
-                onTextChange = { screenViewModel.firstDropDownText = it },
-                onSelectItem = { x ->
-                    screenViewModel.firstDropDownValue = x
-                    screenViewModel.firstDropDownText = x.name
-                },
-                dropDownMenuItemContent = { x -> Text(x.name) },
-                dropDownMenuEmptyContent = { Text("Нет результатов") },
-            )
-
-            OutlinedDropdownTextField(
-                sourceState = secondSourceState,
-                text = screenViewModel.secondDropDownText,
-                onTextChange = { screenViewModel.secondDropDownText = it },
-                onSelectItem = { x ->
-                    screenViewModel.secondDropDownValue = x
-                    screenViewModel.secondDropDownText = x.name
-                },
-                dropDownMenuItemContent = { x -> Text(x.name) },
-                dropDownMenuEmptyContent = { Text("Нет результатов") },
-            )
+            //            Combobox(
+            //                sourceState = firstSourceState,
+            //                text = screenViewModel.firstDropDownText,
+            //                onTextChange = { screenViewModel.firstDropDownText = it },
+            //                onSelectItem = { x ->
+            //                    screenViewModel.firstDropDownValue = x
+            //                    screenViewModel.firstDropDownText = x.name
+            //                },
+            //                dropDownMenuItemContent = { x -> Text(x.name) },
+            //                dropDownMenuEmptyContent = { Text("Нет результатов") },
+            //            )
+            //
+            //            OutlinedDropdownTextField(
+            //                sourceState = secondSourceState,
+            //                text = screenViewModel.secondDropDownText,
+            //                onTextChange = { screenViewModel.secondDropDownText = it },
+            //                onSelectItem = { x ->
+            //                    screenViewModel.secondDropDownValue = x
+            //                    screenViewModel.secondDropDownText = x.name
+            //                },
+            //                dropDownMenuItemContent = { x -> Text(x.name) },
+            //                dropDownMenuEmptyContent = { Text("Нет результатов") },
+            //            )
         },
     )
 }
