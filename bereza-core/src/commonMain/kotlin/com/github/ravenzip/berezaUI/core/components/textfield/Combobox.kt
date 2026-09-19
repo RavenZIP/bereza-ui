@@ -114,5 +114,5 @@ fun <T> Combobox(
     )
 }
 
-// TODO
+// TODO ориентироваться на реализацию Combobox + MultiSelect
 @Composable fun MultiCombobox() {}

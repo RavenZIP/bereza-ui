@@ -117,6 +117,7 @@ fun <T> MultiSelect(
         onExpandedChange = { event -> expanded = event.isExpanded() },
         modifier = modifier,
         key = key,
+        collapseAfterSelect = false,
         textField = {
             TextFieldWithSupportingRow(
                 value = "TODO",
