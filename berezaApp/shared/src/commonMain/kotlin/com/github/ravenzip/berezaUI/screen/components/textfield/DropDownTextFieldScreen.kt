@@ -50,11 +50,8 @@ class DropDownTextFieldViewModel : ViewModel() {
 @Composable
 fun DropDownTextFieldScreen(
     navigationViewModel: RootNavigationViewModel,
-    screenViewModel: SelectScreenViewModel = remember { SelectScreenViewModel() },
+    screenViewModel: DropDownTextFieldViewModel = remember { DropDownTextFieldViewModel() },
 ) {
-    val firstSourceState by screenViewModel.firstSourceState.collectAsState()
-    val secondSourceState by screenViewModel.secondSourceState.collectAsState()
-
     ComponentScreen(
         title = "DropDownTextField",
         description = "Текстовое поле с выпадающим списком.",

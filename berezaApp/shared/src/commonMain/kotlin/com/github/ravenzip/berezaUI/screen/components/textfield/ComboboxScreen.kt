@@ -1,11 +1,12 @@
 package com.github.ravenzip.berezaUI.screen.components.textfield
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.Combobox
-import com.github.ravenzip.berezaUI.core.data.SourceState
-import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
+import com.github.ravenzip.berezaUI.core.components.textfield.Combobox
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,28 +26,6 @@ class ComboboxScreenViewModel : ViewModel() {
         )
 
     val selected = MutableStateFlow<Sample?>(null)
-
-    val firstSourceState =
-        MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
-    val secondSourceState =
-        MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
-
-    var firstDropDownText by mutableStateOf("")
-    var secondDropDownText by mutableStateOf("")
-
-    var firstDropDownValue = EMPTY_SAMPLE
-    var secondDropDownValue = EMPTY_SAMPLE
-
-    /** Реализация поиска */
-    //    init {
-    //        snapshotFlow { firstDropDownText }
-    //            .debounce { 300L }
-    //            .map { x ->
-    //                val source = source.filter { y -> y.name.startsWith(x, ignoreCase = true) }
-    //                firstSourceState.update { SourceState.Content(source) }
-    //            }
-    //            .launchIn(viewModelScope)
-    //    }
 }
 
 @Composable
