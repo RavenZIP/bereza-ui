@@ -115,7 +115,7 @@ internal fun TrailingContent(
 }
 
 @Composable
-private fun ClearButton(onClear: () -> Unit, enabled: Boolean) {
+internal fun ClearButton(onClear: () -> Unit, enabled: Boolean) {
     IconButton(
         onClick = onClear,
         enabled = enabled,
@@ -129,7 +129,7 @@ private fun ClearButton(onClear: () -> Unit, enabled: Boolean) {
 }
 
 @Composable
-private fun AnimatedArrow(expanded: Boolean) {
+internal fun AnimatedArrow(expanded: Boolean) {
     val arrowRotation by animateFloatAsState(targetValue = if (expanded) 180f else 0f)
 
     Icon(
