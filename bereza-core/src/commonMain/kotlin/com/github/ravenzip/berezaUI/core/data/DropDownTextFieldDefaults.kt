@@ -34,6 +34,7 @@ object DropDownTextFieldDefaults {
     @Composable fun outlinedMenuColors(): DropDownMenuColors = DropDownMenuDefaults.outlinedColors()
 }
 
+// TODO разобраться с цветами
 @Immutable
 object DropDownMenuDefaults {
     @Composable

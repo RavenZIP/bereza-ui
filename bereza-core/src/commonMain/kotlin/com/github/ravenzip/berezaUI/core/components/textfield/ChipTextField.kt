@@ -315,6 +315,8 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
+    // TODO нужны ли onFocusChange и onTouchChange в этих компонентах? Пока это просто копипаста из
+    // TextFieldWithSupportingRow
     val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
