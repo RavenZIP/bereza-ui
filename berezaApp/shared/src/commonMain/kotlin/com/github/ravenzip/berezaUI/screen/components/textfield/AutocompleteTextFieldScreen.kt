@@ -4,17 +4,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.data.SourceState
-import com.github.ravenzip.berezaUI.data.EMPTY_SAMPLE
+import com.github.ravenzip.berezaUI.core.components.textfield.Autocomplete
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
+import kotlin.time.Duration.Companion.seconds
 
 class AutocompleteTextFieldScreenViewModel : ViewModel() {
     val source =
@@ -29,19 +35,13 @@ class AutocompleteTextFieldScreenViewModel : ViewModel() {
             Sample(8, "Viktor"),
         )
 
-    val firstValue = MutableStateFlow(EMPTY_SAMPLE)
-    val secondValue = MutableStateFlow(EMPTY_SAMPLE)
+    val selected = MutableStateFlow<Sample?>(null)
 
-    val firstSourceState =
-        MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
-    val secondSourceState =
-        MutableStateFlow<SourceState<Sample>>(SourceState.Content(items = source))
-
-    val firstValueChanged = MutableSharedFlow<Sample>()
-    val secondValueChanged = MutableSharedFlow<Sample>()
-
-    val firstTextChanged = MutableSharedFlow<String>()
-    val secondTextChanged = MutableSharedFlow<String>()
+    // Имитация загрузки с сервера
+    fun getSamples(query: String): Flow<List<Sample>> = flow {
+        delay(2.seconds)
+        emit(source.filter { it.name.startsWith(query, true) })
+    }
 
     /** Реализация поиска */
     // TODO поиск должен выполняться только тогда, когда открыт выпадающий список? Если да, то стоит
@@ -66,11 +66,7 @@ fun AutocompleteTextFieldScreen(
         AutocompleteTextFieldScreenViewModel()
     },
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val firstValue by screenViewModel.firstValue.collectAsState()
-    val secondValue by screenViewModel.secondValue.collectAsState()
-    val firstSourceState by screenViewModel.firstSourceState.collectAsState()
-    val secondSourceState by screenViewModel.secondSourceState.collectAsState()
+    val selected by screenViewModel.selected.collectAsState()
 
     ComponentScreen(
         title = "AutocompleteTextField",
@@ -81,49 +77,14 @@ fun AutocompleteTextFieldScreen(
                 modifier = Modifier.padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                //                AutocompleteTextField(
-                //                    selected = firstValue,
-                //                    sourceState = firstSourceState,
-                //                    onSelectItem = { x ->
-                //                        coroutineScope.launch {
-                // screenViewModel.firstValueChanged.emit(x) }
-                //                    },
-                //                    onClearSelected = {
-                //                        coroutineScope.launch {
-                //                            screenViewModel.firstValueChanged.emit(EMPTY_SAMPLE)
-                //                        }
-                //                    },
-                //                    itemToString = { x -> x.name },
-                //                    onTextChange = {
-                //                        coroutineScope.launch {
-                //                            screenViewModel.firstTextChanged.emit(it)
-                //                        }
-                //                    },
-                //                    dropDownMenuItemContent = { x -> Text(x.name) },
-                //                    dropDownMenuEmptyContent = { Text("Нет результатов") },
-                //                )
-                //
-                //                OutlinedAutocompleteTextField(
-                //                    selected = secondValue,
-                //                    sourceState = secondSourceState,
-                //                    onSelectItem = { x ->
-                //                        coroutineScope.launch {
-                // screenViewModel.secondValueChanged.emit(x) }
-                //                    },
-                //                    onClearSelected = {
-                //                        coroutineScope.launch {
-                //                            screenViewModel.secondValueChanged.emit(EMPTY_SAMPLE)
-                //                        }
-                //                    },
-                //                    itemToString = { x -> x.name },
-                //                    onTextChange = {
-                //                        coroutineScope.launch {
-                //                            screenViewModel.secondTextChanged.emit(it)
-                //                        }
-                //                    },
-                //                    dropDownMenuItemContent = { x -> Text(x.name) },
-                //                    dropDownMenuEmptyContent = { Text("Нет результатов") },
-                //                )
+                Autocomplete(
+                    selected = selected,
+                    displayWith = { x -> x.name },
+                    onSelect = { x -> screenViewModel.selected.update { x } },
+                    search = { x -> screenViewModel.getSamples(x) },
+                    key = { x -> x.id },
+                    onClear = { screenViewModel.selected.update { null } },
+                )
             }
         },
     )

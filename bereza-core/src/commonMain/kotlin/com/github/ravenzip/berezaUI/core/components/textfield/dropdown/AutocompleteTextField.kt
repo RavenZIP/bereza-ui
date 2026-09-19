@@ -1,19 +1,5 @@
 package com.github.ravenzip.berezaUI.core.components.textfield.dropdown
 
-import androidx.compose.runtime.Composable
-
-/**
- * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
- * формируется по мере ввода текста. Ввод значения, отсутствующего в списке, не поддерживается.
- */
-
-// TODO сделать Outlined версию
-// TODO
-@Composable fun Autocomplete() {}
-
-// TODO
-@Composable fun MultiAutocomplete() {}
-
 // TODO временно, пока не придумаю как это оформить лучше
 // private fun textNotEqualAfterManualCollapse(
 //    firstText: String,
