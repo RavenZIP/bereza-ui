@@ -15,9 +15,9 @@ sealed interface Screen : NavKey {
 
     @Serializable data object Select : Screen, NavKey
 
-    @Serializable data object Combobox : Screen, NavKey
+    @Serializable data object ComboBox : Screen, NavKey
 
-    @Serializable data object AutocompleteTextField : Screen, NavKey
+    @Serializable data object Autocomplete : Screen, NavKey
 
     @Serializable data object CheckboxWithText : Screen, NavKey
 

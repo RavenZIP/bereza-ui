@@ -15,12 +15,12 @@ import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.textfield.Autocomplete
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
-import kotlin.time.Duration.Companion.seconds
 
 class AutocompleteTextFieldScreenViewModel : ViewModel() {
     val source =
@@ -69,7 +69,7 @@ fun AutocompleteTextFieldScreen(
     val selected by screenViewModel.selected.collectAsState()
 
     ComponentScreen(
-        title = "AutocompleteTextField",
+        title = "Autocomplete",
         description = "Текстовое поле с выпадающим списком и автодополнением.",
         goBack = { navigationViewModel.navigateBack() },
         content = {

@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.Combobox
+import com.github.ravenzip.berezaUI.core.components.textfield.ComboBox
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ fun ComboboxScreen(
         description = "Текстовое поле с выпадающим списком...",
         goBack = { navigationViewModel.navigateBack() },
         content = {
-            Combobox(
+            ComboBox(
                 source = screenViewModel.source,
                 selected = selected,
                 displayWith = { x -> x.name },

@@ -56,11 +56,11 @@ fun RootNavigation(
                         SelectScreen(navigationViewModel)
                     }
 
-                    is Screen.Combobox -> {
+                    is Screen.ComboBox -> {
                         ComboboxScreen(navigationViewModel)
                     }
 
-                    is Screen.AutocompleteTextField -> {
+                    is Screen.Autocomplete -> {
                         AutocompleteTextFieldScreen(navigationViewModel)
                     }
 

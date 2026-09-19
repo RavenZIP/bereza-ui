@@ -11,8 +11,8 @@ class RootNavigationViewModel : ViewModel() {
         mutableStateListOf(
             Screen.TextFieldWithSupportingRow,
             Screen.Select,
-            Screen.Combobox,
-            Screen.AutocompleteTextField,
+            Screen.ComboBox,
+            Screen.Autocomplete,
             Screen.SwitchWithText,
             Screen.CheckboxWithText,
             Screen.RadioButtonWithText,

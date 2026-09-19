@@ -19,6 +19,8 @@ import com.github.ravenzip.berezaUI.core.data.SourceState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
@@ -36,6 +38,7 @@ fun <T> Autocomplete(
     displayWith: (T) -> String,
     onSelect: (T) -> Unit,
     search: (String) -> Flow<List<T>>,
+    searchDebounce: Duration = 500.milliseconds,
     onClear: (() -> Unit)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
@@ -51,21 +54,28 @@ fun <T> Autocomplete(
     val selectedItemText =
         remember(displayWith, selected) { if (selected != null) displayWith(selected) else "" }
 
-    var inputText by remember(selectedItemText) { mutableStateOf(selectedItemText) }
+    var inputText by remember { mutableStateOf(selectedItemText) }
     var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
 
+    LaunchedEffect(selectedItemText) {
+        inputText = selectedItemText
+    }
+
     LaunchedEffect(search) {
-        // TODO реализовать debounce через параметр
-        snapshotFlow { inputText }
+        val inputTextFlow = snapshotFlow {
+            inputText
+        }
+            .debounce(searchDebounce)
             .distinctUntilChanged()
-            .filter { expanded }
+
+        val expandedFlow = snapshotFlow { expanded }
+
+        inputTextFlow
+            .combine(expandedFlow) { query, expanded -> query to expanded }
+            .filter { (_, expanded) -> expanded }
             .onEach { sourceState = SourceState.Loading }
-            .flatMapLatest { query ->
-                search(query)
-            }
-            .onEach {
-                sourceState = SourceState.Content(it)
-            }
+            .flatMapLatest { (query) -> search(query) }
+            .onEach { response -> sourceState = SourceState.Content(response) }
             .launchIn(this)
     }
 

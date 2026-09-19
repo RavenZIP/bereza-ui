@@ -25,7 +25,7 @@ import com.github.ravenzip.berezaUI.core.data.SourceState
 // TODO сделать Outlined версию
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> Combobox(
+fun <T> ComboBox(
     source: List<T>,
     modifier: Modifier = Modifier,
     selected: T? = null,
@@ -115,4 +115,4 @@ fun <T> Combobox(
 }
 
 // TODO ориентироваться на реализацию Combobox + MultiSelect
-@Composable fun MultiCombobox() {}
+@Composable fun MultiComboBox() {}
