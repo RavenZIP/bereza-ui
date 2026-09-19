@@ -16,11 +16,11 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
@@ -51,14 +51,11 @@ fun <T> Autocomplete(
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedItemText =
-        remember(displayWith, selected) { if (selected != null) displayWith(selected) else "" }
-
-    var inputText by remember { mutableStateOf(selectedItemText) }
+    var inputText by remember { mutableStateOf("") }
     var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
 
-    LaunchedEffect(selectedItemText) {
-        inputText = selectedItemText
+    LaunchedEffect(displayWith, selected) {
+        inputText = if (selected != null) displayWith(selected) else ""
     }
 
     LaunchedEffect(search) {
