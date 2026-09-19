@@ -17,6 +17,7 @@ import com.github.ravenzip.berezaUI.screen.components.radiobutton.RadioGroupScre
 import com.github.ravenzip.berezaUI.screen.components.switch.SwitchGroupScreen
 import com.github.ravenzip.berezaUI.screen.components.switch.SwitchWithTextScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.AutocompleteTextFieldScreen
+import com.github.ravenzip.berezaUI.screen.components.textfield.ComboboxScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.SelectScreen
 import com.github.ravenzip.berezaUI.screen.components.textfield.TextFieldWithSupportingRowScreen
 import com.github.ravenzip.berezaUI.screen.layout.ExpandableCardScreen
@@ -53,6 +54,10 @@ fun RootNavigation(
 
                     is Screen.Select -> {
                         SelectScreen(navigationViewModel)
+                    }
+
+                    is Screen.Combobox -> {
+                        ComboboxScreen(navigationViewModel)
                     }
 
                     is Screen.AutocompleteTextField -> {

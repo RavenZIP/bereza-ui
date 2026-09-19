@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.data.*
+import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 
 // TODO как-то ограничить количество видимых элементов в выпадающем списке
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,6 +114,7 @@ fun <T> DropDownTextFieldBox(
  * или просто параметр (условно allowCustomValue) + callback. Коллбэк можно сделать нуллабле и тогда
  * от этого будет зависеть поведение
  */
+// TODO подпрыгивает при первом открытии страницы с этим компонентом. Возможно, из-за иконки Arrow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Select(
@@ -140,7 +142,7 @@ fun <T> Select(
         sourceState = SourceState.Content(source),
         onSelectItem = onSelect,
         expanded = expanded,
-        onExpandedChange = { x -> expanded = x is DropDownExpandEvent.Expanded },
+        onExpandedChange = { event -> expanded = event.isExpanded() },
         modifier = modifier,
         key = key,
         textField = {
@@ -161,33 +163,7 @@ fun <T> Select(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (onClear != null && selected != null) {
-                            IconButton(
-                                onClick = onClear,
-                                enabled = enabled,
-                                shape = RoundedCornerShape(14.dp),
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = null,
-                                )
-                            }
-                        }
-
-                        val arrowRotation by
-                            animateFloatAsState(targetValue = if (expanded) 180f else 0f)
-
-                        // TODO надо ли оформить это в виде кнопки?
-                        Icon(
-                            imageVector = Icons.Outlined.ArrowDropDown,
-                            contentDescription = null,
-                            modifier =
-                                Modifier.size(48.dp).padding(end = 12.dp).rotate(arrowRotation),
-                        )
-                    }
-                },
+                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -215,8 +191,6 @@ fun <T> MultiSelect(
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     onFocusChange: (FocusState) -> Unit = {},
     onTouchChange: () -> Unit = {},
-    expanded: Boolean,
-    onExpandedChange: (DropDownExpandEvent) -> Unit,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -224,11 +198,13 @@ fun <T> MultiSelect(
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
     DropDownTextFieldBox(
         sourceState = SourceState.Content(source),
         onSelectItem = onSelect,
         expanded = expanded,
-        onExpandedChange = onExpandedChange,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
         modifier = modifier,
         key = key,
         textField = {
@@ -267,10 +243,6 @@ fun <T> MultiSelect(
     )
 }
 
-// Как реализовать поиск? Я думал через параметр функции в компоненте, выделив ему state-класс. Либо
-// снаружи, но не знаю точно ли надо, ведь это уже самостоятельный компонент
-// Как задам архитектуру здесь, так скорее всего она пойдет в Autocomplete потом, как допишу
-// Combobox
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Combobox(
@@ -279,35 +251,56 @@ fun <T> Combobox(
     selected: T? = null,
     displayWith: (T) -> String,
     onSelect: (T) -> Unit,
-    expanded: Boolean,
-    onExpandedChange: (DropDownExpandEvent) -> Unit,
-    onAddItem: ((T) -> Unit)? = null,
-    searchWith: (T) -> String,
+    search: (T, String) -> Boolean,
+    onAddItem: ((String) -> Unit)? = null,
+    onClear: (() -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
-    val text =
+    var expanded by remember { mutableStateOf(false) }
+    val selectedItemText =
         remember(displayWith, selected) { if (selected != null) displayWith(selected) else "" }
 
+    var inputText by remember(selectedItemText) { mutableStateOf(selectedItemText) }
+
+    val filteredSource =
+        remember(source, inputText, search) {
+            source.filter { item ->
+                search(item, inputText)
+            }
+        }
+
     DropDownTextFieldBox(
-        sourceState = SourceState.Content(source),
+        sourceState = SourceState.Content(filteredSource),
         onSelectItem = onSelect,
         expanded = expanded,
-        onExpandedChange = onExpandedChange,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
         modifier = modifier,
         key = key,
         textField = {
             TextFieldWithSupportingRow(
-                value = text,
-                onValueChange = {},
+                value = inputText,
+                onValueChange = { x -> inputText = x },
                 modifier =
                     Modifier.menuAnchor(
-                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
                         enabled = enabled,
                     ),
-                readonly = true,
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                maxLines = 1,
+                singleLine = true,
+                label = label,
+                placeholder = placeholder,
+                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -317,8 +310,20 @@ fun <T> Combobox(
             Text(text = text)
         },
         emptyContent = {
+            // TODO нужно как-то дать возможность прокинуть свой контент
+            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
+            // который предоставляет дефолтное поведение
+            // Либо костяк оставить, а снаружи получать text: @Composable () -> Unit
+
+            // TODO надо ли при нажатии добавить автоматически выбирать элемент? Если да,
+            // тогда список с элементами, которые отображаются в выпадающем списке, должен храниться
+            // на стороне компонента и будет состоять из исходного списка + того, что натыкал юзер
+            // Либо же оставить это на откуп пользователю, захочет - реализует, после подстановки
+            // в selected компонент сам отреагирует
             if (onAddItem != null) {
-                // TODO
+                TextButton(onClick = { onAddItem(inputText) }) {
+                    Text("Добавить")
+                }
             } else {
                 Text(text = "Не найдено")
             }
@@ -337,3 +342,44 @@ fun <T> Combobox(
 
 // TODO
 @Composable fun MultiAutocomplete() {}
+
+@Composable
+private fun TrailingContent(
+    selected: Any?,
+    expanded: Boolean,
+    enabled: Boolean,
+    onClear: (() -> Unit)?,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        if (onClear != null && selected != null) {
+            ClearButton(onClear, enabled)
+        }
+
+        AnimatedArrow(expanded)
+    }
+}
+
+@Composable
+private fun ClearButton(onClear: () -> Unit, enabled: Boolean) {
+    IconButton(
+        onClick = onClear,
+        enabled = enabled,
+        shape = RoundedCornerShape(14.dp),
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Clear,
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+private fun AnimatedArrow(expanded: Boolean) {
+    val arrowRotation by animateFloatAsState(targetValue = if (expanded) 180f else 0f)
+
+    Icon(
+        imageVector = Icons.Outlined.ArrowDropDown,
+        contentDescription = null,
+        modifier = Modifier.size(48.dp).padding(end = 12.dp).rotate(arrowRotation),
+    )
+}
