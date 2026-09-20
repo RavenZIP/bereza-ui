@@ -66,7 +66,11 @@ fun RootNavigation(
                     }
 
                     is Screen.Autocomplete -> {
-                        AutocompleteTextFieldScreen(navigationViewModel)
+                        AutocompleteScreen(navigationViewModel)
+                    }
+
+                    is Screen.MultiAutocomplete -> {
+                        MultiAutocompleteScreen(navigationViewModel)
                     }
 
                     // Чекбоксы

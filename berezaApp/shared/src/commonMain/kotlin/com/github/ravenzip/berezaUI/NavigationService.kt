@@ -15,6 +15,7 @@ class RootNavigationViewModel : ViewModel() {
             Screen.ComboBox,
             Screen.MultiCombobox,
             Screen.Autocomplete,
+            Screen.MultiAutocomplete,
             Screen.SwitchWithText,
             Screen.CheckboxWithText,
             Screen.RadioButtonWithText,

@@ -23,6 +23,8 @@ sealed interface Screen : NavKey {
 
     @Serializable data object Autocomplete : Screen, NavKey
 
+    @Serializable data object MultiAutocomplete : Screen, NavKey
+
     @Serializable data object CheckboxWithText : Screen, NavKey
 
     @Serializable data object CheckboxGroup : Screen, NavKey

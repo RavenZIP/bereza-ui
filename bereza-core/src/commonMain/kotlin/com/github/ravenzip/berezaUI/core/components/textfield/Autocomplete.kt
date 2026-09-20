@@ -1,6 +1,9 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Text
@@ -9,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AnimatedArrow
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.DropDownTextFieldBox
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.TrailingContent
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
@@ -125,5 +129,105 @@ fun <T> Autocomplete(
     )
 }
 
-// TODO Ориентироваться на реализацию Autocomplete + MultiCombobox
-@Composable fun MultiAutocomplete() {}
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class)
+@Composable
+fun <T> MultiAutocomplete(
+    modifier: Modifier = Modifier,
+    selected: List<T> = listOf(),
+    displayWith: (T) -> String,
+    onRemoveChip: (T) -> Unit,
+    onSelect: (T) -> Unit,
+    search: (String) -> Flow<List<T>>,
+    searchDebounce: Duration = 500.milliseconds,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+    var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
+
+    LaunchedEffect(search) {
+        val inputTextFlow = snapshotFlow {
+            inputText
+        }
+            .debounce(searchDebounce)
+            .distinctUntilChanged()
+
+        val expandedFlow = snapshotFlow { expanded }
+
+        inputTextFlow
+            .combine(expandedFlow) { query, expanded -> query to expanded }
+            .filter { (_, expanded) -> expanded }
+            .onEach { sourceState = SourceState.Loading }
+            .flatMapLatest { (query) -> search(query) }
+            .onEach { response -> sourceState = SourceState.Content(response) }
+            .launchIn(this)
+    }
+
+    DropDownTextFieldBox(
+        sourceState = sourceState,
+        onSelectItem = { x ->
+            onSelect(x)
+            inputText = ""
+        },
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        collapseAfterSelect = false,
+        textField = {
+            ChipTextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                chips = selected,
+                displayWith = displayWith,
+                onRemoveChip = onRemoveChip,
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                singleLine = true,
+                textFieldLabel = label,
+                textFieldPlaceholder = placeholder,
+                textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = { item ->
+            val itemKey = key(item)
+            val selected = selected.any { key(it) == itemKey }
+            val text = remember(item) { displayWith(item) }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Checkbox(selected, onCheckedChange = null)
+                Text(text = text)
+            }
+        },
+        emptyContent = {
+            // TODO нужно как-то дать возможность прокинуть свой контент
+            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
+            // который предоставляет дефолтное поведение и снаружи получать строку
+            // Либо снаружи получать emptyContent: @Composable () -> Unit
+
+            Text(text = "Не найдено")
+        },
+        loadingContent = {
+            Text(text = "Загрузка...")
+        },
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}
