@@ -51,7 +51,7 @@ fun <T> ComboBox(
     var inputText by remember(selectedItemText) { mutableStateOf(selectedItemText) }
 
     val filteredSource =
-        remember(source, inputText, search) {
+        remember(source, source.count(), inputText, search) {
             source.filter { item ->
                 search(item, inputText)
             }
@@ -139,7 +139,7 @@ fun <T> MultiComboBox(
     var inputText by remember { mutableStateOf("") }
 
     val filteredSource =
-        remember(source, inputText, search) {
+        remember(source, source.count(), inputText, search) {
             source.filter { item ->
                 search(item, inputText)
             }
