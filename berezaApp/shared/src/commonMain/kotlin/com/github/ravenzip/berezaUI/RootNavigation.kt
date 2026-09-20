@@ -61,6 +61,10 @@ fun RootNavigation(
                         ComboboxScreen(navigationViewModel)
                     }
 
+                    is Screen.MultiCombobox -> {
+                        MultiComboboxScreen(navigationViewModel)
+                    }
+
                     is Screen.Autocomplete -> {
                         AutocompleteTextFieldScreen(navigationViewModel)
                     }

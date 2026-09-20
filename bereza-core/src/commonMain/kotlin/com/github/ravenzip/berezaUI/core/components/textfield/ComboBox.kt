@@ -1,15 +1,15 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.AnimatedArrow
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.DropDownTextFieldBox
 import com.github.ravenzip.berezaUI.core.components.textfield.dropdown.TrailingContent
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
@@ -114,5 +114,92 @@ fun <T> ComboBox(
     )
 }
 
-// TODO ориентироваться на реализацию Combobox + MultiSelect
-@Composable fun MultiComboBox() {}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> MultiComboBox(
+    source: List<T>,
+    modifier: Modifier = Modifier,
+    selected: List<T> = listOf(),
+    displayWith: (T) -> String,
+    onRemoveChip: (T) -> Unit,
+    onSelect: (T) -> Unit,
+    search: (T, String) -> Boolean,
+    onAddItem: ((String) -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+
+    val filteredSource =
+        remember(source, inputText, search) {
+            source.filter { item ->
+                search(item, inputText)
+            }
+        }
+
+    DropDownTextFieldBox(
+        sourceState = SourceState.Content(filteredSource),
+        onSelectItem = { x ->
+            onSelect(x)
+            inputText = ""
+        },
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        collapseAfterSelect = false,
+        textField = {
+            ChipTextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                chips = selected,
+                displayWith = displayWith,
+                onRemoveChip = onRemoveChip,
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                singleLine = true,
+                textFieldLabel = label,
+                textFieldPlaceholder = placeholder,
+                textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = { item ->
+            val itemKey = key(item)
+            val selected = selected.any { key(it) == itemKey }
+            val text = remember(item) { displayWith(item) }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Checkbox(selected, onCheckedChange = null)
+                Text(text = text)
+            }
+        },
+        emptyContent = {
+            if (onAddItem != null) {
+                TextButton(onClick = { onAddItem(inputText) }) {
+                    Text("Добавить")
+                }
+            } else {
+                Text(text = "Не найдено")
+            }
+        },
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}

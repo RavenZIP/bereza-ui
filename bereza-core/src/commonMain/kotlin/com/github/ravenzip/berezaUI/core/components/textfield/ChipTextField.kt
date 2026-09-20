@@ -59,7 +59,7 @@ fun <T> ChipTextField(
                 minHeight = TextFieldDefaults.MinHeight,
             ),
         interactionSource = interactionSource,
-        decorationBox = {
+        decorationBox = { innerTextField ->
             TextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = {
@@ -85,32 +85,36 @@ fun <T> ChipTextField(
                     //                            )
                     //                        }
                     //                    }
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        chips.forEach { chip ->
-                            InputChip(
-                                selected = false,
-                                onClick = {},
-                                label = { chipLabel(chip) },
-                                modifier = Modifier.height(24.dp),
-                                trailingIcon = {
-                                    IconButton(
-                                        onClick = { onRemoveChip(chip) },
-                                        modifier = Modifier.size(16.dp),
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Close,
-                                            contentDescription = "Удалить $chip",
-                                            modifier =
-                                                Modifier.size(InputChipDefaults.IconSize)
-                                                    .padding(2.dp),
-                                        )
-                                    }
-                                },
-                            )
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            chips.forEach { chip ->
+                                InputChip(
+                                    selected = false,
+                                    onClick = {},
+                                    label = { chipLabel(chip) },
+                                    modifier = Modifier.height(24.dp),
+                                    trailingIcon = {
+                                        IconButton(
+                                            onClick = { onRemoveChip(chip) },
+                                            modifier = Modifier.size(16.dp),
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = "Удалить $chip",
+                                                modifier =
+                                                    Modifier.size(InputChipDefaults.IconSize)
+                                                        .padding(2.dp),
+                                            )
+                                        }
+                                    },
+                                )
+                            }
                         }
+
+                        if (!readOnly) innerTextField()
                     }
                 },
                 enabled = enabled,
@@ -170,36 +174,40 @@ fun <T> OutlinedChipTextField(
                 minHeight = OutlinedTextFieldDefaults.MinHeight,
             ),
         interactionSource = interactionSource,
-        decorationBox = {
+        decorationBox = { innerTextField ->
             OutlinedTextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = {
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        chips.forEach { chip ->
-                            InputChip(
-                                selected = false,
-                                onClick = {},
-                                label = { chipLabel(chip) },
-                                modifier = Modifier.height(24.dp),
-                                trailingIcon = {
-                                    IconButton(
-                                        onClick = { onRemoveChip(chip) },
-                                        modifier = Modifier.size(16.dp),
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Close,
-                                            contentDescription = "Удалить $chip",
-                                            modifier =
-                                                Modifier.size(InputChipDefaults.IconSize)
-                                                    .padding(2.dp),
-                                        )
-                                    }
-                                },
-                            )
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            chips.forEach { chip ->
+                                InputChip(
+                                    selected = false,
+                                    onClick = {},
+                                    label = { chipLabel(chip) },
+                                    modifier = Modifier.height(24.dp),
+                                    trailingIcon = {
+                                        IconButton(
+                                            onClick = { onRemoveChip(chip) },
+                                            modifier = Modifier.size(16.dp),
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = "Удалить $chip",
+                                                modifier =
+                                                    Modifier.size(InputChipDefaults.IconSize)
+                                                        .padding(2.dp),
+                                            )
+                                        }
+                                    },
+                                )
+                            }
                         }
+
+                        if (!readOnly) innerTextField()
                     }
                 },
                 enabled = enabled,
