@@ -1,9 +1,11 @@
 package com.github.ravenzip.berezaUI.screen.components.textfield
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.MultiSelect
 import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedSelect
 import com.github.ravenzip.berezaUI.core.components.textfield.Select
 import com.github.ravenzip.berezaUI.data.Sample
@@ -33,7 +35,6 @@ fun SelectScreen(
     screenViewModel: SelectScreenViewModel = remember { SelectScreenViewModel() },
 ) {
     val selected by screenViewModel.selected.collectAsState()
-    val selectedList = mutableStateListOf<Sample>()
 
     ComponentScreen(
         title = "Select",
@@ -56,22 +57,6 @@ fun SelectScreen(
                 onSelect = { x -> screenViewModel.selected.update { x } },
                 key = { x -> x.id },
                 onClear = { screenViewModel.selected.update { null } },
-            )
-
-            // TODO вынести в отдельный экран
-            MultiSelect(
-                source = screenViewModel.source,
-                selected = selectedList,
-                displayWith = { x -> x.name },
-                onRemoveChip = { x ->
-                    val index = selectedList.indexOfFirst { it.name == x.name }
-                    if (index != -1) selectedList.removeAt(index)
-                },
-                onSelect = { x ->
-                    val index = selectedList.indexOfFirst { it.name == x.name }
-                    if (index != -1) selectedList.removeAt(index) else selectedList.add(x)
-                },
-                key = { x -> x.id },
             )
         },
     )
