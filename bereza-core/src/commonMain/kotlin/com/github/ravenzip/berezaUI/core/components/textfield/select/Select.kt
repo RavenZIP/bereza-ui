@@ -9,8 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
 import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedTextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
+import com.github.ravenzip.berezaUI.core.components.textfield.TrailingContent
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
