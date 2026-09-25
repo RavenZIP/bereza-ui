@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedSelect
-import com.github.ravenzip.berezaUI.core.components.textfield.Select
+import com.github.ravenzip.berezaUI.core.components.textfield.select.OutlinedSelect
+import com.github.ravenzip.berezaUI.core.components.textfield.select.Select
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import kotlinx.coroutines.flow.MutableStateFlow

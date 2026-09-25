@@ -1,7 +1,9 @@
-package com.github.ravenzip.berezaUI.core.components.textfield.dropdown
+package com.github.ravenzip.berezaUI.core.components.textfield
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -96,6 +98,29 @@ fun <T> DropDownTextFieldBox(
             }
         }
     }
+}
+
+@Composable
+fun DisabledDropDownMenuItem(
+    text: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    colors: MenuItemColors = MenuDefaults.itemColors(),
+    contentPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
+    interactionSource: MutableInteractionSource? = null,
+) {
+    DropdownMenuItem(
+        text = text,
+        onClick = {},
+        modifier = modifier,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        enabled = false,
+        colors = colors,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+    )
 }
 
 @Composable
