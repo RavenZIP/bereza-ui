@@ -23,7 +23,6 @@ import com.github.ravenzip.berezaUI.core.data.SourceState
  * Select — компонент с возможностью выбора элемента из заданного списка. Не поддерживает ввод
  * текста, фильтрацию списка или добавление собственных значений.
  */
-// TODO сделать Outlined версию
 // TODO подпрыгивает при первом открытии страницы с этим компонентом. Возможно, из-за иконки Arrow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

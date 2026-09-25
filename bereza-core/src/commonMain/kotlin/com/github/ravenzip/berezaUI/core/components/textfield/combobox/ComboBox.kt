@@ -1,4 +1,4 @@
-package com.github.ravenzip.berezaUI.core.components.textfield
+package com.github.ravenzip.berezaUI.core.components.textfield.combobox
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.github.ravenzip.berezaUI.core.components.textfield.*
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
@@ -43,17 +44,14 @@ fun <T> ComboBox(
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedItemText =
-        remember(displayWith, selected) { if (selected != null) displayWith(selected) else "" }
+    var inputText by remember { mutableStateOf("") }
+    val filteredSource = rememberFilteredSource(source, inputText, search)
 
-    var inputText by remember(selectedItemText) { mutableStateOf(selectedItemText) }
-
-    val filteredSource =
-        remember(source, source.count(), inputText, search) {
-            source.filter { item ->
-                search(item, inputText)
-            }
-        }
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
 
     DropDownTextFieldBox(
         sourceState = SourceState.Content(filteredSource),

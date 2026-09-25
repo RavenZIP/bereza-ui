@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
-import com.github.ravenzip.berezaUI.core.components.textfield.MultiComboBox
+import com.github.ravenzip.berezaUI.core.components.textfield.combobox.MultiComboBox
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 

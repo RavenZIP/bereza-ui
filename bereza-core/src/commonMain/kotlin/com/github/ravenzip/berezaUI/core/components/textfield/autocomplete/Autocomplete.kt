@@ -9,29 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
-import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
-import com.github.ravenzip.berezaUI.core.components.textfield.TrailingContent
+import com.github.ravenzip.berezaUI.core.components.textfield.*
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
 
 /**
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
  * формируется по мере ввода текста. Ввод значения, отсутствующего в списке, не поддерживается.
  */
 
-// TODO onClear должен чистить выбранный текст. Снаружи или внутри компонента?
 // TODO сделать спиннер при загрузке (trailingIcon?)
 // TODO сделать Outlined версию
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Autocomplete(
     modifier: Modifier = Modifier,
@@ -55,27 +50,23 @@ fun <T> Autocomplete(
     var inputText by remember { mutableStateOf("") }
     var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
 
-    LaunchedEffect(displayWith, selected) {
-        inputText = if (selected != null) displayWith(selected) else ""
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { inputText }.collect { println(it) }
     }
 
-    LaunchedEffect(search) {
-        val inputTextFlow = snapshotFlow {
-            inputText
-        }
-            .debounce(searchDebounce)
-            .distinctUntilChanged()
-
-        val expandedFlow = snapshotFlow { expanded }
-
-        inputTextFlow
-            .combine(expandedFlow) { query, expanded -> query to expanded }
-            .filter { (_, expanded) -> expanded }
-            .onEach { sourceState = SourceState.Loading }
-            .flatMapLatest { (query) -> search(query) }
-            .onEach { response -> sourceState = SourceState.Content(response) }
-            .launchIn(this)
-    }
+    Search(
+        inputText = inputText,
+        expanded = expanded,
+        search = search,
+        searchDebounce = searchDebounce,
+        onSourceStateChange = { newSourceState -> sourceState = newSourceState },
+    )
 
     DropDownTextFieldBox(
         sourceState = sourceState,

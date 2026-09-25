@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.AnimatedArrow
 import com.github.ravenzip.berezaUI.core.components.textfield.ChipTextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
+import com.github.ravenzip.berezaUI.core.components.textfield.Search
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
@@ -22,11 +23,9 @@ import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiAutocomplete(
     modifier: Modifier = Modifier,
@@ -50,23 +49,13 @@ fun <T> MultiAutocomplete(
     var inputText by remember { mutableStateOf("") }
     var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
 
-    LaunchedEffect(search) {
-        val inputTextFlow = snapshotFlow {
-            inputText
-        }
-            .debounce(searchDebounce)
-            .distinctUntilChanged()
-
-        val expandedFlow = snapshotFlow { expanded }
-
-        inputTextFlow
-            .combine(expandedFlow) { query, expanded -> query to expanded }
-            .filter { (_, expanded) -> expanded }
-            .onEach { sourceState = SourceState.Loading }
-            .flatMapLatest { (query) -> search(query) }
-            .onEach { response -> sourceState = SourceState.Content(response) }
-            .launchIn(this)
-    }
+    Search(
+        inputText = inputText,
+        expanded = expanded,
+        search = search,
+        searchDebounce = searchDebounce,
+        onSourceStateChange = { newSourceState -> sourceState = newSourceState },
+    )
 
     DropDownTextFieldBox(
         sourceState = sourceState,
