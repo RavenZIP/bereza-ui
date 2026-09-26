@@ -22,6 +22,10 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * [MultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет получен
+ * при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiAutocomplete(
@@ -104,6 +108,10 @@ fun <T> MultiAutocomplete(
     )
 }
 
+/**
+ * [OutlinedMultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет
+ * получен при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedMultiAutocomplete(
@@ -186,6 +194,10 @@ fun <T> OutlinedMultiAutocomplete(
     )
 }
 
+/**
+ * [MultiAutocomplete] — компонент с возможностью выбора элементов из заданного списка, который
+ * будет отфильтрован при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiAutocomplete(
@@ -258,6 +270,10 @@ fun <T> MultiAutocomplete(
     )
 }
 
+/**
+ * [OutlinedMultiAutocomplete] — компонент с возможностью выбора элементов из заданного списка,
+ * который будет отфильтрован при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedMultiAutocomplete(

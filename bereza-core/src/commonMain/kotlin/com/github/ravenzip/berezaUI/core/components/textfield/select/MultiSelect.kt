@@ -20,8 +20,8 @@ import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
 
 /**
- * MultiSelect — компонент с возможностью выбора нескольких элементов из заданного списка. Не
- * поддерживает ввод текста, фильтрацию списка или добавление собственных значений.
+ * [MultiSelect] — компонент с возможностью выбора нескольких элементов из заданного списка. Не
+ * поддерживает ввод текста и фильтрацию списка.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,6 +94,10 @@ fun <T> MultiSelect(
     )
 }
 
+/**
+ * [OutlinedMultiSelect] — компонент с возможностью выбора нескольких элементов из заданного списка.
+ * Не поддерживает ввод текста и фильтрацию списка.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedMultiSelect(

@@ -20,8 +20,8 @@ import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
 
 /**
- * Select — компонент с возможностью выбора элемента из заданного списка. Не поддерживает ввод
- * текста, фильтрацию списка или добавление собственных значений.
+ * [Select] — компонент с возможностью выбора элемента из заданного списка. Не поддерживает ввод
+ * текста и фильтрацию списка.
  */
 // TODO подпрыгивает при первом открытии страницы с этим компонентом. Возможно, из-за иконки Arrow
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,6 +90,10 @@ fun <T> Select(
     )
 }
 
+/**
+ * [OutlinedSelect] — компонент с возможностью выбора элемента из заданного списка. Не поддерживает
+ * ввод текста и фильтрацию списка.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedSelect(

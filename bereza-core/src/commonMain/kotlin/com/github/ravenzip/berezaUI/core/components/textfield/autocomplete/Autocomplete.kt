@@ -15,13 +15,13 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 /**
- * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
- * формируется по мере ввода текста. Ввод значения, отсутствующего в списке, не поддерживается.
+ * [Autocomplete] — компонент с возможностью выбора элемента из списка, который будет получен при
+ * помощи функции [search] мере ввода текста
  */
 // TODO сделать спиннер при загрузке (trailingIcon?)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,6 +106,10 @@ fun <T> Autocomplete(
     )
 }
 
+/**
+ * [OutlinedAutocomplete] — компонент с возможностью выбора элемента из списка, который будет
+ * получен при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedAutocomplete(
@@ -188,6 +192,10 @@ fun <T> OutlinedAutocomplete(
     )
 }
 
+/**
+ * [Autocomplete] — компонент с возможностью выбора элемента из заданного списка, который будет
+ * отфильтрован при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Autocomplete(
@@ -260,6 +268,10 @@ fun <T> Autocomplete(
     )
 }
 
+/**
+ * [OutlinedAutocomplete] — компонент с возможностью выбора элемента из заданного списка, который
+ * будет отфильтрован при помощи функции [search] мере ввода текста
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedAutocomplete(
