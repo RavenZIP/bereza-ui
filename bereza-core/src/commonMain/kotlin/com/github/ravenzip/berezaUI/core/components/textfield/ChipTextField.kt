@@ -19,13 +19,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.FocusLostEffect
+import com.github.ravenzip.berezaUI.core.components.Chip
 import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 
 // TODO много дублирующегося кода
 // TODO не слишком ли мелковаты крестики у чипов?
-
 @Composable
 fun <T> ChipTextField(
     value: String,
@@ -91,9 +91,7 @@ fun <T> ChipTextField(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             chips.forEach { chip ->
-                                InputChip(
-                                    selected = false,
-                                    onClick = {},
+                                Chip(
                                     label = { chipLabel(chip) },
                                     modifier = Modifier.height(24.dp),
                                     trailingIcon = {
@@ -184,9 +182,7 @@ fun <T> OutlinedChipTextField(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             chips.forEach { chip ->
-                                InputChip(
-                                    selected = false,
-                                    onClick = {},
+                                Chip(
                                     label = { chipLabel(chip) },
                                     modifier = Modifier.height(24.dp),
                                     trailingIcon = {
