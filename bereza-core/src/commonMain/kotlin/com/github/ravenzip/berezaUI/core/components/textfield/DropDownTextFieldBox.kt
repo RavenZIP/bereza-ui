@@ -124,7 +124,7 @@ fun DisabledDropDownMenuItem(
 }
 
 @Composable
-internal fun TrailingContent(
+internal fun DropDownTextFieldTrailingContent(
     selected: Any?,
     expanded: Boolean,
     enabled: Boolean,

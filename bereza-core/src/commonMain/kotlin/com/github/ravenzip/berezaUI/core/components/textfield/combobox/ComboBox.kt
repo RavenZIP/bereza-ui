@@ -75,7 +75,9 @@ fun <T> ComboBox(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -89,12 +91,6 @@ fun <T> ComboBox(
             // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
             // который предоставляет дефолтное поведение
             // Либо костяк оставить, а снаружи получать text: @Composable () -> Unit
-
-            // TODO надо ли при нажатии добавить автоматически выбирать элемент? Если да,
-            // тогда список с элементами, которые отображаются в выпадающем списке, должен храниться
-            // на стороне компонента и будет состоять из исходного списка + того, что натыкал юзер
-            // Либо же оставить это на откуп пользователю, захочет - реализует, после подстановки
-            // в selected компонент сам отреагирует
             if (onAddItem != null) {
                 TextButton(onClick = { onAddItem(inputText) }) {
                     Text("Добавить")
@@ -163,7 +159,9 @@ fun <T> OutlinedComboBox(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -177,12 +175,6 @@ fun <T> OutlinedComboBox(
             // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
             // который предоставляет дефолтное поведение
             // Либо костяк оставить, а снаружи получать text: @Composable () -> Unit
-
-            // TODO надо ли при нажатии добавить автоматически выбирать элемент? Если да,
-            // тогда список с элементами, которые отображаются в выпадающем списке, должен храниться
-            // на стороне компонента и будет состоять из исходного списка + того, что натыкал юзер
-            // Либо же оставить это на откуп пользователю, захочет - реализует, после подстановки
-            // в selected компонент сам отреагирует
             if (onAddItem != null) {
                 TextButton(onClick = { onAddItem(inputText) }) {
                     Text("Добавить")

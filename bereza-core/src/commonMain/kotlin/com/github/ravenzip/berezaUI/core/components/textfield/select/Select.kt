@@ -10,9 +10,9 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
+import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldTrailingContent
 import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedTextFieldWithSupportingRow
 import com.github.ravenzip.berezaUI.core.components.textfield.TextFieldWithSupportingRow
-import com.github.ravenzip.berezaUI.core.components.textfield.TrailingContent
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
@@ -72,7 +72,9 @@ fun <T> Select(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -136,7 +138,9 @@ fun <T> OutlinedSelect(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )

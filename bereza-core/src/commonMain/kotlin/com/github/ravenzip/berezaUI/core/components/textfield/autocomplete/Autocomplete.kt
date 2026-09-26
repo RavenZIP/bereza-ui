@@ -15,9 +15,9 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
@@ -90,7 +90,9 @@ fun <T> Autocomplete(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -181,7 +183,9 @@ fun <T> OutlinedAutocomplete(
                 singleLine = true,
                 label = label,
                 placeholder = placeholder,
-                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
                 shape = shape,
                 colors = colors.textFieldColors,
             )
