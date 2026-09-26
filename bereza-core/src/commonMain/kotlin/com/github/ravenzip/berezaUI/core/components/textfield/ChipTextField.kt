@@ -1,6 +1,5 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.components.Chip
-import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 
@@ -335,13 +333,7 @@ fun <T> ChipTextFieldWithSupportingRow(
         textFieldSupportingText =
             if (reserveSupportingContentSpace || errorMessage.isNotEmpty()) {
                 {
-                    AnimatedVisibility(
-                        visible = errorMessage.isNotEmpty(),
-                        enter = slideInVertically() + fadeIn(),
-                        exit = slideOutVertically() + fadeOut(),
-                    ) {
-                        HintText(text = errorMessage, color = colors.errorLabelColor)
-                    }
+                    AnimatedError(errorMessage = errorMessage, colors = colors)
                 }
             } else null,
         chipLabel = chipLabel,
@@ -405,13 +397,7 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
         textFieldSupportingText =
             if (reserveSupportingContentSpace || errorMessage.isNotEmpty()) {
                 {
-                    AnimatedVisibility(
-                        visible = errorMessage.isNotEmpty(),
-                        enter = slideInVertically() + fadeIn(),
-                        exit = slideOutVertically() + fadeOut(),
-                    ) {
-                        HintText(text = errorMessage, color = colors.errorLabelColor)
-                    }
+                    AnimatedError(errorMessage = errorMessage, colors = colors)
                 }
             } else null,
         chipLabel = chipLabel,

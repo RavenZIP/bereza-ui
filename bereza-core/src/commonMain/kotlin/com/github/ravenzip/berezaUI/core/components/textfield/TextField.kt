@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.ravenzip.berezaUI.core.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
-import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
@@ -209,6 +209,19 @@ private fun Modifier.animateContentSizeIf(condition: Boolean) =
     if (condition) animateContentSize() else this
 
 @Composable
+internal fun AnimatedError(errorMessage: String, colors: TextFieldColors) {
+    AnimatedVisibility(
+        visible = errorMessage.isNotEmpty(),
+        enter = slideInVertically() + fadeIn(),
+        exit = slideOutVertically() + fadeOut(),
+    ) {
+        CompositionLocalProvider(LocalTextStyle provides TextFieldSupportRowStyle) {
+            Text(text = errorMessage, color = colors.errorLabelColor)
+        }
+    }
+}
+
+@Composable
 private fun TextFieldSupportingRow(
     errorMessage: String,
     showTextLengthCounter: Boolean,
@@ -223,20 +236,14 @@ private fun TextFieldSupportingRow(
 
     /**
      * minHeight нужно вычислить для того, чтобы корректно среагировать на появление анимированного
-     * контента. [Row] сразу будет отрисован, тогда как [HintText] и [CounterLabel] отрисовываются
-     * по условию, которое не факт, что в момент отображения [Row] выполнено
+     * контента. [Row] сразу будет отрисован, тогда как [AnimatedError] и [CounterLabel]
+     * отрисовываются по условию, которое не факт, что в момент отображения [Row] выполнено
      */
     Row(
         modifier = Modifier.fillMaxWidth().heightIn(minHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        AnimatedVisibility(
-            visible = errorMessage.isNotEmpty(),
-            enter = slideInVertically() + fadeIn(),
-            exit = slideOutVertically() + fadeOut(),
-        ) {
-            HintText(text = errorMessage, color = colors.errorLabelColor)
-        }
+        AnimatedError(errorMessage = errorMessage, colors = colors)
 
         AnimatedVisibility(
             visible = showTextLengthCounter && (value.isNotEmpty() || showTextLengthCounterIfZero),
@@ -269,3 +276,5 @@ private fun rememberSupportingTextHeight(): Dp {
         result.size.height.toDp()
     }
 }
+
+internal val TextFieldSupportRowStyle = TextStyle(fontSize = 12.sp)
