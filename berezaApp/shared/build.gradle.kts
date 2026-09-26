@@ -14,7 +14,7 @@ kotlin {
     jvm()
 
     android {
-        namespace = "com.github.ravenzip.berezaUI"
+        namespace = "com.github.ravenzip.bereza.app"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

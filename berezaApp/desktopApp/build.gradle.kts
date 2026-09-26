@@ -17,7 +17,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "com.github.ravenzip.berezaUI.MainKt"
+        mainClass = "com.github.ravenzip.bereza.app.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
