@@ -1,5 +1,6 @@
 package com.github.ravenzip.berezaUI.core.components.textfield.autocomplete
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,7 +10,6 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.*
@@ -18,9 +18,9 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [MultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет получен
@@ -37,8 +37,6 @@ fun <T> MultiAutocomplete(
     search: (String) -> Flow<List<T>>,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
@@ -49,6 +47,7 @@ fun <T> MultiAutocomplete(
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -89,12 +88,11 @@ fun <T> MultiAutocomplete(
                     ),
                 chipOverflow = chipOverflow,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 singleLine = true,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -123,8 +121,6 @@ fun <T> OutlinedMultiAutocomplete(
     search: (String) -> Flow<List<T>>,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
@@ -135,6 +131,7 @@ fun <T> OutlinedMultiAutocomplete(
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -175,12 +172,11 @@ fun <T> OutlinedMultiAutocomplete(
                     ),
                 chipOverflow = chipOverflow,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 singleLine = true,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -209,8 +205,6 @@ fun <T> MultiAutocomplete(
     onSelect: (T) -> Unit,
     search: (T, String) -> Boolean,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
@@ -220,6 +214,7 @@ fun <T> MultiAutocomplete(
         MultiAutocompleteMenuItem(item, selected, displayWith, key)
     },
     emptyContent: @Composable (() -> Unit),
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -252,12 +247,11 @@ fun <T> MultiAutocomplete(
                     ),
                 chipOverflow = chipOverflow,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 singleLine = true,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -285,8 +279,6 @@ fun <T> OutlinedMultiAutocomplete(
     onSelect: (T) -> Unit,
     search: (T, String) -> Boolean,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
@@ -296,6 +288,7 @@ fun <T> OutlinedMultiAutocomplete(
     },
     placeholder: @Composable (() -> Unit)? = null,
     emptyContent: @Composable (() -> Unit),
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -328,12 +321,11 @@ fun <T> OutlinedMultiAutocomplete(
                     ),
                 chipOverflow = chipOverflow,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 singleLine = true,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )

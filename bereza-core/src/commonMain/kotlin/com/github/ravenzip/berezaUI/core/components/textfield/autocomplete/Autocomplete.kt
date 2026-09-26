@@ -1,12 +1,12 @@
 package com.github.ravenzip.berezaUI.core.components.textfield.autocomplete
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.*
@@ -15,9 +15,9 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [Autocomplete] — компонент с возможностью выбора элемента из списка, который будет получен при
@@ -34,8 +34,6 @@ fun <T> Autocomplete(
     searchDebounce: Duration = 500.milliseconds,
     onClear: (() -> Unit)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -47,6 +45,7 @@ fun <T> Autocomplete(
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -85,8 +84,6 @@ fun <T> Autocomplete(
                         enabled = enabled,
                     ),
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 maxLines = 1,
                 singleLine = true,
                 label = label,
@@ -101,6 +98,7 @@ fun <T> Autocomplete(
                         dropDownIcon = dropDownIcon,
                     )
                 },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -129,8 +127,6 @@ fun <T> OutlinedAutocomplete(
     searchDebounce: Duration = 500.milliseconds,
     onClear: (() -> Unit)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -142,6 +138,7 @@ fun <T> OutlinedAutocomplete(
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -180,8 +177,6 @@ fun <T> OutlinedAutocomplete(
                         enabled = enabled,
                     ),
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 maxLines = 1,
                 singleLine = true,
                 label = label,
@@ -196,6 +191,7 @@ fun <T> OutlinedAutocomplete(
                         dropDownIcon = dropDownIcon,
                     )
                 },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -224,8 +220,6 @@ fun <T> Autocomplete(
     search: (T, String) -> Boolean,
     onClear: (() -> Unit)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -236,6 +230,7 @@ fun <T> Autocomplete(
         AutocompleteMenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -266,8 +261,6 @@ fun <T> Autocomplete(
                         enabled = enabled,
                     ),
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 maxLines = 1,
                 singleLine = true,
                 label = label,
@@ -282,6 +275,7 @@ fun <T> Autocomplete(
                         dropDownIcon = dropDownIcon,
                     )
                 },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -309,8 +303,6 @@ fun <T> OutlinedAutocomplete(
     search: (T, String) -> Boolean,
     onClear: (() -> Unit)? = null,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
@@ -321,6 +313,7 @@ fun <T> OutlinedAutocomplete(
         AutocompleteMenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -351,8 +344,6 @@ fun <T> OutlinedAutocomplete(
                         enabled = enabled,
                     ),
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 maxLines = 1,
                 singleLine = true,
                 label = label,
@@ -367,6 +358,7 @@ fun <T> OutlinedAutocomplete(
                         dropDownIcon = dropDownIcon,
                     )
                 },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )

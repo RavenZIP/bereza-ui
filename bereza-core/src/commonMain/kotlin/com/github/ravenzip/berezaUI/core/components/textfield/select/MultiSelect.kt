@@ -1,5 +1,6 @@
 package com.github.ravenzip.berezaUI.core.components.textfield.select
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,7 +10,6 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.berezaUI.core.components.textfield.*
@@ -33,13 +33,12 @@ fun <T> MultiSelect(
     onRemoveChip: (T) -> Unit,
     onSelect: (T) -> Unit,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -68,11 +67,10 @@ fun <T> MultiSelect(
                 chipOverflow = chipOverflow,
                 readonly = true,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )
@@ -108,13 +106,12 @@ fun <T> OutlinedMultiSelect(
     onRemoveChip: (T) -> Unit,
     onSelect: (T) -> Unit,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -143,11 +140,10 @@ fun <T> OutlinedMultiSelect(
                 chipOverflow = chipOverflow,
                 readonly = true,
                 errorState = errorState,
-                onFocusChange = onFocusChange,
-                onTouchChange = onTouchChange,
                 textFieldLabel = label,
                 textFieldPlaceholder = placeholder,
                 textFieldTrailingIcon = { AnimatedArrow(expanded) },
+                interactionSource = interactionSource,
                 shape = shape,
                 colors = colors.textFieldColors,
             )

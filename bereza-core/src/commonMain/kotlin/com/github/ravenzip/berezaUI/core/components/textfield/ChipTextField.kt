@@ -10,17 +10,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.components.Chip
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
@@ -45,10 +40,11 @@ fun <T> ChipTextField(
     textFieldTrailingIcon: @Composable (() -> Unit)? = null,
     textFieldSupportingText: @Composable (() -> Unit)? = null,
     chipLabel: @Composable (T) -> Unit = { x -> Text(displayWith(x)) },
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
+    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
 
     BasicTextField(
         value = value,
@@ -117,10 +113,11 @@ fun <T> OutlinedChipTextField(
     textFieldTrailingIcon: @Composable (() -> Unit)? = null,
     textFieldSupportingText: @Composable (() -> Unit)? = null,
     chipLabel: @Composable (T) -> Unit = { x -> Text(displayWith(x)) },
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
+    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
 
     BasicTextField(
         value = value,
@@ -293,22 +290,18 @@ fun <T> ChipTextFieldWithSupportingRow(
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     singleLine: Boolean = false,
     textFieldLabel: @Composable (() -> Unit)? = null,
     textFieldPlaceholder: @Composable (() -> Unit)? = null,
     textFieldLeadingIcon: @Composable (() -> Unit)? = null,
     textFieldTrailingIcon: @Composable (() -> Unit)? = null,
     chipLabel: @Composable (T) -> Unit = { x -> Text(displayWith(x)) },
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
-    val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
-
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     ChipTextField(
         value = value,
@@ -316,11 +309,7 @@ fun <T> ChipTextFieldWithSupportingRow(
         chips = chips,
         displayWith = displayWith,
         onRemoveChip = onRemoveChip,
-        modifier =
-            modifier.onFocusChanged { x ->
-                isFocused.value = x.isFocused
-                onFocusChange(x)
-            },
+        modifier = modifier,
         chipOverflow = chipOverflow,
         enabled = enabled,
         readOnly = readonly,
@@ -333,10 +322,11 @@ fun <T> ChipTextFieldWithSupportingRow(
         textFieldSupportingText =
             if (reserveSupportingContentSpace || errorMessage.isNotEmpty()) {
                 {
-                    AnimatedError(errorMessage = errorMessage, colors = colors)
+                    AnimatedError(errorMessage = errorMessage)
                 }
             } else null,
         chipLabel = chipLabel,
+        interactionSource = interactionSource,
         shape = shape,
         colors = colors,
     )
@@ -355,24 +345,18 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     singleLine: Boolean = false,
     textFieldLabel: @Composable (() -> Unit)? = null,
     textFieldPlaceholder: @Composable (() -> Unit)? = null,
     textFieldLeadingIcon: @Composable (() -> Unit)? = null,
     textFieldTrailingIcon: @Composable (() -> Unit)? = null,
     chipLabel: @Composable (T) -> Unit = { x -> Text(displayWith(x)) },
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
-    // TODO нужны ли onFocusChange и onTouchChange в этих компонентах? Пока это просто копипаста из
-    // TextFieldWithSupportingRow
-    val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
-
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     OutlinedChipTextField(
         value = value,
@@ -380,11 +364,7 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
         chips = chips,
         displayWith = displayWith,
         onRemoveChip = onRemoveChip,
-        modifier =
-            modifier.onFocusChanged { x ->
-                isFocused.value = x.isFocused
-                onFocusChange(x)
-            },
+        modifier = modifier,
         chipOverflow = chipOverflow,
         enabled = enabled,
         readOnly = readonly,
@@ -397,10 +377,11 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
         textFieldSupportingText =
             if (reserveSupportingContentSpace || errorMessage.isNotEmpty()) {
                 {
-                    AnimatedError(errorMessage = errorMessage, colors = colors)
+                    AnimatedError(errorMessage = errorMessage)
                 }
             } else null,
         chipLabel = chipLabel,
+        interactionSource = interactionSource,
         shape = shape,
         colors = colors,
     )
