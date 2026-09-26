@@ -20,7 +20,6 @@ composeMultiplatformNavigation3 = "1.1.1"
 junit = "4.13.2"
 vanniktechMavenPublish = "0.37.0"
 
-ravenzip-krex = "0.1.2"
 ravenzip-kotlinReactiveForms = "0.2.2"
 ravenzip-compose-extensions = "0.1.0"
 
@@ -51,7 +50,6 @@ material-icons-extended = { module = "org.jetbrains.compose.material:material-ic
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
-ravenzip-krex-core = { module = "com.github.RavenZIP.krex:krex-core", version.ref = "ravenzip-krex" }
 ravenzip-kotlinReactiveForms-core = { module = "com.github.RavenZIP.kotlin-reactive-forms:krf-core", version.ref = "ravenzip-kotlinReactiveForms" }
 ravenzip-compose-extensions = { module = "com.github.RavenZIP.compose-extensions:compose-extensions", version.ref = "ravenzip-compose-extensions" }
 

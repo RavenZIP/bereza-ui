@@ -37,8 +37,6 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.material.icons.extended)
-
-            implementation(libs.ravenzip.krex.core)
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }
