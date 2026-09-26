@@ -38,8 +38,7 @@ fun Chip(
         ) {
             Row(
                 modifier =
-                    Modifier.width(IntrinsicSize.Max)
-                        .defaultMinSize(minHeight = InputChipDefaults.Height)
+                    Modifier.defaultMinSize(minHeight = InputChipDefaults.Height)
                         .padding(contentPadding),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = horizontalArrangement,
@@ -54,7 +53,6 @@ fun Chip(
                 }
 
                 Row(
-                    modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                     content = { label() },
