@@ -3,6 +3,7 @@ package com.github.ravenzip.berezaUI.screen.components.textfield
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -69,6 +70,19 @@ fun AutocompleteScreen(
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    emptyContent = { Text("Не найдено") },
+                    loadingContent = { Text("Загрузка...") },
+                )
+
+                Autocomplete(
+                    source = screenViewModel.source,
+                    selected = selected,
+                    displayWith = { x -> x.name },
+                    onSelect = { x -> screenViewModel.selected.update { x } },
+                    search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
+                    key = { x -> x.id },
+                    onClear = { screenViewModel.selected.update { null } },
+                    emptyContent = { Text("Не найдено") },
                 )
 
                 OutlinedAutocomplete(
@@ -78,6 +92,19 @@ fun AutocompleteScreen(
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    emptyContent = { Text("Не найдено") },
+                    loadingContent = { Text("Загрузка...") },
+                )
+
+                OutlinedAutocomplete(
+                    source = screenViewModel.source,
+                    selected = selected,
+                    displayWith = { x -> x.name },
+                    onSelect = { x -> screenViewModel.selected.update { x } },
+                    search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
+                    key = { x -> x.id },
+                    onClear = { screenViewModel.selected.update { null } },
+                    emptyContent = { Text("Не найдено") },
                 )
             }
         },

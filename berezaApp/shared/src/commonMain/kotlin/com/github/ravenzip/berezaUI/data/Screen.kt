@@ -17,10 +17,6 @@ sealed interface Screen : NavKey {
 
     @Serializable data object MultiSelect : Screen, NavKey
 
-    @Serializable data object ComboBox : Screen, NavKey
-
-    @Serializable data object MultiCombobox : Screen, NavKey
-
     @Serializable data object Autocomplete : Screen, NavKey
 
     @Serializable data object MultiAutocomplete : Screen, NavKey

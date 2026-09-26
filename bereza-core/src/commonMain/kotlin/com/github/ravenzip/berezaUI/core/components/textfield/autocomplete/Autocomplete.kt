@@ -23,7 +23,6 @@ import kotlin.time.Duration.Companion.milliseconds
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
  * формируется по мере ввода текста. Ввод значения, отсутствующего в списке, не поддерживается.
  */
-
 // TODO сделать спиннер при загрузке (trailingIcon?)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +41,11 @@ fun <T> Autocomplete(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        AutocompleteMenuItem(item, displayWith)
+    },
+    emptyContent: @Composable (() -> Unit),
+    loadingContent: @Composable (() -> Unit) = emptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
 ) {
@@ -54,10 +58,6 @@ fun <T> Autocomplete(
         displayWith = displayWith,
         onInputTextChange = { newText -> inputText = newText },
     )
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { inputText }.collect { println(it) }
-    }
 
     Search(
         inputText = inputText,
@@ -97,21 +97,9 @@ fun <T> Autocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val text = remember(item) { displayWith(item) }
-            Text(text = text)
-        },
-        emptyContent = {
-            // TODO нужно как-то дать возможность прокинуть свой контент
-            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
-            // который предоставляет дефолтное поведение и снаружи получать строку
-            // Либо снаружи получать emptyContent: @Composable () -> Unit
-
-            Text(text = "Не найдено")
-        },
-        loadingContent = {
-            Text(text = "Загрузка...")
-        },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
+        loadingContent = loadingContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
@@ -135,6 +123,11 @@ fun <T> OutlinedAutocomplete(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        AutocompleteMenuItem(item, displayWith)
+    },
+    emptyContent: @Composable (() -> Unit),
+    loadingContent: @Composable (() -> Unit) = emptyContent,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
 ) {
@@ -147,10 +140,6 @@ fun <T> OutlinedAutocomplete(
         displayWith = displayWith,
         onInputTextChange = { newText -> inputText = newText },
     )
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { inputText }.collect { println(it) }
-    }
 
     Search(
         inputText = inputText,
@@ -190,23 +179,164 @@ fun <T> OutlinedAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val text = remember(item) { displayWith(item) }
-            Text(text = text)
-        },
-        emptyContent = {
-            // TODO нужно как-то дать возможность прокинуть свой контент
-            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
-            // который предоставляет дефолтное поведение и снаружи получать строку
-            // Либо снаружи получать emptyContent: @Composable () -> Unit
-
-            Text(text = "Не найдено")
-        },
-        loadingContent = {
-            Text(text = "Загрузка...")
-        },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
+        loadingContent = loadingContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> Autocomplete(
+    source: List<T>,
+    modifier: Modifier = Modifier,
+    selected: T? = null,
+    displayWith: (T) -> String,
+    onSelect: (T) -> Unit,
+    search: (T, String) -> Boolean,
+    onClear: (() -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        AutocompleteMenuItem(item, displayWith)
+    },
+    placeholder: @Composable (() -> Unit)? = null,
+    emptyContent: @Composable (() -> Unit),
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+    val filteredSource = rememberFilteredSource(source, inputText, search)
+
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
+
+    DropDownTextFieldBox(
+        sourceState = SourceState.Content(filteredSource),
+        onSelectItem = onSelect,
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        textField = {
+            TextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                maxLines = 1,
+                singleLine = true,
+                label = label,
+                placeholder = placeholder,
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> OutlinedAutocomplete(
+    source: List<T>,
+    modifier: Modifier = Modifier,
+    selected: T? = null,
+    displayWith: (T) -> String,
+    onSelect: (T) -> Unit,
+    search: (T, String) -> Boolean,
+    onClear: (() -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        AutocompleteMenuItem(item, displayWith)
+    },
+    emptyContent: @Composable (() -> Unit),
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+    val filteredSource = rememberFilteredSource(source, inputText, search)
+
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
+
+    DropDownTextFieldBox(
+        sourceState = SourceState.Content(filteredSource),
+        onSelectItem = onSelect,
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        textField = {
+            OutlinedTextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                maxLines = 1,
+                singleLine = true,
+                label = label,
+                placeholder = placeholder,
+                trailingIcon = {
+                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}
+
+@Composable
+private fun <T> AutocompleteMenuItem(
+    item: T,
+    displayWith: (T) -> String,
+) {
+    val text = remember(item) { displayWith(item) }
+    Text(text)
 }
