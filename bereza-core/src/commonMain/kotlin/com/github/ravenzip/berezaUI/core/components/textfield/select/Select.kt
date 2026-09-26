@@ -39,6 +39,8 @@ fun <T> Select(
     key: (T) -> Any? = { it },
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
@@ -73,7 +75,14 @@ fun <T> Select(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,
@@ -109,6 +118,8 @@ fun <T> OutlinedSelect(
     key: (T) -> Any? = { it },
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
@@ -143,7 +154,14 @@ fun <T> OutlinedSelect(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,

@@ -129,13 +129,23 @@ internal fun DropDownTextFieldTrailingContent(
     expanded: Boolean,
     enabled: Boolean,
     onClear: (() -> Unit)?,
+    clearIcon: (@Composable () -> Unit)?,
+    dropDownIcon: (@Composable (Boolean) -> Unit)?,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        if (onClear != null && selected != null) {
-            ClearButton(onClear, enabled)
+        if (selected != null) {
+            if (clearIcon != null) {
+                clearIcon()
+            } else if (onClear != null) {
+                ClearButton(onClear, enabled)
+            }
         }
 
-        AnimatedArrow(expanded)
+        if (dropDownIcon != null) {
+            dropDownIcon(expanded)
+        } else {
+            AnimatedArrow(expanded)
+        }
     }
 }
 

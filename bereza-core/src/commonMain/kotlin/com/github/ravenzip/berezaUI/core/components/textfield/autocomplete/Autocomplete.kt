@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.Flow
  * [Autocomplete] — компонент с возможностью выбора элемента из списка, который будет получен при
  * помощи функции [search] мере ввода текста
  */
-// TODO сделать спиннер при загрузке (trailingIcon?)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Autocomplete(
@@ -41,6 +40,8 @@ fun <T> Autocomplete(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
         AutocompleteMenuItem(item, displayWith)
     },
@@ -91,7 +92,14 @@ fun <T> Autocomplete(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,
@@ -127,6 +135,8 @@ fun <T> OutlinedAutocomplete(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
         AutocompleteMenuItem(item, displayWith)
     },
@@ -177,7 +187,14 @@ fun <T> OutlinedAutocomplete(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,
@@ -212,10 +229,12 @@ fun <T> Autocomplete(
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
         AutocompleteMenuItem(item, displayWith)
     },
-    placeholder: @Composable (() -> Unit)? = null,
     emptyContent: @Composable (() -> Unit),
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
@@ -254,7 +273,14 @@ fun <T> Autocomplete(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,
@@ -289,6 +315,8 @@ fun <T> OutlinedAutocomplete(
     enabled: Boolean = true,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    clearIcon: @Composable (() -> Unit)? = null,
+    dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
         AutocompleteMenuItem(item, displayWith)
     },
@@ -330,7 +358,14 @@ fun <T> OutlinedAutocomplete(
                 label = label,
                 placeholder = placeholder,
                 trailingIcon = {
-                    DropDownTextFieldTrailingContent(selected, expanded, enabled, onClear)
+                    DropDownTextFieldTrailingContent(
+                        selected = selected,
+                        expanded = expanded,
+                        enabled = enabled,
+                        onClear = onClear,
+                        clearIcon = clearIcon,
+                        dropDownIcon = dropDownIcon,
+                    )
                 },
                 shape = shape,
                 colors = colors.textFieldColors,
