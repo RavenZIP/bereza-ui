@@ -109,3 +109,91 @@ fun <T> ComboBox(
         colors = colors.menuColors,
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> OutlinedComboBox(
+    source: List<T>,
+    modifier: Modifier = Modifier,
+    selected: T? = null,
+    displayWith: (T) -> String,
+    onSelect: (T) -> Unit,
+    search: (T, String) -> Boolean,
+    onAddItem: ((String) -> Unit)? = null,
+    onClear: (() -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+    val filteredSource = rememberFilteredSource(source, inputText, search)
+
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
+
+    DropDownTextFieldBox(
+        sourceState = SourceState.Content(filteredSource),
+        onSelectItem = onSelect,
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        textField = {
+            OutlinedTextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                maxLines = 1,
+                singleLine = true,
+                label = label,
+                placeholder = placeholder,
+                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = { item ->
+            val text = remember(item) { displayWith(item) }
+            Text(text = text)
+        },
+        emptyContent = {
+            // TODO нужно как-то дать возможность прокинуть свой контент
+            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
+            // который предоставляет дефолтное поведение
+            // Либо костяк оставить, а снаружи получать text: @Composable () -> Unit
+
+            // TODO надо ли при нажатии добавить автоматически выбирать элемент? Если да,
+            // тогда список с элементами, которые отображаются в выпадающем списке, должен храниться
+            // на стороне компонента и будет состоять из исходного списка + того, что натыкал юзер
+            // Либо же оставить это на откуп пользователю, захочет - реализует, после подстановки
+            // в selected компонент сам отреагирует
+            if (onAddItem != null) {
+                TextButton(onClick = { onAddItem(inputText) }) {
+                    Text("Добавить")
+                }
+            } else {
+                Text(text = "Не найдено")
+            }
+        },
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}

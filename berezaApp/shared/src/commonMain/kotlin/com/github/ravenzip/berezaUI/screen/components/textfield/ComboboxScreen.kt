@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.textfield.combobox.ComboBox
+import com.github.ravenzip.berezaUI.core.components.textfield.combobox.OutlinedComboBox
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,16 @@ fun ComboboxScreen(
         goBack = { navigationViewModel.navigateBack() },
         content = {
             ComboBox(
+                source = screenViewModel.source,
+                selected = selected,
+                displayWith = { x -> x.name },
+                onSelect = { x -> screenViewModel.selected.update { x } },
+                search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
+                key = { x -> x.id },
+                onClear = { screenViewModel.selected.update { null } },
+            )
+
+            OutlinedComboBox(
                 source = screenViewModel.source,
                 selected = selected,
                 displayWith = { x -> x.name },
