@@ -12,14 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.textfield.autocomplete.Autocomplete
+import com.github.ravenzip.berezaUI.core.components.textfield.autocomplete.OutlinedAutocomplete
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
-import kotlin.time.Duration.Companion.seconds
 
 class AutocompleteScreenViewModel : ViewModel() {
     val source =
@@ -62,6 +63,15 @@ fun AutocompleteScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Autocomplete(
+                    selected = selected,
+                    displayWith = { x -> x.name },
+                    onSelect = { x -> screenViewModel.selected.update { x } },
+                    search = { x -> screenViewModel.getSamples(x) },
+                    key = { x -> x.id },
+                    onClear = { screenViewModel.selected.update { null } },
+                )
+
+                OutlinedAutocomplete(
                     selected = selected,
                     displayWith = { x -> x.name },
                     onSelect = { x -> screenViewModel.selected.update { x } },

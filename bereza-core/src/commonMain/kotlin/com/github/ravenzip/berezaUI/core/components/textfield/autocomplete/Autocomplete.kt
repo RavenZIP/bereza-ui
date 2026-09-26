@@ -15,9 +15,9 @@ import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isEx
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Autocomplete — компонент с возможностью выбора элемента из списка, который фильтруется или
@@ -25,7 +25,6 @@ import kotlin.time.Duration.Companion.milliseconds
  */
 
 // TODO сделать спиннер при загрузке (trailingIcon?)
-// TODO сделать Outlined версию
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> Autocomplete(
@@ -77,6 +76,97 @@ fun <T> Autocomplete(
         key = key,
         textField = {
             TextFieldWithSupportingRow(
+                value = inputText,
+                onValueChange = { x -> inputText = x },
+                modifier =
+                    Modifier.menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = enabled,
+                    ),
+                errorState = errorState,
+                onFocusChange = onFocusChange,
+                onTouchChange = onTouchChange,
+                maxLines = 1,
+                singleLine = true,
+                label = label,
+                placeholder = placeholder,
+                trailingIcon = { TrailingContent(selected, expanded, enabled, onClear) },
+                shape = shape,
+                colors = colors.textFieldColors,
+            )
+        },
+        itemContent = { item ->
+            val text = remember(item) { displayWith(item) }
+            Text(text = text)
+        },
+        emptyContent = {
+            // TODO нужно как-то дать возможность прокинуть свой контент
+            // Возможно, что стоит поступить как с TrailingIcon в ExposedDropdownMenuBoxScope,
+            // который предоставляет дефолтное поведение и снаружи получать строку
+            // Либо снаружи получать emptyContent: @Composable () -> Unit
+
+            Text(text = "Не найдено")
+        },
+        loadingContent = {
+            Text(text = "Загрузка...")
+        },
+        enabled = enabled,
+        shape = shape,
+        colors = colors.menuColors,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> OutlinedAutocomplete(
+    modifier: Modifier = Modifier,
+    selected: T? = null,
+    displayWith: (T) -> String,
+    onSelect: (T) -> Unit,
+    search: (String) -> Flow<List<T>>,
+    searchDebounce: Duration = 500.milliseconds,
+    onClear: (() -> Unit)? = null,
+    errorState: ComponentErrorState = ComponentErrorState.Ok,
+    onFocusChange: (FocusState) -> Unit = {},
+    onTouchChange: () -> Unit = {},
+    key: (T) -> Any? = { it },
+    enabled: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(12.dp),
+    colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var inputText by remember { mutableStateOf("") }
+    var sourceState by remember { mutableStateOf<SourceState<T>>(SourceState.Content(listOf())) }
+
+    ComputeInputText(
+        selected = selected,
+        displayWith = displayWith,
+        onInputTextChange = { newText -> inputText = newText },
+    )
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { inputText }.collect { println(it) }
+    }
+
+    Search(
+        inputText = inputText,
+        expanded = expanded,
+        search = search,
+        searchDebounce = searchDebounce,
+        onSourceStateChange = { newSourceState -> sourceState = newSourceState },
+    )
+
+    DropDownTextFieldBox(
+        sourceState = sourceState,
+        onSelectItem = onSelect,
+        expanded = expanded,
+        onExpandedChange = { event -> expanded = event.isExpanded() },
+        modifier = modifier,
+        key = key,
+        textField = {
+            OutlinedTextFieldWithSupportingRow(
                 value = inputText,
                 onValueChange = { x -> inputText = x },
                 modifier =

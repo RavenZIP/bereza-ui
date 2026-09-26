@@ -21,7 +21,6 @@ import com.github.ravenzip.berezaUI.core.data.SourceState
  * ComboBox — компонент с возможностью выбора элемента из заданного списка или ввода собственного
  * значения.
  */
-// TODO сделать Outlined версию
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> ComboBox(
