@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.berezaUI.RootNavigationViewModel
 import com.github.ravenzip.berezaUI.core.components.textfield.combobox.MultiComboBox
+import com.github.ravenzip.berezaUI.core.components.textfield.combobox.OutlinedMultiComboBox
 import com.github.ravenzip.berezaUI.data.Sample
 import com.github.ravenzip.berezaUI.screen.components.shared.ComponentScreen
 
@@ -36,6 +37,23 @@ fun MultiComboboxScreen(
         goBack = { navigationViewModel.navigateBack() },
         content = {
             MultiComboBox(
+                source = screenViewModel.source,
+                selected = screenViewModel.selected,
+                displayWith = { x -> x.name },
+                search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
+                onRemoveChip = { x ->
+                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
+                    if (index != -1) screenViewModel.selected.removeAt(index)
+                },
+                onSelect = { x ->
+                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
+                    if (index != -1) screenViewModel.selected.removeAt(index)
+                    else screenViewModel.selected.add(x)
+                },
+                key = { x -> x.id },
+            )
+
+            OutlinedMultiComboBox(
                 source = screenViewModel.source,
                 selected = screenViewModel.selected,
                 displayWith = { x -> x.name },
