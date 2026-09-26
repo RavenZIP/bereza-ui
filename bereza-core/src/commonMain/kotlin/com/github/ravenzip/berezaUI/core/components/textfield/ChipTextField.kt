@@ -1,8 +1,10 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
@@ -24,7 +27,6 @@ import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
 
-// TODO много дублирующегося кода
 // TODO не слишком ли мелковаты крестики у чипов?
 @Composable
 fun <T> ChipTextField(
@@ -34,6 +36,7 @@ fun <T> ChipTextField(
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     modifier: Modifier = Modifier,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     singleLine: Boolean = false,
@@ -63,57 +66,15 @@ fun <T> ChipTextField(
             TextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = {
-                    // TODO row + scroll или flowRow со увеличением по горизонтали при большом
-                    // кол-ве элементов?
-                    //                    Row(modifier =
-                    // Modifier.horizontalScroll(rememberScrollState())) {
-                    //                        chips.forEach { chip ->
-                    //                            InputChip(
-                    //                                selected = false,
-                    //                                onClick = {},
-                    //                                label = { chipLabel(chip) },
-                    //                                modifier = Modifier.height(24.dp),
-                    //                                trailingIcon = {
-                    //                                    Icon(
-                    //                                        imageVector = Icons.Default.Close,
-                    //                                        contentDescription = "Удалить $chip",
-                    //                                        modifier =
-                    //
-                    // Modifier.size(InputChipDefaults.IconSize).padding(2.dp),
-                    //                                    )
-                    //                                },
-                    //                            )
-                    //                        }
-                    //                    }
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                        ) {
-                            chips.forEach { chip ->
-                                Chip(
-                                    label = { chipLabel(chip) },
-                                    modifier = Modifier.height(24.dp),
-                                    trailingIcon = {
-                                        IconButton(
-                                            onClick = { onRemoveChip(chip) },
-                                            modifier = Modifier.size(16.dp),
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.Close,
-                                                contentDescription = "Удалить $chip",
-                                                modifier =
-                                                    Modifier.size(InputChipDefaults.IconSize)
-                                                        .padding(2.dp),
-                                            )
-                                        }
-                                    },
-                                )
-                            }
-                        }
-
-                        if (!readOnly) innerTextField()
-                    }
+                    ChipTextFieldContent(
+                        chips = chips,
+                        chipOverflow = chipOverflow,
+                        chipLabel = chipLabel,
+                        onRemoveChip = onRemoveChip,
+                        enabled = enabled,
+                        readOnly = readOnly,
+                        innerTextField = innerTextField,
+                    )
                 },
                 enabled = enabled,
                 singleLine = singleLine,
@@ -147,6 +108,7 @@ fun <T> OutlinedChipTextField(
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     modifier: Modifier = Modifier,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     singleLine: Boolean = false,
@@ -176,35 +138,15 @@ fun <T> OutlinedChipTextField(
             OutlinedTextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                        ) {
-                            chips.forEach { chip ->
-                                Chip(
-                                    label = { chipLabel(chip) },
-                                    modifier = Modifier.height(24.dp),
-                                    trailingIcon = {
-                                        IconButton(
-                                            onClick = { onRemoveChip(chip) },
-                                            modifier = Modifier.size(16.dp),
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.Close,
-                                                contentDescription = "Удалить $chip",
-                                                modifier =
-                                                    Modifier.size(InputChipDefaults.IconSize)
-                                                        .padding(2.dp),
-                                            )
-                                        }
-                                    },
-                                )
-                            }
-                        }
-
-                        if (!readOnly) innerTextField()
-                    }
+                    ChipTextFieldContent(
+                        chips = chips,
+                        chipOverflow = chipOverflow,
+                        chipLabel = chipLabel,
+                        onRemoveChip = onRemoveChip,
+                        enabled = enabled,
+                        readOnly = readOnly,
+                        innerTextField = innerTextField,
+                    )
                 },
                 enabled = enabled,
                 singleLine = singleLine,
@@ -231,6 +173,116 @@ fun <T> OutlinedChipTextField(
 }
 
 @Composable
+private fun <T> ChipTextFieldContent(
+    chips: List<T>,
+    chipOverflow: ChipOverflow,
+    chipLabel: @Composable (T) -> Unit,
+    onRemoveChip: (T) -> Unit,
+    enabled: Boolean,
+    readOnly: Boolean,
+    innerTextField: @Composable () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        when (chipOverflow) {
+            ChipOverflow.Wrap -> {
+                WrapChips(
+                    chips = chips,
+                    label = chipLabel,
+                    onRemove = onRemoveChip,
+                    enabled = enabled,
+                )
+            }
+
+            ChipOverflow.HorizontalScroll -> {
+                HorizontalScrollChips(
+                    chips = chips,
+                    label = chipLabel,
+                    onRemove = onRemoveChip,
+                    enabled = enabled,
+                )
+            }
+        }
+
+        if (!readOnly) {
+            innerTextField()
+        }
+    }
+}
+
+@Composable
+private fun <T> HorizontalScrollChips(
+    chips: List<T>,
+    label: @Composable ((T) -> Unit),
+    onRemove: (T) -> Unit,
+    enabled: Boolean,
+) {
+    Row(
+        modifier = Modifier.horizontalScroll(rememberScrollState()),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        chips.forEach { chip ->
+            TextFieldChip(
+                label = { label(chip) },
+                onRemove = { onRemove(chip) },
+                enabled = enabled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun <T> WrapChips(
+    chips: List<T>,
+    label: @Composable ((T) -> Unit),
+    onRemove: (T) -> Unit,
+    enabled: Boolean,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        chips.forEach { chip ->
+            TextFieldChip(
+                label = { label(chip) },
+                onRemove = { onRemove(chip) },
+                enabled = enabled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun TextFieldChip(
+    label: @Composable (() -> Unit),
+    onRemove: () -> Unit,
+    enabled: Boolean,
+) {
+    Chip(
+        label = label,
+        modifier = Modifier.height(24.dp),
+        enabled = enabled,
+        trailingIcon = {
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier.size(16.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Удалить Chip",
+                    modifier = Modifier.size(InputChipDefaults.IconSize).padding(2.dp),
+                )
+            }
+        },
+    )
+}
+
+enum class ChipOverflow {
+    Wrap,
+    HorizontalScroll,
+}
+
+@Composable
 fun <T> ChipTextFieldWithSupportingRow(
     value: String,
     onValueChange: (String) -> Unit,
@@ -238,6 +290,7 @@ fun <T> ChipTextFieldWithSupportingRow(
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     modifier: Modifier = Modifier,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     enabled: Boolean = true,
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
@@ -270,6 +323,7 @@ fun <T> ChipTextFieldWithSupportingRow(
                 isFocused.value = x.isFocused
                 onFocusChange(x)
             },
+        chipOverflow = chipOverflow,
         enabled = enabled,
         readOnly = readonly,
         singleLine = singleLine,
@@ -304,6 +358,7 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     modifier: Modifier = Modifier,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     enabled: Boolean = true,
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
@@ -338,6 +393,7 @@ fun <T> OutlinedChipTextFieldWithSupportingRow(
                 isFocused.value = x.isFocused
                 onFocusChange(x)
             },
+        chipOverflow = chipOverflow,
         enabled = enabled,
         readOnly = readonly,
         singleLine = singleLine,

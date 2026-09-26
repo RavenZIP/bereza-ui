@@ -12,18 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.AnimatedArrow
-import com.github.ravenzip.berezaUI.core.components.textfield.ChipTextFieldWithSupportingRow
-import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
-import com.github.ravenzip.berezaUI.core.components.textfield.Search
+import com.github.ravenzip.berezaUI.core.components.textfield.*
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldDefaults
 import com.github.ravenzip.berezaUI.core.data.SourceState
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +37,7 @@ fun <T> MultiAutocomplete(
     onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -80,6 +78,7 @@ fun <T> MultiAutocomplete(
                         type = ExposedDropdownMenuAnchorType.PrimaryEditable,
                         enabled = enabled,
                     ),
+                chipOverflow = chipOverflow,
                 errorState = errorState,
                 onFocusChange = onFocusChange,
                 onTouchChange = onTouchChange,

@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.berezaUI.core.components.textfield.AnimatedArrow
-import com.github.ravenzip.berezaUI.core.components.textfield.ChipTextFieldWithSupportingRow
-import com.github.ravenzip.berezaUI.core.components.textfield.DropDownTextFieldBox
-import com.github.ravenzip.berezaUI.core.components.textfield.OutlinedChipTextFieldWithSupportingRow
+import com.github.ravenzip.berezaUI.core.components.textfield.*
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.DropDownExpandEvent.Companion.isExpanded
 import com.github.ravenzip.berezaUI.core.data.DropDownTextFieldColors
@@ -40,6 +37,7 @@ fun <T> MultiSelect(
     onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -67,6 +65,7 @@ fun <T> MultiSelect(
                         type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
                         enabled = enabled,
                     ),
+                chipOverflow = chipOverflow,
                 readonly = true,
                 errorState = errorState,
                 onFocusChange = onFocusChange,
@@ -109,6 +108,7 @@ fun <T> OutlinedMultiSelect(
     onTouchChange: () -> Unit = {},
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
+    chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -136,6 +136,7 @@ fun <T> OutlinedMultiSelect(
                         type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
                         enabled = enabled,
                     ),
+                chipOverflow = chipOverflow,
                 readonly = true,
                 errorState = errorState,
                 onFocusChange = onFocusChange,
