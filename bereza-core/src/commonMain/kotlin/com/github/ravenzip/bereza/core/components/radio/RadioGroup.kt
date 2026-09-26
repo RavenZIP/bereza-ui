@@ -15,11 +15,11 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-private fun <T> RadioGroupImpl(
+fun <T> RadioGroup(
     source: List<T>,
+    selectedItem: T?,
     onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
-    selectedKey: Any? = null,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
     contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
@@ -28,6 +28,9 @@ private fun <T> RadioGroupImpl(
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
     content: @Composable RowScope.(T) -> Unit,
 ) {
+    val selectedKey =
+        remember(selectedItem) { if (selectedItem != null) key(selectedItem) else null }
+
     Column(
         modifier = modifier,
         verticalArrangement = contentPadding,
@@ -49,67 +52,4 @@ private fun <T> RadioGroupImpl(
             }
         }
     }
-}
-
-@Composable
-fun <T : Any> RadioGroup(
-    source: List<T>,
-    selectedItem: T,
-    onSelectionItemChange: (T) -> Unit,
-    modifier: Modifier = Modifier,
-    key: (T) -> Any? = { it },
-    enabled: Boolean = true,
-    contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
-    padding: PaddingValues = PaddingValues(15.dp),
-    shape: Shape = RoundedCornerShape(14.dp),
-    colors: RadioButtonColors = RadioButtonDefaults.colors(),
-    content: @Composable RowScope.(T) -> Unit,
-) {
-    val selectedKey = remember(selectedItem) { key(selectedItem) }
-
-    RadioGroupImpl(
-        source = source,
-        onSelectionItemChange = onSelectionItemChange,
-        modifier = modifier,
-        selectedKey = selectedKey,
-        key = key,
-        enabled = enabled,
-        contentPadding = contentPadding,
-        padding = padding,
-        shape = shape,
-        colors = colors,
-        content = content,
-    )
-}
-
-@Composable
-fun <T> RadioGroup(
-    source: List<T>,
-    selectedItem: T?,
-    onSelectionItemChange: (T) -> Unit,
-    modifier: Modifier = Modifier,
-    key: (T) -> Any? = { it },
-    enabled: Boolean = true,
-    contentPadding: Arrangement.Vertical = Arrangement.spacedBy(10.dp),
-    padding: PaddingValues = PaddingValues(15.dp),
-    shape: Shape = RoundedCornerShape(14.dp),
-    colors: RadioButtonColors = RadioButtonDefaults.colors(),
-    content: @Composable RowScope.(T) -> Unit,
-) {
-    val selectedKey =
-        remember(selectedItem) { if (selectedItem != null) key(selectedItem) else null }
-
-    RadioGroupImpl(
-        source = source,
-        onSelectionItemChange = onSelectionItemChange,
-        modifier = modifier,
-        selectedKey = selectedKey,
-        key = key,
-        enabled = enabled,
-        contentPadding = contentPadding,
-        padding = padding,
-        shape = shape,
-        colors = colors,
-        content = content,
-    )
 }
