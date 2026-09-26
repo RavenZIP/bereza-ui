@@ -10,14 +10,13 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
 private fun <T> RadioGroupImpl(
-    source: SnapshotStateList<T>,
+    source: List<T>,
     onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
     selectedKey: Any? = null,
@@ -54,7 +53,7 @@ private fun <T> RadioGroupImpl(
 
 @Composable
 fun <T> RadioGroup(
-    source: SnapshotStateList<T>,
+    source: List<T>,
     selectedItem: T,
     onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +84,7 @@ fun <T> RadioGroup(
 
 @Composable
 fun <T> RadioGroup(
-    source: SnapshotStateList<T>,
+    source: List<T>,
     selectedItem: T?,
     onSelectionItemChange: (T) -> Unit,
     modifier: Modifier = Modifier,

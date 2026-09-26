@@ -10,7 +10,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
@@ -18,8 +17,8 @@ import com.github.ravenzip.berezaUI.core.data.SelectionChange
 
 @Composable
 fun <T> SwitchGroup(
-    source: SnapshotStateList<T>,
-    selectedItems: SnapshotStateList<T>,
+    source: List<T>,
+    selectedItems: List<T>,
     onSelectionItemChange: (T, SelectionChange) -> Unit,
     modifier: Modifier = Modifier,
     key: (T) -> Any? = { it },
