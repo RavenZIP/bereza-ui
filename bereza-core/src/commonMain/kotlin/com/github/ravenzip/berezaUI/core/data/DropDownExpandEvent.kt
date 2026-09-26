@@ -4,6 +4,10 @@ sealed class DropDownExpandEvent {
     object Expanded : DropDownExpandEvent()
 
     data class Collapsed(val afterSelect: Boolean) : DropDownExpandEvent()
+
+    companion object {
+        fun DropDownExpandEvent.isExpanded(): Boolean = this is Expanded
+    }
 }
 
 fun createDropDownExpandEvent(

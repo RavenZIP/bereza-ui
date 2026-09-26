@@ -1,18 +1,16 @@
 package com.github.ravenzip.berezaUI.core.components.textfield
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -21,12 +19,9 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.ravenzip.berezaUI.core.FocusLostEffect
 import com.github.ravenzip.berezaUI.core.components.text.CounterLabel
-import com.github.ravenzip.berezaUI.core.components.text.HintText
 import com.github.ravenzip.berezaUI.core.data.ComponentErrorState
 import com.github.ravenzip.berezaUI.core.data.unwrapErrorMessage
-import com.github.ravenzip.berezaUI.core.utils.calculateLabelColor
 import com.github.ravenzip.berezaUI.core.utils.canAddCharacter
 
 /**
@@ -44,8 +39,6 @@ fun TextFieldWithSupportingRow(
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -58,14 +51,12 @@ fun TextFieldWithSupportingRow(
     showTextLengthCounterIfZero: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(),
 ) {
-    val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
-
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     Box(modifier = Modifier.animateContentSizeIf(!reserveSupportingContentSpace)) {
         TextField(
@@ -75,11 +66,7 @@ fun TextFieldWithSupportingRow(
                     onValueChange(x)
                 }
             },
-            modifier =
-                modifier.onFocusChanged { x ->
-                    isFocused.value = x.isFocused
-                    onFocusChange(x)
-                },
+            modifier = modifier,
             enabled = enabled,
             readOnly = readonly,
             maxLines = maxLines,
@@ -101,9 +88,6 @@ fun TextFieldWithSupportingRow(
                             showTextLengthCounterIfZero = showTextLengthCounterIfZero,
                             value = value,
                             maxLength = maxLength,
-                            error = isError,
-                            focused = isFocused.value,
-                            colors = colors,
                         )
                     }
                 } else null,
@@ -111,6 +95,7 @@ fun TextFieldWithSupportingRow(
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
             singleLine = singleLine,
+            interactionSource = interactionSource,
             shape = shape,
             colors = colors,
         )
@@ -132,8 +117,6 @@ fun OutlinedTextFieldWithSupportingRow(
     readonly: Boolean = false,
     reserveSupportingContentSpace: Boolean = false,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
-    onFocusChange: (FocusState) -> Unit = {},
-    onTouchChange: () -> Unit = {},
     maxLength: Int? = null,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
@@ -146,14 +129,12 @@ fun OutlinedTextFieldWithSupportingRow(
     showTextLengthCounterIfZero: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(14.dp),
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
-    val isFocused = rememberSaveable { mutableStateOf(false) }
     val isError = remember(errorState) { errorState is ComponentErrorState.Error }
     val errorMessage = remember(errorState) { errorState.unwrapErrorMessage() }
-
-    FocusLostEffect(focusedState = isFocused, onFocusLost = onTouchChange)
 
     Box(modifier = Modifier.animateContentSizeIf(!reserveSupportingContentSpace)) {
         OutlinedTextField(
@@ -163,11 +144,7 @@ fun OutlinedTextFieldWithSupportingRow(
                     onValueChange(x)
                 }
             },
-            modifier =
-                modifier.onFocusChanged { x ->
-                    isFocused.value = x.isFocused
-                    onFocusChange(x)
-                },
+            modifier = modifier,
             enabled = enabled,
             readOnly = readonly,
             maxLines = maxLines,
@@ -189,9 +166,6 @@ fun OutlinedTextFieldWithSupportingRow(
                             showTextLengthCounterIfZero = showTextLengthCounterIfZero,
                             value = value,
                             maxLength = maxLength,
-                            error = isError,
-                            focused = isFocused.value,
-                            colors = colors,
                         )
                     }
                 } else null,
@@ -199,6 +173,7 @@ fun OutlinedTextFieldWithSupportingRow(
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
             singleLine = singleLine,
+            interactionSource = interactionSource,
             shape = shape,
             colors = colors,
         )
@@ -209,34 +184,38 @@ private fun Modifier.animateContentSizeIf(condition: Boolean) =
     if (condition) animateContentSize() else this
 
 @Composable
+internal fun AnimatedError(errorMessage: String) {
+    AnimatedVisibility(
+        visible = errorMessage.isNotEmpty(),
+        enter = slideInVertically() + fadeIn(),
+        exit = slideOutVertically() + fadeOut(),
+    ) {
+        CompositionLocalProvider(LocalTextStyle provides TextFieldSupportRowStyle) {
+            Text(text = errorMessage)
+        }
+    }
+}
+
+@Composable
 private fun TextFieldSupportingRow(
     errorMessage: String,
     showTextLengthCounter: Boolean,
     showTextLengthCounterIfZero: Boolean,
     value: String,
     maxLength: Int?,
-    error: Boolean,
-    focused: Boolean,
-    colors: TextFieldColors,
 ) {
     val minHeight = rememberSupportingTextHeight()
 
     /**
      * minHeight нужно вычислить для того, чтобы корректно среагировать на появление анимированного
-     * контента. [Row] сразу будет отрисован, тогда как [HintText] и [CounterLabel] отрисовываются
-     * по условию, которое не факт, что в момент отображения [Row] выполнено
+     * контента. [Row] сразу будет отрисован, тогда как [AnimatedError] и [CounterLabel]
+     * отрисовываются по условию, которое не факт, что в момент отображения [Row] выполнено
      */
     Row(
         modifier = Modifier.fillMaxWidth().heightIn(minHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        AnimatedVisibility(
-            visible = errorMessage.isNotEmpty(),
-            enter = slideInVertically() + fadeIn(),
-            exit = slideOutVertically() + fadeOut(),
-        ) {
-            HintText(text = errorMessage, color = colors.errorLabelColor)
-        }
+        AnimatedError(errorMessage = errorMessage)
 
         AnimatedVisibility(
             visible = showTextLengthCounter && (value.isNotEmpty() || showTextLengthCounterIfZero),
@@ -247,7 +226,6 @@ private fun TextFieldSupportingRow(
                 CounterLabel(
                     current = value.length,
                     max = maxLength,
-                    color = colors.calculateLabelColor(invalid = error, focused = focused),
                 )
             }
         }
@@ -269,3 +247,5 @@ private fun rememberSupportingTextHeight(): Dp {
         result.size.height.toDp()
     }
 }
+
+internal val TextFieldSupportRowStyle = TextStyle(fontSize = 12.sp)
