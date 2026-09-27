@@ -1,5 +1,6 @@
 package com.github.ravenzip.bereza.app.screen.components.textfield
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -9,6 +10,7 @@ import com.github.ravenzip.bereza.app.data.Sample
 import com.github.ravenzip.bereza.app.screen.components.shared.ComponentScreen
 import com.github.ravenzip.bereza.core.components.textfield.select.MultiSelect
 import com.github.ravenzip.bereza.core.components.textfield.select.OutlinedMultiSelect
+import com.github.ravenzip.bereza.core.data.SelectionChange
 
 class MultiSelectScreenViewModel : ViewModel() {
     val source =
@@ -40,32 +42,36 @@ fun MultiSelectScreen(
                 source = screenViewModel.source,
                 selected = screenViewModel.selected,
                 displayWith = { x -> x.name },
-                onRemoveChip = { x ->
-                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                    if (index != -1) screenViewModel.selected.removeAt(index)
-                },
-                onSelect = { x ->
-                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                    if (index != -1) screenViewModel.selected.removeAt(index)
-                    else screenViewModel.selected.add(x)
+                onSelectionChange = { item, selectionChange ->
+                    when (selectionChange) {
+                        SelectionChange.Deselect -> {
+                            val existingIndex =
+                                screenViewModel.selected.indexOfFirst { s -> s == item }
+                            screenViewModel.selected.removeAt(existingIndex)
+                        }
+                        else -> screenViewModel.selected.add(item)
+                    }
                 },
                 key = { x -> x.id },
+                emptyContent = { Text("Не найдено") },
             )
 
             OutlinedMultiSelect(
                 source = screenViewModel.source,
                 selected = screenViewModel.selected,
                 displayWith = { x -> x.name },
-                onRemoveChip = { x ->
-                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                    if (index != -1) screenViewModel.selected.removeAt(index)
-                },
-                onSelect = { x ->
-                    val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                    if (index != -1) screenViewModel.selected.removeAt(index)
-                    else screenViewModel.selected.add(x)
+                onSelectionChange = { item, selectionChange ->
+                    when (selectionChange) {
+                        SelectionChange.Deselect -> {
+                            val existingIndex =
+                                screenViewModel.selected.indexOfFirst { s -> s == item }
+                            screenViewModel.selected.removeAt(existingIndex)
+                        }
+                        else -> screenViewModel.selected.add(item)
+                    }
                 },
                 key = { x -> x.id },
+                emptyContent = { Text("Не найдено") },
             )
         },
     )

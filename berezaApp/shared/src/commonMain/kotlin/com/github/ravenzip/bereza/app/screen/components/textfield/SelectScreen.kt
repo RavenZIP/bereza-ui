@@ -1,5 +1,6 @@
 package com.github.ravenzip.bereza.app.screen.components.textfield
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -48,6 +49,7 @@ fun SelectScreen(
                 onSelect = { x -> screenViewModel.selected.update { x } },
                 key = { x -> x.id },
                 onClear = { screenViewModel.selected.update { null } },
+                emptyContent = { Text("Не найдено") },
             )
 
             OutlinedSelect(
@@ -57,6 +59,7 @@ fun SelectScreen(
                 onSelect = { x -> screenViewModel.selected.update { x } },
                 key = { x -> x.id },
                 onClear = { screenViewModel.selected.update { null } },
+                emptyContent = { Text("Не найдено") },
             )
         },
     )

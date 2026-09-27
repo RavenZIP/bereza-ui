@@ -15,10 +15,11 @@ import com.github.ravenzip.bereza.app.data.Sample
 import com.github.ravenzip.bereza.app.screen.components.shared.ComponentScreen
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.MultiAutocomplete
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.OutlinedMultiAutocomplete
+import com.github.ravenzip.bereza.core.data.SelectionChange
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlin.time.Duration.Companion.seconds
 
 class MultiAutocompleteScreenViewModel : ViewModel() {
     val source =
@@ -61,14 +62,15 @@ fun MultiAutocompleteScreen(
                 MultiAutocomplete(
                     selected = screenViewModel.selected,
                     displayWith = { x -> x.name },
-                    onRemoveChip = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                    },
-                    onSelect = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                        else screenViewModel.selected.add(x)
+                    onSelectionChange = { item, selectionChange ->
+                        when (selectionChange) {
+                            SelectionChange.Deselect -> {
+                                val existingIndex =
+                                    screenViewModel.selected.indexOfFirst { s -> s == item }
+                                screenViewModel.selected.removeAt(existingIndex)
+                            }
+                            else -> screenViewModel.selected.add(item)
+                        }
                     },
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
@@ -81,14 +83,15 @@ fun MultiAutocompleteScreen(
                     selected = screenViewModel.selected,
                     displayWith = { x -> x.name },
                     search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
-                    onRemoveChip = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                    },
-                    onSelect = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                        else screenViewModel.selected.add(x)
+                    onSelectionChange = { item, selectionChange ->
+                        when (selectionChange) {
+                            SelectionChange.Deselect -> {
+                                val existingIndex =
+                                    screenViewModel.selected.indexOfFirst { s -> s == item }
+                                screenViewModel.selected.removeAt(existingIndex)
+                            }
+                            else -> screenViewModel.selected.add(item)
+                        }
                     },
                     key = { x -> x.id },
                     emptyContent = { Text("Не найдено") },
@@ -97,14 +100,15 @@ fun MultiAutocompleteScreen(
                 OutlinedMultiAutocomplete(
                     selected = screenViewModel.selected,
                     displayWith = { x -> x.name },
-                    onRemoveChip = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                    },
-                    onSelect = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                        else screenViewModel.selected.add(x)
+                    onSelectionChange = { item, selectionChange ->
+                        when (selectionChange) {
+                            SelectionChange.Deselect -> {
+                                val existingIndex =
+                                    screenViewModel.selected.indexOfFirst { s -> s == item }
+                                screenViewModel.selected.removeAt(existingIndex)
+                            }
+                            else -> screenViewModel.selected.add(item)
+                        }
                     },
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
@@ -117,14 +121,15 @@ fun MultiAutocompleteScreen(
                     selected = screenViewModel.selected,
                     displayWith = { x -> x.name },
                     search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
-                    onRemoveChip = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                    },
-                    onSelect = { x ->
-                        val index = screenViewModel.selected.indexOfFirst { it.name == x.name }
-                        if (index != -1) screenViewModel.selected.removeAt(index)
-                        else screenViewModel.selected.add(x)
+                    onSelectionChange = { item, selectionChange ->
+                        when (selectionChange) {
+                            SelectionChange.Deselect -> {
+                                val existingIndex =
+                                    screenViewModel.selected.indexOfFirst { s -> s == item }
+                                screenViewModel.selected.removeAt(existingIndex)
+                            }
+                            else -> screenViewModel.selected.add(item)
+                        }
                     },
                     key = { x -> x.id },
                     emptyContent = { Text("Не найдено") },
