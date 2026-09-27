@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.bereza.core.components.textfield.*
 import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [MultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет получен
@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.Flow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiAutocomplete(
-    modifier: Modifier = Modifier,
-    selected: List<T> = listOf(),
+    selected: List<T>,
     displayWith: (T) -> String,
     onSelectionChange: (T, SelectionChange) -> Unit,
     search: (String) -> Flow<List<T>>,
+    modifier: Modifier = Modifier,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
@@ -121,11 +121,11 @@ fun <T> MultiAutocomplete(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> OutlinedMultiAutocomplete(
-    modifier: Modifier = Modifier,
-    selected: List<T> = listOf(),
+    selected: List<T>,
     displayWith: (T) -> String,
     onSelectionChange: (T, SelectionChange) -> Unit,
     search: (String) -> Flow<List<T>>,
+    modifier: Modifier = Modifier,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
@@ -221,12 +221,12 @@ fun <T> OutlinedMultiAutocomplete(
 @Composable
 fun <T> MultiAutocomplete(
     source: List<T>,
-    modifier: Modifier = Modifier,
-    selected: List<T> = listOf(),
+    selected: List<T>,
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     onSelect: (T) -> Unit,
     search: (T, String) -> Boolean,
+    modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
@@ -300,12 +300,12 @@ fun <T> MultiAutocomplete(
 @Composable
 fun <T> OutlinedMultiAutocomplete(
     source: List<T>,
-    modifier: Modifier = Modifier,
-    selected: List<T> = listOf(),
+    selected: List<T>,
     displayWith: (T) -> String,
     onRemoveChip: (T) -> Unit,
     onSelect: (T) -> Unit,
     search: (T, String) -> Boolean,
+    modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
