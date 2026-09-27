@@ -13,14 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.bereza.core.components.textfield.*
-import com.github.ravenzip.bereza.core.data.ComponentErrorState
+import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldColors
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldDefaults
-import com.github.ravenzip.bereza.core.data.SourceState
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 /**
  * [MultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет получен
@@ -32,8 +29,7 @@ fun <T> MultiAutocomplete(
     modifier: Modifier = Modifier,
     selected: List<T> = listOf(),
     displayWith: (T) -> String,
-    onRemoveChip: (T) -> Unit,
-    onSelect: (T) -> Unit,
+    onSelectionChange: (T, SelectionChange) -> Unit,
     search: (String) -> Flow<List<T>>,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -65,8 +61,14 @@ fun <T> MultiAutocomplete(
 
     DropDownTextFieldBox(
         sourceState = sourceState,
-        onSelectItem = { x ->
-            onSelect(x)
+        onSelectItem = { item ->
+            val itemKey = key(item)
+            val isSelected = selected.any { key(item) == itemKey }
+
+            onSelectionChange(
+                item,
+                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
+            )
             inputText = ""
         },
         expanded = expanded,
@@ -80,7 +82,12 @@ fun <T> MultiAutocomplete(
                 onValueChange = { x -> inputText = x },
                 chips = selected,
                 displayWith = displayWith,
-                onRemoveChip = onRemoveChip,
+                onRemoveChip = { item ->
+                    onSelectionChange(
+                        item,
+                        SelectionChange.Deselect,
+                    )
+                },
                 modifier =
                     Modifier.menuAnchor(
                         type = ExposedDropdownMenuAnchorType.PrimaryEditable,
@@ -116,8 +123,7 @@ fun <T> OutlinedMultiAutocomplete(
     modifier: Modifier = Modifier,
     selected: List<T> = listOf(),
     displayWith: (T) -> String,
-    onRemoveChip: (T) -> Unit,
-    onSelect: (T) -> Unit,
+    onSelectionChange: (T, SelectionChange) -> Unit,
     search: (String) -> Flow<List<T>>,
     searchDebounce: Duration = 500.milliseconds,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -149,8 +155,14 @@ fun <T> OutlinedMultiAutocomplete(
 
     DropDownTextFieldBox(
         sourceState = sourceState,
-        onSelectItem = { x ->
-            onSelect(x)
+        onSelectItem = { item ->
+            val itemKey = key(item)
+            val isSelected = selected.any { key(item) == itemKey }
+
+            onSelectionChange(
+                item,
+                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
+            )
             inputText = ""
         },
         expanded = expanded,
@@ -164,7 +176,12 @@ fun <T> OutlinedMultiAutocomplete(
                 onValueChange = { x -> inputText = x },
                 chips = selected,
                 displayWith = displayWith,
-                onRemoveChip = onRemoveChip,
+                onRemoveChip = { item ->
+                    onSelectionChange(
+                        item,
+                        SelectionChange.Deselect,
+                    )
+                },
                 modifier =
                     Modifier.menuAnchor(
                         type = ExposedDropdownMenuAnchorType.PrimaryEditable,
