@@ -11,11 +11,11 @@ import com.github.ravenzip.bereza.app.screen.HomeScreen
 import com.github.ravenzip.bereza.app.screen.LastChangesScreen
 import com.github.ravenzip.bereza.app.screen.components.button.RichButtonScreen
 import com.github.ravenzip.bereza.app.screen.components.checkbox.CheckboxGroupScreen
-import com.github.ravenzip.bereza.app.screen.components.checkbox.CheckboxWithTextScreen
-import com.github.ravenzip.bereza.app.screen.components.radiobutton.RadioButtonWithTextScreen
+import com.github.ravenzip.bereza.app.screen.components.checkbox.CheckboxScreen
+import com.github.ravenzip.bereza.app.screen.components.radiobutton.RadioButtonScreen
 import com.github.ravenzip.bereza.app.screen.components.radiobutton.RadioGroupScreen
 import com.github.ravenzip.bereza.app.screen.components.switch.SwitchGroupScreen
-import com.github.ravenzip.bereza.app.screen.components.switch.SwitchWithTextScreen
+import com.github.ravenzip.bereza.app.screen.components.switch.SwitchScreen
 import com.github.ravenzip.bereza.app.screen.components.textfield.*
 import com.github.ravenzip.bereza.app.screen.layout.ExpandableCardScreen
 import com.github.ravenzip.bereza.app.screen.layout.HorizontalPagerWithIndicatorScreen
@@ -66,8 +66,8 @@ fun RootNavigation(
                     }
 
                     // Чекбоксы
-                    is Screen.CheckboxWithText -> {
-                        CheckboxWithTextScreen(navigationViewModel)
+                    is Screen.Checkbox -> {
+                        CheckboxScreen(navigationViewModel)
                     }
 
                     is Screen.CheckboxGroup -> {
@@ -75,8 +75,8 @@ fun RootNavigation(
                     }
 
                     // Свичи
-                    is Screen.SwitchWithText -> {
-                        SwitchWithTextScreen(navigationViewModel)
+                    is Screen.Switch -> {
+                        SwitchScreen(navigationViewModel)
                     }
 
                     is Screen.SwitchGroup -> {
@@ -84,8 +84,8 @@ fun RootNavigation(
                     }
 
                     // Радиокнопки
-                    is Screen.RadioButtonWithText -> {
-                        RadioButtonWithTextScreen(navigationViewModel)
+                    is Screen.RadioButton -> {
+                        RadioButtonScreen(navigationViewModel)
                     }
 
                     is Screen.RadioGroup -> {

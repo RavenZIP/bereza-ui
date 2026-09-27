@@ -21,7 +21,7 @@ sealed interface Screen : NavKey {
 
     @Serializable data object MultiAutocomplete : Screen, NavKey
 
-    @Serializable data object CheckboxWithText : Screen, NavKey
+    @Serializable data object Checkbox : Screen, NavKey
 
     @Serializable data object CheckboxGroup : Screen, NavKey
 
@@ -35,11 +35,11 @@ sealed interface Screen : NavKey {
 
     @Serializable data object RoundedBox : Screen, NavKey
 
-    @Serializable data object SwitchWithText : Screen, NavKey
+    @Serializable data object Switch : Screen, NavKey
 
     @Serializable data object SwitchGroup : Screen, NavKey
 
-    @Serializable data object RadioButtonWithText : Screen, NavKey
+    @Serializable data object RadioButton : Screen, NavKey
 
     @Serializable data object RichButton : Screen, NavKey
 
