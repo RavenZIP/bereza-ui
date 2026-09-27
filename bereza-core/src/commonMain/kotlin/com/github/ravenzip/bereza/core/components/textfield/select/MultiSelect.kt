@@ -1,13 +1,9 @@
 package com.github.ravenzip.bereza.core.components.textfield.select
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -36,6 +32,15 @@ fun <T> MultiSelect(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
+    },
+    emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
@@ -86,17 +91,8 @@ fun <T> MultiSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val itemKey = key(item)
-            val selected = selected.any { key(it) == itemKey }
-            val text = remember(item) { displayWith(item) }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Checkbox(selected, onCheckedChange = null)
-                Text(text = text)
-            }
-        },
-        emptyContent = { Text(text = "Не найдено") },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
@@ -121,6 +117,15 @@ fun <T> OutlinedMultiSelect(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
+    },
+    emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
@@ -171,17 +176,8 @@ fun <T> OutlinedMultiSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val itemKey = key(item)
-            val selected = selected.any { key(it) == itemKey }
-            val text = remember(item) { displayWith(item) }
-
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Checkbox(selected, onCheckedChange = null)
-                Text(text = text)
-            }
-        },
-        emptyContent = { Text(text = "Не найдено") },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
