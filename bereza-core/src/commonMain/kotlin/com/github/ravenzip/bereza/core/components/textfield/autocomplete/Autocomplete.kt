@@ -4,20 +4,16 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.github.ravenzip.bereza.core.components.textfield.*
-import com.github.ravenzip.bereza.core.data.ComponentErrorState
+import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldColors
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldDefaults
-import com.github.ravenzip.bereza.core.data.SourceState
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 /**
  * [Autocomplete] — компонент с возможностью выбора элемента из списка, который будет получен при
@@ -41,7 +37,7 @@ fun <T> Autocomplete(
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        AutocompleteMenuItem(item, displayWith)
+        DropDownMenuDefaults.MenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
@@ -134,7 +130,7 @@ fun <T> OutlinedAutocomplete(
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        AutocompleteMenuItem(item, displayWith)
+        DropDownMenuDefaults.MenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
@@ -227,7 +223,7 @@ fun <T> Autocomplete(
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        AutocompleteMenuItem(item, displayWith)
+        DropDownMenuDefaults.MenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
@@ -310,7 +306,7 @@ fun <T> OutlinedAutocomplete(
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        AutocompleteMenuItem(item, displayWith)
+        DropDownMenuDefaults.MenuItem(item, displayWith)
     },
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
@@ -369,13 +365,4 @@ fun <T> OutlinedAutocomplete(
         shape = shape,
         colors = colors.menuColors,
     )
-}
-
-@Composable
-private fun <T> AutocompleteMenuItem(
-    item: T,
-    displayWith: (T) -> String,
-) {
-    val text = remember(item) { displayWith(item) }
-    Text(text)
 }

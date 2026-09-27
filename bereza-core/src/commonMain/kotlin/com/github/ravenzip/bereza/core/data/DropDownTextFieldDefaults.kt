@@ -50,6 +50,15 @@ object DropDownMenuDefaults {
         )
 
     @Composable
+    fun <T> MenuItem(
+        item: T,
+        displayWith: (T) -> String,
+    ) {
+        val text = remember(item) { displayWith(item) }
+        Text(text)
+    }
+
+    @Composable
     fun <T> SelectableMenuItem(
         item: T,
         selected: List<T>,
