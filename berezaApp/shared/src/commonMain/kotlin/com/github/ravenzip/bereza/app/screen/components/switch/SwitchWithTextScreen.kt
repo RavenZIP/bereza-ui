@@ -16,8 +16,8 @@ fun SwitchWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         goBack = { navigationViewModel.navigateBack() },
         content = {
             Switch(
-                selected = selected,
-                onClick = { selected = !selected },
+                checked = selected,
+                onCheckedChange = { selected = !selected },
                 content = { Text("С текстом") },
             )
         },

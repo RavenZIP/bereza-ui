@@ -1,5 +1,6 @@
 package com.github.ravenzip.bereza.core.components.checkbox
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,6 +28,7 @@ fun <T> CheckboxGroup(
     padding: PaddingValues = PaddingValues(15.dp),
     shape: Shape = RoundedCornerShape(14.dp),
     colors: CheckboxColors = CheckboxDefaults.colors(),
+    interactionSource: MutableInteractionSource? = null,
     content: @Composable RowScope.(T) -> Unit,
 ) {
     Column(
@@ -39,8 +41,8 @@ fun <T> CheckboxGroup(
 
             key(itemKey) {
                 Checkbox(
-                    selected = selected,
-                    onClick = {
+                    checked = selected,
+                    onCheckedChange = {
                         onSelectionItemChange(
                             item,
                             if (selected) SelectionChange.Deselect else SelectionChange.Select,
@@ -50,6 +52,7 @@ fun <T> CheckboxGroup(
                     padding = padding,
                     shape = shape,
                     colors = colors,
+                    interactionSource = interactionSource,
                 ) {
                     content(item)
                 }

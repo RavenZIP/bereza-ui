@@ -16,8 +16,8 @@ fun CheckboxWithTextScreen(navigationViewModel: RootNavigationViewModel) {
         goBack = { navigationViewModel.navigateBack() },
         content = {
             Checkbox(
-                selected = selected,
-                onClick = { selected = !selected },
+                checked = selected,
+                onCheckedChange = { x -> selected = x },
                 content = { Text("С текстом") },
             )
         },
