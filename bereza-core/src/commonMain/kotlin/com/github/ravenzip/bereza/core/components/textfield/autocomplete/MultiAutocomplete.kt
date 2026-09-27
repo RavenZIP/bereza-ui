@@ -63,6 +63,7 @@ fun <T> MultiAutocomplete(
     DropDownTextFieldBox(
         sourceState = sourceState,
         onSelectItem = { item ->
+            // TODO не дублировать код
             val itemKey = key(item)
             val isSelected = selected.any { key(item) == itemKey }
 
@@ -223,8 +224,7 @@ fun <T> MultiAutocomplete(
     source: List<T>,
     selected: List<T>,
     displayWith: (T) -> String,
-    onRemoveChip: (T) -> Unit,
-    onSelect: (T) -> Unit,
+    onSelectionChange: (T, SelectionChange) -> Unit,
     search: (T, String) -> Boolean,
     modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -252,8 +252,14 @@ fun <T> MultiAutocomplete(
 
     DropDownTextFieldBox(
         sourceState = SourceState.Content(filteredSource),
-        onSelectItem = { x ->
-            onSelect(x)
+        onSelectItem = { item ->
+            val itemKey = key(item)
+            val isSelected = selected.any { key(item) == itemKey }
+
+            onSelectionChange(
+                item,
+                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
+            )
             inputText = ""
         },
         expanded = expanded,
@@ -267,7 +273,12 @@ fun <T> MultiAutocomplete(
                 onValueChange = { x -> inputText = x },
                 chips = selected,
                 displayWith = displayWith,
-                onRemoveChip = onRemoveChip,
+                onRemoveChip = { item ->
+                    onSelectionChange(
+                        item,
+                        SelectionChange.Deselect,
+                    )
+                },
                 modifier =
                     Modifier.menuAnchor(
                         type = ExposedDropdownMenuAnchorType.PrimaryEditable,
@@ -302,8 +313,7 @@ fun <T> OutlinedMultiAutocomplete(
     source: List<T>,
     selected: List<T>,
     displayWith: (T) -> String,
-    onRemoveChip: (T) -> Unit,
-    onSelect: (T) -> Unit,
+    onSelectionChange: (T, SelectionChange) -> Unit,
     search: (T, String) -> Boolean,
     modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -331,8 +341,14 @@ fun <T> OutlinedMultiAutocomplete(
 
     DropDownTextFieldBox(
         sourceState = SourceState.Content(filteredSource),
-        onSelectItem = { x ->
-            onSelect(x)
+        onSelectItem = { item ->
+            val itemKey = key(item)
+            val isSelected = selected.any { key(item) == itemKey }
+
+            onSelectionChange(
+                item,
+                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
+            )
             inputText = ""
         },
         expanded = expanded,
@@ -346,7 +362,12 @@ fun <T> OutlinedMultiAutocomplete(
                 onValueChange = { x -> inputText = x },
                 chips = selected,
                 displayWith = displayWith,
-                onRemoveChip = onRemoveChip,
+                onRemoveChip = { item ->
+                    onSelectionChange(
+                        item,
+                        SelectionChange.Deselect,
+                    )
+                },
                 modifier =
                     Modifier.menuAnchor(
                         type = ExposedDropdownMenuAnchorType.PrimaryEditable,
