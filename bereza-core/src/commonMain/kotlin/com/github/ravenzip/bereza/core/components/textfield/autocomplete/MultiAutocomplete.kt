@@ -1,13 +1,9 @@
 package com.github.ravenzip.bereza.core.components.textfield.autocomplete
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -39,7 +35,12 @@ fun <T> MultiAutocomplete(
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        MultiAutocompleteMenuItem(item, selected, displayWith, key)
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
@@ -133,7 +134,12 @@ fun <T> OutlinedMultiAutocomplete(
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        MultiAutocompleteMenuItem(item, selected, displayWith, key)
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
     },
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
@@ -228,7 +234,12 @@ fun <T> MultiAutocomplete(
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        MultiAutocompleteMenuItem(item, selected, displayWith, key)
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
     },
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
@@ -301,7 +312,12 @@ fun <T> OutlinedMultiAutocomplete(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     itemContent: @Composable (T) -> Unit = { item ->
-        MultiAutocompleteMenuItem(item, selected, displayWith, key)
+        DropDownMenuDefaults.SelectableMenuItem(
+            item,
+            selected,
+            displayWith,
+            key,
+        )
     },
     placeholder: @Composable (() -> Unit)? = null,
     emptyContent: @Composable (() -> Unit),
@@ -353,21 +369,4 @@ fun <T> OutlinedMultiAutocomplete(
         shape = shape,
         colors = colors.menuColors,
     )
-}
-
-@Composable
-private fun <T> MultiAutocompleteMenuItem(
-    item: T,
-    selected: List<T>,
-    displayWith: (T) -> String,
-    key: (T) -> Any? = { it },
-) {
-    val itemKey = key(item)
-    val selected = selected.any { key(it) == itemKey }
-    val text = remember(item) { displayWith(item) }
-
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Checkbox(selected, onCheckedChange = null)
-        Text(text = text)
-    }
 }
