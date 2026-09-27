@@ -4,7 +4,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -13,11 +12,8 @@ import com.github.ravenzip.bereza.core.components.textfield.DropDownTextFieldBox
 import com.github.ravenzip.bereza.core.components.textfield.DropDownTextFieldTrailingContent
 import com.github.ravenzip.bereza.core.components.textfield.OutlinedTextFieldWithSupportingRow
 import com.github.ravenzip.bereza.core.components.textfield.TextFieldWithSupportingRow
-import com.github.ravenzip.bereza.core.data.ComponentErrorState
+import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldColors
-import com.github.ravenzip.bereza.core.data.DropDownTextFieldDefaults
-import com.github.ravenzip.bereza.core.data.SourceState
 
 /**
  * [Select] — компонент с возможностью выбора элемента из заданного списка. Не поддерживает ввод
@@ -39,6 +35,10 @@ fun <T> Select(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        DropDownMenuDefaults.MenuItem(item, displayWith)
+    },
+    emptyContent: @Composable (() -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -86,11 +86,8 @@ fun <T> Select(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val text = remember(item) { displayWith(item) }
-            Text(text = text)
-        },
-        emptyContent = { Text(text = "Не найдено") },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
@@ -116,6 +113,10 @@ fun <T> OutlinedSelect(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
+    itemContent: @Composable (T) -> Unit = { item ->
+        DropDownMenuDefaults.MenuItem(item, displayWith)
+    },
+    emptyContent: @Composable (() -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -163,11 +164,8 @@ fun <T> OutlinedSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = { item ->
-            val text = remember(item) { displayWith(item) }
-            Text(text = text)
-        },
-        emptyContent = { Text(text = "Не найдено") },
+        itemContent = itemContent,
+        emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
         colors = colors.menuColors,
