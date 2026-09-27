@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.bereza.core.components.textfield.*
 import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
 /**
  * [MultiAutocomplete] — компонент с возможностью выбора элементов из списка, который будет получен
@@ -65,7 +65,7 @@ fun <T> MultiAutocomplete(
         onSelectItem = { item ->
             // TODO не дублировать код
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,
@@ -164,7 +164,7 @@ fun <T> OutlinedMultiAutocomplete(
         sourceState = sourceState,
         onSelectItem = { item ->
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,
@@ -254,7 +254,7 @@ fun <T> MultiAutocomplete(
         sourceState = SourceState.Content(filteredSource),
         onSelectItem = { item ->
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,
@@ -343,7 +343,7 @@ fun <T> OutlinedMultiAutocomplete(
         sourceState = SourceState.Content(filteredSource),
         onSelectItem = { item ->
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,

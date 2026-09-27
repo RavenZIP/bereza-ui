@@ -51,7 +51,7 @@ fun <T> MultiSelect(
         sourceState = SourceState.Content(source),
         onSelectItem = { item ->
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,
@@ -136,7 +136,7 @@ fun <T> OutlinedMultiSelect(
         sourceState = SourceState.Content(source),
         onSelectItem = { item ->
             val itemKey = key(item)
-            val isSelected = selected.any { key(item) == itemKey }
+            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
 
             onSelectionChange(
                 item,
