@@ -49,6 +49,7 @@ fun SelectScreen(
                 onSelect = { x -> screenViewModel.selected.update { x } },
                 key = { x -> x.id },
                 onClear = { screenViewModel.selected.update { null } },
+                itemContent = { text -> Text(text) },
                 emptyContent = { Text("Не найдено") },
             )
 
@@ -59,6 +60,7 @@ fun SelectScreen(
                 onSelect = { x -> screenViewModel.selected.update { x } },
                 key = { x -> x.id },
                 onClear = { screenViewModel.selected.update { null } },
+                itemContent = { text -> Text(text) },
                 emptyContent = { Text("Не найдено") },
             )
         },

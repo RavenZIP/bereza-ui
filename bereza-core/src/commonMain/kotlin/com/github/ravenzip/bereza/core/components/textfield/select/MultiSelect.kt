@@ -1,6 +1,7 @@
 package com.github.ravenzip.bereza.core.components.textfield.select
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -32,15 +33,8 @@ fun <T> MultiSelect(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
-    emptyContent: @Composable (() -> Unit),
+    itemContent: @Composable RowScope.(String) -> Unit,
+    emptyContent: @Composable () -> Unit,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
@@ -91,7 +85,15 @@ fun <T> MultiSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
@@ -117,15 +119,8 @@ fun <T> OutlinedMultiSelect(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
-    emptyContent: @Composable (() -> Unit),
+    itemContent: @Composable RowScope.(String) -> Unit,
+    emptyContent: @Composable () -> Unit,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.outlinedColors(),
@@ -176,7 +171,15 @@ fun <T> OutlinedMultiSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,

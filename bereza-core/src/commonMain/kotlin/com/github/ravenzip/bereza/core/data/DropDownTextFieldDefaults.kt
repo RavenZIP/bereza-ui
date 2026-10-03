@@ -2,6 +2,7 @@ package com.github.ravenzip.bereza.core.data
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -50,20 +51,22 @@ object DropDownMenuDefaults {
         )
 
     @Composable
-    fun <T> MenuItem(
+    internal fun <T> MenuItem(
         item: T,
         displayWith: (T) -> String,
+        content: @Composable (String) -> Unit,
     ) {
         val text = remember(item) { displayWith(item) }
-        Text(text)
+        content(text)
     }
 
     @Composable
-    fun <T> SelectableMenuItem(
+    internal fun <T> SelectableMenuItem(
         item: T,
         selected: List<T>,
         displayWith: (T) -> String,
         key: (T) -> Any? = { it },
+        content: @Composable RowScope.(String) -> Unit,
     ) {
         val itemKey = key(item)
         val selected = selected.any { key(it) == itemKey }
@@ -71,7 +74,7 @@ object DropDownMenuDefaults {
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Checkbox(selected, onCheckedChange = null)
-            Text(text = text)
+            content(text)
         }
     }
 }

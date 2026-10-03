@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.github.ravenzip.bereza.core.components.textfield.*
 import com.github.ravenzip.bereza.core.data.*
 import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpanded
+import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.Flow
 
 /**
  * [Autocomplete] — компонент с возможностью выбора элемента из списка, который будет получен при
@@ -36,9 +36,7 @@ fun <T> Autocomplete(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
     interactionSource: MutableInteractionSource? = null,
@@ -99,7 +97,13 @@ fun <T> Autocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         loadingContent = loadingContent,
         enabled = enabled,
@@ -129,9 +133,7 @@ fun <T> OutlinedAutocomplete(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     loadingContent: @Composable (() -> Unit) = emptyContent,
     interactionSource: MutableInteractionSource? = null,
@@ -192,7 +194,13 @@ fun <T> OutlinedAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         loadingContent = loadingContent,
         enabled = enabled,
@@ -222,9 +230,7 @@ fun <T> Autocomplete(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -276,7 +282,13 @@ fun <T> Autocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
@@ -305,9 +317,7 @@ fun <T> OutlinedAutocomplete(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -359,7 +369,13 @@ fun <T> OutlinedAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,

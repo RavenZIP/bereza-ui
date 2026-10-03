@@ -53,6 +53,7 @@ fun MultiSelectScreen(
                     }
                 },
                 key = { x -> x.id },
+                itemContent = { text -> Text(text) },
                 emptyContent = { Text("Не найдено") },
             )
 
@@ -71,6 +72,7 @@ fun MultiSelectScreen(
                     }
                 },
                 key = { x -> x.id },
+                itemContent = { text -> Text(text) },
                 emptyContent = { Text("Не найдено") },
             )
         },

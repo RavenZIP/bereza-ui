@@ -16,10 +16,10 @@ import com.github.ravenzip.bereza.app.screen.components.shared.ComponentScreen
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.MultiAutocomplete
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.OutlinedMultiAutocomplete
 import com.github.ravenzip.bereza.core.data.SelectionChange
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration.Companion.seconds
 
 class MultiAutocompleteScreenViewModel : ViewModel() {
     val source =
@@ -74,6 +74,7 @@ fun MultiAutocompleteScreen(
                     },
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                     loadingContent = { Text("Загрузка...") },
                 )
@@ -94,6 +95,7 @@ fun MultiAutocompleteScreen(
                         }
                     },
                     key = { x -> x.id },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                 )
 
@@ -112,6 +114,7 @@ fun MultiAutocompleteScreen(
                     },
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                     loadingContent = { Text("Загрузка...") },
                 )
@@ -132,6 +135,7 @@ fun MultiAutocompleteScreen(
                         }
                     },
                     key = { x -> x.id },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                 )
             }

@@ -1,6 +1,7 @@
 package com.github.ravenzip.bereza.core.components.textfield.autocomplete
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -34,15 +35,8 @@ fun <T> MultiAutocomplete(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
-    emptyContent: @Composable (() -> Unit),
+    itemContent: @Composable RowScope.(String) -> Unit,
+    emptyContent: @Composable () -> Unit,
     loadingContent: @Composable (() -> Unit) = emptyContent,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -106,7 +100,15 @@ fun <T> MultiAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         loadingContent = loadingContent,
         enabled = enabled,
@@ -134,15 +136,8 @@ fun <T> OutlinedMultiAutocomplete(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
-    emptyContent: @Composable (() -> Unit),
+    itemContent: @Composable RowScope.(String) -> Unit,
+    emptyContent: @Composable () -> Unit,
     loadingContent: @Composable (() -> Unit) = emptyContent,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -205,7 +200,15 @@ fun <T> OutlinedMultiAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         loadingContent = loadingContent,
         enabled = enabled,
@@ -233,15 +236,8 @@ fun <T> MultiAutocomplete(
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
-    emptyContent: @Composable (() -> Unit),
+    itemContent: @Composable RowScope.(String) -> Unit,
+    emptyContent: @Composable () -> Unit,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: DropDownTextFieldColors = DropDownTextFieldDefaults.colors(),
@@ -295,7 +291,15 @@ fun <T> MultiAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
@@ -321,15 +325,8 @@ fun <T> OutlinedMultiAutocomplete(
     enabled: Boolean = true,
     chipOverflow: ChipOverflow = ChipOverflow.Wrap,
     label: @Composable (() -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.SelectableMenuItem(
-            item,
-            selected,
-            displayWith,
-            key,
-        )
-    },
     placeholder: @Composable (() -> Unit)? = null,
+    itemContent: @Composable RowScope.(String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -384,7 +381,15 @@ fun <T> OutlinedMultiAutocomplete(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.SelectableMenuItem(
+                item = item,
+                selected = selected,
+                displayWith = displayWith,
+                key = key,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,

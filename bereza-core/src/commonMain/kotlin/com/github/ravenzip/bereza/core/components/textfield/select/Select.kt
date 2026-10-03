@@ -35,9 +35,7 @@ fun <T> Select(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
@@ -86,7 +84,13 @@ fun <T> Select(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,
@@ -113,9 +117,7 @@ fun <T> OutlinedSelect(
     placeholder: @Composable (() -> Unit)? = null,
     clearIcon: @Composable (() -> Unit)? = null,
     dropDownIcon: @Composable ((expanded: Boolean) -> Unit)? = null,
-    itemContent: @Composable (T) -> Unit = { item ->
-        DropDownMenuDefaults.MenuItem(item, displayWith)
-    },
+    itemContent: @Composable (String) -> Unit,
     emptyContent: @Composable (() -> Unit),
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
@@ -164,7 +166,13 @@ fun <T> OutlinedSelect(
                 colors = colors.textFieldColors,
             )
         },
-        itemContent = itemContent,
+        itemContent = { item ->
+            DropDownMenuDefaults.MenuItem(
+                item = item,
+                displayWith = displayWith,
+                content = itemContent,
+            )
+        },
         emptyContent = emptyContent,
         enabled = enabled,
         shape = shape,

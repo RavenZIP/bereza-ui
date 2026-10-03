@@ -16,12 +16,12 @@ import com.github.ravenzip.bereza.app.data.Sample
 import com.github.ravenzip.bereza.app.screen.components.shared.ComponentScreen
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.Autocomplete
 import com.github.ravenzip.bereza.core.components.textfield.autocomplete.OutlinedAutocomplete
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
-import kotlin.time.Duration.Companion.seconds
 
 class AutocompleteScreenViewModel : ViewModel() {
     val source =
@@ -70,6 +70,7 @@ fun AutocompleteScreen(
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                     loadingContent = { Text("Загрузка...") },
                 )
@@ -82,6 +83,7 @@ fun AutocompleteScreen(
                     search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                 )
 
@@ -92,6 +94,7 @@ fun AutocompleteScreen(
                     search = { x -> screenViewModel.getSamples(x) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                     loadingContent = { Text("Загрузка...") },
                 )
@@ -104,6 +107,7 @@ fun AutocompleteScreen(
                     search = { item, text -> item.name.startsWith(text, ignoreCase = true) },
                     key = { x -> x.id },
                     onClear = { screenViewModel.selected.update { null } },
+                    itemContent = { text -> Text(text) },
                     emptyContent = { Text("Не найдено") },
                 )
             }

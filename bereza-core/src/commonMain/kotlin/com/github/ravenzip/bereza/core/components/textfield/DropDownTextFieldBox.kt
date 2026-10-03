@@ -101,7 +101,7 @@ fun <T> DropDownTextFieldBox(
 }
 
 @Composable
-fun DisabledDropDownMenuItem(
+private fun DisabledDropDownMenuItem(
     text: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
