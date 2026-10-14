@@ -10,17 +10,17 @@ import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.github.ravenzip.bereza.core.data.SelectionChange
+import com.github.ravenzip.bereza.core.components.textfield.MultiSelectChange
+import com.github.ravenzip.bereza.core.components.textfield.toggleItem
 
 @Composable
 fun <T> CheckboxGroup(
     source: List<T>,
     selectedItems: List<T>,
-    onSelectionItemChange: (T, SelectionChange) -> Unit,
+    onSelectionItemChange: (MultiSelectChange<T>) -> Unit,
     modifier: Modifier = Modifier,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
@@ -36,17 +36,14 @@ fun <T> CheckboxGroup(
         verticalArrangement = contentPadding,
     ) {
         source.forEach { item ->
-            val itemKey = remember(key, item) { key(item) }
+            val itemKey = key(item)
             val selected = selectedItems.any { key(it) == itemKey }
 
             key(itemKey) {
                 Checkbox(
                     checked = selected,
                     onCheckedChange = {
-                        onSelectionItemChange(
-                            item,
-                            if (selected) SelectionChange.Deselect else SelectionChange.Select,
-                        )
+                        onSelectionItemChange(toggleItem(selected = selectedItems, item, key = key))
                     },
                     enabled = enabled,
                     padding = padding,

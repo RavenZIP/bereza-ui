@@ -3,11 +3,18 @@ package com.github.ravenzip.bereza.core.components.textfield
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import com.github.ravenzip.bereza.core.data.SelectionChange
 import com.github.ravenzip.bereza.core.data.SourceState
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+
+class MultiSelectChange<T>(
+    val selected: List<T>,
+    val item: T,
+    val kind: SelectionChange,
+)
 
 @Composable
 internal fun <T> rememberFilteredSource(
@@ -20,6 +27,44 @@ internal fun <T> rememberFilteredSource(
             search(item, inputText)
         }
     }
+}
+
+internal fun <T> toggleItem(selected: List<T>, item: T, key: (T) -> Any?): MultiSelectChange<T> {
+    val itemKey = key(item)
+    val selectedIndex = selected.indexOfFirst { iterableItem ->
+        key(iterableItem) == itemKey
+    }
+    val isSelected = selectedIndex >= 0
+
+    val newSelected =
+        selected.toMutableList().apply {
+            if (isSelected) {
+                removeAt(selectedIndex)
+            } else {
+                add(item)
+            }
+        }
+
+    return MultiSelectChange(
+        newSelected,
+        item,
+        if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
+    )
+}
+
+internal fun <T> removeItem(selected: List<T>, item: T, key: (T) -> Any?): MultiSelectChange<T> {
+    val itemKey = key(item)
+    val selectedIndex = selected.indexOfFirst { iterableItem ->
+        key(iterableItem) == itemKey
+    }
+
+    val newSelected = selected.toMutableList().apply { removeAt(selectedIndex) }
+
+    return MultiSelectChange(
+        newSelected,
+        item,
+        SelectionChange.Deselect,
+    )
 }
 
 @Composable

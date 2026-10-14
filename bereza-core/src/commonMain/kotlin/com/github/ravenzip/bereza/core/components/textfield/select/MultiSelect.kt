@@ -17,8 +17,6 @@ import com.github.ravenzip.bereza.core.data.DropDownExpandEvent.Companion.isExpa
  * [MultiSelect] — компонент с возможностью выбора нескольких элементов из заданного списка. Не
  * поддерживает ввод текста и фильтрацию списка.
  */
-// TODO может быть для selected перейти на Set<T>?
-// TODO подумать над внедрением kotlinx.immutable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiSelect(
@@ -26,7 +24,7 @@ fun <T> MultiSelect(
     modifier: Modifier = Modifier,
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
@@ -44,13 +42,7 @@ fun <T> MultiSelect(
     DropDownTextFieldBox(
         sourceState = SourceState.Content(source),
         onSelectItem = { item ->
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
         },
         expanded = expanded,
         onExpandedChange = { event -> expanded = event.isExpanded() },
@@ -64,10 +56,7 @@ fun <T> MultiSelect(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(
@@ -112,7 +101,7 @@ fun <T> OutlinedMultiSelect(
     modifier: Modifier = Modifier,
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
@@ -130,13 +119,7 @@ fun <T> OutlinedMultiSelect(
     DropDownTextFieldBox(
         sourceState = SourceState.Content(source),
         onSelectItem = { item ->
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
         },
         expanded = expanded,
         onExpandedChange = { event -> expanded = event.isExpanded() },
@@ -150,10 +133,7 @@ fun <T> OutlinedMultiSelect(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(

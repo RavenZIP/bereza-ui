@@ -2,7 +2,7 @@ package com.github.ravenzip.bereza.app.screen.components.textfield
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.github.ravenzip.bereza.app.RootNavigationViewModel
@@ -10,7 +10,8 @@ import com.github.ravenzip.bereza.app.data.Sample
 import com.github.ravenzip.bereza.app.screen.components.shared.ComponentScreen
 import com.github.ravenzip.bereza.core.components.textfield.select.MultiSelect
 import com.github.ravenzip.bereza.core.components.textfield.select.OutlinedMultiSelect
-import com.github.ravenzip.bereza.core.data.SelectionChange
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 class MultiSelectScreenViewModel : ViewModel() {
     val source =
@@ -25,7 +26,7 @@ class MultiSelectScreenViewModel : ViewModel() {
             Sample(8, "Viktor"),
         )
 
-    val selected = mutableStateListOf<Sample>()
+    val selected = MutableStateFlow<List<Sample>>(listOf())
 }
 
 @Composable
@@ -38,19 +39,14 @@ fun MultiSelectScreen(
         description = "Текстовое поле с выпадающим списком...",
         goBack = { navigationViewModel.navigateBack() },
         content = {
+            val selected = screenViewModel.selected.collectAsState().value
+
             MultiSelect(
                 source = screenViewModel.source,
-                selected = screenViewModel.selected,
+                selected = selected,
                 displayWith = { x -> x.name },
-                onSelectionChange = { item, selectionChange ->
-                    when (selectionChange) {
-                        SelectionChange.Deselect -> {
-                            val existingIndex =
-                                screenViewModel.selected.indexOfFirst { s -> s == item }
-                            screenViewModel.selected.removeAt(existingIndex)
-                        }
-                        else -> screenViewModel.selected.add(item)
-                    }
+                onSelectedChange = { event ->
+                    screenViewModel.selected.update { event.selected }
                 },
                 key = { x -> x.id },
                 itemContent = { text -> Text(text) },
@@ -59,17 +55,10 @@ fun MultiSelectScreen(
 
             OutlinedMultiSelect(
                 source = screenViewModel.source,
-                selected = screenViewModel.selected,
+                selected = selected,
                 displayWith = { x -> x.name },
-                onSelectionChange = { item, selectionChange ->
-                    when (selectionChange) {
-                        SelectionChange.Deselect -> {
-                            val existingIndex =
-                                screenViewModel.selected.indexOfFirst { s -> s == item }
-                            screenViewModel.selected.removeAt(existingIndex)
-                        }
-                        else -> screenViewModel.selected.add(item)
-                    }
+                onSelectedChange = { event ->
+                    screenViewModel.selected.update { event.selected }
                 },
                 key = { x -> x.id },
                 itemContent = { text -> Text(text) },

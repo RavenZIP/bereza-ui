@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 fun <T> MultiAutocomplete(
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     search: (String) -> Flow<List<T>>,
     modifier: Modifier = Modifier,
     searchDebounce: Duration = 500.milliseconds,
@@ -57,14 +57,7 @@ fun <T> MultiAutocomplete(
     DropDownTextFieldBox(
         sourceState = sourceState,
         onSelectItem = { item ->
-            // TODO не дублировать код
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
             inputText = ""
         },
         expanded = expanded,
@@ -79,10 +72,7 @@ fun <T> MultiAutocomplete(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(
@@ -126,7 +116,7 @@ fun <T> MultiAutocomplete(
 fun <T> OutlinedMultiAutocomplete(
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     search: (String) -> Flow<List<T>>,
     modifier: Modifier = Modifier,
     searchDebounce: Duration = 500.milliseconds,
@@ -158,13 +148,7 @@ fun <T> OutlinedMultiAutocomplete(
     DropDownTextFieldBox(
         sourceState = sourceState,
         onSelectItem = { item ->
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
             inputText = ""
         },
         expanded = expanded,
@@ -179,10 +163,7 @@ fun <T> OutlinedMultiAutocomplete(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(
@@ -227,7 +208,7 @@ fun <T> MultiAutocomplete(
     source: List<T>,
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     search: (T, String) -> Boolean,
     modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -249,13 +230,7 @@ fun <T> MultiAutocomplete(
     DropDownTextFieldBox(
         sourceState = SourceState.Content(filteredSource),
         onSelectItem = { item ->
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
             inputText = ""
         },
         expanded = expanded,
@@ -270,10 +245,7 @@ fun <T> MultiAutocomplete(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(
@@ -317,7 +289,7 @@ fun <T> OutlinedMultiAutocomplete(
     source: List<T>,
     selected: List<T>,
     displayWith: (T) -> String,
-    onSelectionChange: (T, SelectionChange) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     search: (T, String) -> Boolean,
     modifier: Modifier = Modifier,
     errorState: ComponentErrorState = ComponentErrorState.Ok,
@@ -339,13 +311,7 @@ fun <T> OutlinedMultiAutocomplete(
     DropDownTextFieldBox(
         sourceState = SourceState.Content(filteredSource),
         onSelectItem = { item ->
-            val itemKey = key(item)
-            val isSelected = selected.any { iterableItem -> key(iterableItem) == itemKey }
-
-            onSelectionChange(
-                item,
-                if (isSelected) SelectionChange.Deselect else SelectionChange.Select,
-            )
+            onSelectedChange(toggleItem(selected, item, key))
             inputText = ""
         },
         expanded = expanded,
@@ -360,10 +326,7 @@ fun <T> OutlinedMultiAutocomplete(
                 chips = selected,
                 displayWith = displayWith,
                 onRemoveChip = { item ->
-                    onSelectionChange(
-                        item,
-                        SelectionChange.Deselect,
-                    )
+                    onSelectedChange(removeItem(selected, item, key))
                 },
                 modifier =
                     Modifier.menuAnchor(
