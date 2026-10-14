@@ -33,7 +33,7 @@ fun SwitchGroupScreen(
             SwitchGroup(
                 source = screenViewModel.source,
                 selectedItems = selected,
-                onSelectionItemChange = { event ->
+                onSelectedChange = { event ->
                     screenViewModel.selected.update { event.selected }
                 },
                 content = { x -> Text(x) },

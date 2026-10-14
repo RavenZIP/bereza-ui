@@ -20,7 +20,7 @@ import com.github.ravenzip.bereza.core.components.textfield.toggleItem
 fun <T> SwitchGroup(
     source: List<T>,
     selectedItems: List<T>,
-    onSelectionItemChange: (MultiSelectChange<T>) -> Unit,
+    onSelectedChange: (MultiSelectChange<T>) -> Unit,
     modifier: Modifier = Modifier,
     key: (T) -> Any? = { it },
     enabled: Boolean = true,
@@ -43,7 +43,7 @@ fun <T> SwitchGroup(
                 Switch(
                     checked = selected,
                     onCheckedChange = {
-                        onSelectionItemChange(toggleItem(selected = selectedItems, item, key = key))
+                        onSelectedChange(toggleItem(selected = selectedItems, item, key = key))
                     },
                     enabled = enabled,
                     padding = padding,
