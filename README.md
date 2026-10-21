@@ -1,7 +1,14 @@
 <p align="center">
-
 <img alt="Logo" src="images/logo.png" width="100%">
+</p>
 
+<p align="center">
+<strong>Дополнительные UI-компоненты для Compose
+Multiplatform</strong><br> Bereza UI расширяет стандартный набор
+Material 3 компонентами для создания современных и сложных интерфейсов.
+</p>
+
+<p align="center">
 <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.4.20-A831F5">
 <img alt="Compose Multiplatform" src="https://img.shields.io/badge/Compose Multiplatform-1.12.0-3b83f8">
 <img alt="Static Badge" src="https://img.shields.io/badge/API-24+-39ad31">
@@ -10,14 +17,26 @@
 </a>
 </p>
 
-> 🌐 **Languages:**  
-> [Русский](README.md) | [English](docs/README-EN.md)
+<p align="center">
+<a href="README.md">Русский</a> ·
+<a href="docs/README-EN.md">English</a>
+</p>
 
-## 🔎 Что такое Bereza UI?
+## ✨ О библиотеке
 
-Bereza UI — библиотека компонентов для Compose Multiplatform,
-расширяющая возможности стандартной Material3 библиотеки,
-предоставляя дополнительные UI-компоненты и инструменты, отсутствующие в стандартной библиотеке Material
+**Bereza UI** — библиотека UI-компонентов для Compose Multiplatform,
+дополняющая стандартную Material 3 библиотеку элементами, которых может
+не хватать при разработке приложения.
+
+## 🧩 Компоненты
+
+Ниже представлены наиболее интересные группы компонентов, на которые стоит обратить внимание.
+Полный список лучше смотреть в коде проекта. В будущем будет вынесено в отдельную документацию.
+
+- **Выбор из списка** — `Select`, `MultiSelect`.
+- **Автодополнение и поиск** — `AutocompleteTextField`, `MultiAutocomplete`.
+- **Группы переключателей** — `CheckBoxGroup`, `RadioGroup`, `SwitchGroup`.
+- **Контейнеры** — `ExpandableCard`.
 
 ## 🌍 Поддерживаемые платформы
 
@@ -32,26 +51,9 @@ Bereza UI — библиотека компонентов для Compose Multipl
 
 macOS, iOS временно не поддерживаются, так как невозможно проверить работоспособность библиотеки на данных платформах.
 
-## 🌳 Структура проекта
-
-### - bereza-core
-
-Основной модуль библиотеки
-
-### - berezaApp
-
-Демонстрационное приложение библиотеки. Позволяет запустить Bereza UI, ознакомиться с доступными компонентами и
-протестировать их работу в реальных сценариях.
-
-### - docs
-
-Документация проекта.
-
-### - images
-
-Изображения, используемые в README и документации.
-
 ## 🚀 Установка
+
+### 1. Добавьте JitPack репозиторий
 
 **settings.gradle.kts**
 
@@ -64,6 +66,11 @@ dependencyResolutionManagement {
     }
 }
 ```
+
+### 2. Добавьте зависимость
+
+Замените `$version` на версию, которую вы хотите использовать —
+её можно найти на [JitPack](https://jitpack.io/#RavenZIP/bereza-ui).
 
 **build.gradle.kts**
 
@@ -93,17 +100,18 @@ dependencies {
 }
 ```
 
-## 🤝 Интеграции
+## 🔗 Интеграции
 
-[kotlin-reactive-forms](https://github.com/RavenZIP/kotlin-reactive-forms)
+[Kotlin Reactive Forms](https://github.com/RavenZIP/kotlin-reactive-forms) -
+библиотека реактивного управления состоянием форм,
+предоставляющая интеграцию с UI-компонентами через `FormControl`.
 
-## 🚬 Примеры использования
+## 🗂️ Структура проекта
 
-В разработке... Смотрите berezaApp модуль
-
-## 📚 Документация
-
-В разработке...
+- **`bereza-core`** — основной модуль библиотеки с UI-компонентами.
+- **`berezaApp`** — демонстрационное приложение.
+- **`docs`** — документация проекта.
+- **`images`** — изображения для README и документации.
 
 ## 📜 Лицензия
 
