@@ -113,6 +113,21 @@ integration through `FormControl`.
 - **`docs`** — project documentation.
 - **`images`** — images used in the README and documentation.
 
+### ✨ New Components
+
+- [ ] Button with additional actions (`Split Button`)
+- [ ] Input field with separate cells for characters (`SegmentedTextField`)
+- [ ] Address input field (`AddressField`)
+- [ ] Group of checkboxes with a master toggle to select all items (`CheckboxTreeGroup`)
+
+### ⚙️ Improvements
+
+- [ ] Optimization
+- [ ] Addressing TODOs
+- [ ] Documentation and usage examples
+
+> This roadmap is preliminary and subject to change as the project evolves.
+
 ## 📜 License
 
 This library is distributed under the Apache License 2.0. See the
